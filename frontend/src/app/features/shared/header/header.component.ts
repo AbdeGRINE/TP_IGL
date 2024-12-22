@@ -12,6 +12,6 @@ interface User {
 export class HeaderComponent {
   user: User = {
     nom: 'Grine Abderrahmane',
-    type: 'Medecin',
+    type: 'Type', //this is a static declaration for test.
   };
 }
