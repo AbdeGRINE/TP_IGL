@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../../shared/header/header.component';
 
 interface DPI {
   id: string;
@@ -8,21 +9,13 @@ interface DPI {
   telephone: string;
   dateDeCreation: Date;
 }
-interface User{
-  nom: string,
-  type: string,
-}
 @Component({
   selector: 'app-medecin-dashboard',
-  imports: [CommonModule],
+  imports: [CommonModule, HeaderComponent],
   templateUrl: './medecin-dashboard.component.html',
   styleUrl: './medecin-dashboard.component.css',
 })
 export class MedecinDashboardComponent {
-  user: User ={
-    nom: "Grine Abderrahmane",
-    type: "Medecin",
-  }
   DPIs: DPI[] = [
     {
       id: 'P12345',
