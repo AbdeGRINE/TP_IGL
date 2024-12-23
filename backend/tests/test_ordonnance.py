@@ -50,12 +50,11 @@ def test_valider_ordonnance(client):
     )
    
     url = reverse('valider_ordonnance', kwargs={'ordonnance_id': ordonnance.id})
-    # Perform the POST request to validate the ordonnance
     response = client.patch(url)
 
-    # Verify the response
+    
     assert response.status_code == status.HTTP_200_OK
     
-    # Refresh from database to get updated status
+   
     ordonnance.refresh_from_db()
     assert ordonnance.status == 'Validé'
