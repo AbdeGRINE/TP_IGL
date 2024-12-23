@@ -1,0 +1,95 @@
+<!-- TO DO:
+ - See the way Backend team name the attributes: See the data base diagramme.
+ - Simulate linking with backend.
+
+ - Save the form locally with error handling (name the things as in the backend).
+ - simulate sumbiting by http.
+
+ Meeting:
+ - long svg code problem, one of you should pull my work and try.
+ - we link once with backend (login), and after we'll see how we work: merging and linking, or linking at the big end.
+ - we merge front-end every 3 days (for example). first Deadline: this Tuesday. 
+ -->
+<app-header></app-header>
+<div class="bg-[#EEEFF1] flex flex-col gap-7 items-center min-h-screen">
+  <div class="flex flex-row items-center gap-20 mt-12">
+    <label for="fname" class="w-24">Nom:</label>
+    <input
+      id="fname"
+      type="text"
+      class="text-gray-500 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none"
+      placeholder="Benziada"
+    />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="name" class="w-24">Prenom:</label>
+    <input
+      id="name"
+      type="text"
+      class="text-gray-500 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none"
+      placeholder="Fares"
+    />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="NSS" class="w-24">NSS:</label>
+    <input
+      id="NSS"
+      type="text"
+      inputmode="numeric"
+      class="text-gray-500 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none"
+      placeholder="123456789"
+    />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="adress" class="w-24">Adresse:</label>
+    <input
+      id="adress"
+      type="text"
+      class="text-gray-500 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none"
+      placeholder="ESI, Oued Semmar, Alger."
+    />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="phone" class="w-24">N tel:</label>
+    <input
+      id="phone"
+      type="text"
+      inputmode="numeric"
+      class="text-gray-500 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none"
+      placeholder="0555555555"
+    />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="mutuelle" class="w-24">Mutuelle:</label>
+    <input
+      id="mutuelle"
+      type="text"
+      class="text-gray-500 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none"
+      placeholder="/"
+    />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="med" class="w-24">Medecin traitant:</label>
+    <input
+      id="med"
+      type="text"
+      class="text-gray-500 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none"
+      placeholder="Grine Abderrahmane"
+    />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="personne" class="w-24">Personne à contacter:</label>
+    <input
+      id="personne"
+      type="text"
+      class="text-gray-500 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none"
+      placeholder="Yasser Arafat"
+    />
+  </div>
+  <div class="flex flex-row self-center ml-52">
+    <button class="text-[#46BB91] rounded-xl p-2 w-32" (click) = "navigateToAdminDashboard()">Annuler</button>
+    <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32 " (click)="handleSaveDPI()">
+      Confirmer
+    </button>
+  </div>
+</div>

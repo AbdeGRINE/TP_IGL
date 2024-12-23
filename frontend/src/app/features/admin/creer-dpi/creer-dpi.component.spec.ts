@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreerCompteComponent } from './creer-compte.component';
+import { CreerDPIComponent } from './creer-dpi.component';
 
-describe('CreerCompteComponent', () => {
-  let component: CreerCompteComponent;
-  let fixture: ComponentFixture<CreerCompteComponent>;
+describe('CreerDPIComponent', () => {
+  let component: CreerDPIComponent;
+  let fixture: ComponentFixture<CreerDPIComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreerCompteComponent]
+      imports: [CreerDPIComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CreerCompteComponent);
+    fixture = TestBed.createComponent(CreerDPIComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
