@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Enum-like fields
 class StatusHospitalisation(models.TextChoices):
@@ -49,15 +50,14 @@ class Role(models.TextChoices):
     LABORANTIN = 'Laborantin'
     RADIOLOGUE = 'Radiologue'
 
-
 # Models
+
 class Etablissement(models.Model):
     nom = models.CharField(max_length=100)
     adresse = models.CharField(max_length=100)
 
     def __str__(self):
         return self.nom
-
 
 class Patient(models.Model):
     NSS = models.CharField(max_length=15, unique=True)
@@ -66,20 +66,21 @@ class Patient(models.Model):
     date_naissance = models.DateField()
     adresse = models.CharField(max_length=100)
     mutuelle = models.CharField(max_length=50)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient', null=True, blank=True)
 
     def __str__(self):
         return f'{self.nom} {self.prenom}'
-
 
 class Medcin(models.Model):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
     specialite = models.CharField(max_length=100)
     etablissement = models.ForeignKey(Etablissement, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='medcin', null=True, blank=True)
+
 
     def __str__(self):
         return f'{self.nom} {self.prenom}'
-
 
 class DPI(models.Model):
     date_creation = models.DateField(auto_now_add=True)
@@ -90,7 +91,6 @@ class DPI(models.Model):
 
     def __str__(self):
         return f'DPI for {self.patient}'
-
 
 class Hospitalisation(models.Model):
     date_entre = models.DateField()
@@ -104,7 +104,6 @@ class Hospitalisation(models.Model):
     def __str__(self):
         return f'Hospitalisation for {self.dpi.patient}'
 
-
 class Consultation(models.Model):
     date = models.DateField(auto_now_add=True)
     medecin_consulte = models.CharField(max_length=100)
@@ -112,7 +111,6 @@ class Consultation(models.Model):
 
     def __str__(self):
         return f'Consultation on {self.date} by {self.medecin_consulte}'
-
 
 class Resume(models.Model):
     date_prochaine_consultation = models.DateField()
@@ -127,19 +125,19 @@ class Laborantin(models.Model):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
     etablissement = models.ForeignKey(Etablissement, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='laborantin', null=True, blank=True)
 
     def __str__(self):
         return f'{self.nom} {self.prenom}'
-
 
 class Radiologue(models.Model):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
     etablissement = models.ForeignKey(Etablissement, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='radiologue', null=True, blank=True)
 
     def __str__(self):
         return f'{self.nom} {self.prenom}'
-
 
 class Bilan(models.Model):
     nom = models.CharField(max_length=100)
@@ -153,10 +151,6 @@ class Bilan(models.Model):
 
     def __str__(self):
         return f'Bilan {self.nom} for consultation on {self.consultation.date}'
-
-
-
-
 
 class Ordonnance(models.Model):
     date = models.DateField(auto_now_add=True)
@@ -175,7 +169,7 @@ class Medicament(models.Model):
         return self.nom
 
 class Traitement(models.Model):
-    ordonnance = models.ForeignKey(Ordonnance, on_delete=models.CASCADE)
+    ordonnance = models.ForeignKey(Ordonnance,related_name='traitement_set', on_delete=models.CASCADE)
     medicament = models.ForeignKey(Medicament, on_delete=models.CASCADE)
     duree = models.CharField(max_length=50)
     dosage = models.CharField(max_length=50)
@@ -183,13 +177,12 @@ class Traitement(models.Model):
     def __str__(self):
         return f'Traitement for ordonnance {self.ordonnance.id}'
 
-
-
 class Infermier(models.Model):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
     groupe = models.CharField(max_length=20, choices=Groupe.choices)
     etablissement = models.ForeignKey(Etablissement, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='infermier', null=True, blank=True)
 
     def __str__(self):
         return f'{self.nom} {self.prenom}'
@@ -205,9 +198,6 @@ class Soin(models.Model):
     def __str__(self):
         return f'Soin {self.nom} for {self.dpi.patient}'
 
-
-
-
 class Test(models.Model):
     nom = models.CharField(max_length=100)
     resultat = models.CharField(max_length=100)
@@ -218,7 +208,6 @@ class Test(models.Model):
     def __str__(self):
         return f'Test {self.nom} for bilan {self.bilan.nom}'
 
-
 class CompteRendu(models.Model):
     nom = models.CharField(max_length=100)
     resultat = models.TextField()
@@ -227,7 +216,6 @@ class CompteRendu(models.Model):
     def __str__(self):
         return f'Compte rendu for test {self.test.nom}'
 
-
 class Image(models.Model):
     donnee = models.BinaryField()
     compte_rendu = models.ForeignKey(CompteRendu, on_delete=models.CASCADE)
@@ -235,14 +223,13 @@ class Image(models.Model):
     def __str__(self):
         return f'Image for compte rendu {self.compte_rendu.id}'
 
-
 class Admin(models.Model):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='admin', null=True, blank=True)
 
     def __str__(self):
         return f'{self.nom} {self.prenom}'
-
 
 class PersonneAContacter(models.Model):
     prenom = models.CharField(max_length=50)
