@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'users',
+    'dpi',
+    'qrcode',
 ]
 
 MIDDLEWARE = [
@@ -83,9 +86,18 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': 'abdegrine',
         'HOST': 'localhost',  # Ou l'adresse IP du serveur MySQL
-        'PORT': '3307',       
+        'PORT': '3306',       
     }
 }
+
+DATABASES['default']['TEST'] = {
+    'NAME': 'test_db',  # Your test database name
+}
+
+
+
+
+
 
 
 # Password validation
@@ -128,3 +140,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000  # Augmentez ce nombre selon vos besoins

@@ -9,7 +9,7 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
+
 
 @api_view(['POST'])
 def authentifier_utilisateur(request: Request) -> Response:
@@ -53,3 +53,5 @@ def obtenir_utilisateur_connecte(request: Request) -> Response:
         serializer = UserSerializer(instance= request.user)
         return Response({"user": serializer.data})
     return Response({"detail": "user not found"})
+
+
