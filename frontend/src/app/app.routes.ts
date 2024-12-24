@@ -3,6 +3,7 @@ import { MedecinDashboardComponent } from './features/medecin/medecin-dashboard/
 import { LoginComponent } from './features/auth/login/login.component';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard.component';
 import { CreerDPIComponent } from './features/admin/creer-dpi/creer-dpi.component';
+import { AfficherDpiComponent } from './features/medecin/afficher-dpi/afficher-dpi.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
@@ -21,5 +22,10 @@ export const routes: Routes = [
     path: 'creer-dpi',
     component: CreerDPIComponent,
     title: 'Creer DPI',
+  },
+  {
+    path: 'afficher-dpi',
+    component: AfficherDpiComponent,
+    title: 'Afficher DPI',
   },
 ];
