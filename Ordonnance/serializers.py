@@ -5,7 +5,7 @@ from users.models import Traitement,Ordonnance,Medicament
 class MedicamentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Medicament
-        fields = ['id', 'nom', 'code']
+        fields = ['id', 'nom', 'code','type']
 
 
 class TraitementSerializer(serializers.ModelSerializer):

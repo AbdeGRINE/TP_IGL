@@ -2,10 +2,10 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import api_view
-from .serializers import GetOrdonnanceSerializer, OrdonnanceSerializer
+from .serializers import GetOrdonnanceSerializer, MedicamentSerializer, OrdonnanceSerializer
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
-from users.models import Ordonnance,StatusOrdonnance
+from users.models import Medicament, Ordonnance,StatusOrdonnance
 from users.permissions import IsDoctor, IsPatient, IsAdmin, IsInfermier, IsLaborantin, IsRadiologue
  
 
@@ -60,6 +60,25 @@ def ordonnances_par_dpi(request, dpi_id):
 
     # Sérialiser les ordonnances
     serializer = OrdonnanceSerializer(ordonnances, many=True)
+    return Response(serializer.data, status=200)
+
+@api_view(['GET'])
+#@permission_classes([IsAuthenticated])
+def liste_medicaments(request):
+    """
+    Récupère tout les medicaments.
+    """
+    try:
+
+        medicaments = Medicament.objects.all()
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+    if not medicaments.exists():
+        return Response({"error": "Aucune medicaments trouvée."}, status=404)
+
+    # Sérialiser les ordonnances
+    serializer = MedicamentSerializer(medicaments, many=True)
     return Response(serializer.data, status=200)
 
 @api_view(['PATCH'])
