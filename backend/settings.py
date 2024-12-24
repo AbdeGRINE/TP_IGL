@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'dpi',
     'qrcode',
     'drf_yasg',
+    'Ordonnance',
+    'Consultation',
+    'Soin',
 
 ]
 REST_FRAMEWORK = {
