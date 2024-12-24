@@ -20,6 +20,9 @@ from PIL import Image
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from users.permissions import IsDoctor, IsAdmin, IsPatient
+import base64
+
+
 
 
 class creer_dpi(APIView):
@@ -71,6 +74,8 @@ class creer_dpi(APIView):
         qr_binary.seek(0)
         
   
+        # Convertir l'image en base64
+        qr_base64 = base64.b64encode(qr_binary.read()).decode('utf-8') 
   
         # Créer le DPI
         dpi = DPI.objects.create(
@@ -81,8 +86,19 @@ class creer_dpi(APIView):
 
         )
        
+        return Response({"success": f"DPI créé pour le patient {patient.nom} {patient.prenom}.","qr_code": qr_base64  # Envoyer le QR Code sous forme de chaîne base64 
+                         }, status=status.HTTP_201_CREATED)
 
-        return Response({"success": f"DPI créé pour le patient {patient.nom} {patient.prenom}."}, status=status.HTTP_201_CREATED)
+
+
+
+
+
+
+
+
+
+
 
 
 class consulter_dpi(APIView):
@@ -94,6 +110,13 @@ class consulter_dpi(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
   
+
+
+
+
+
+
+
 
 
 
