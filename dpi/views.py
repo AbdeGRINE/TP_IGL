@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import DPI, Medcin, Etablissement, Patient, PersonneAContacter
+from users.models import DPI, Medcin, Etablissement, Patient, PersonneAContacter
 from .serializers import DPISerializer
 import qrcode
 from io import BytesIO
@@ -19,11 +19,11 @@ from pyzbar.pyzbar import decode
 from PIL import Image
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
-from .permissions import IsDoctorOrAdministrative, IsDoctorOrPatient
+from users.permissions import IsDoctor, IsAdmin, IsPatient
 
 
 class creer_dpi(APIView):
-    permission_classes = [IsAuthenticated, IsDoctorOrAdministrative]
+    permission_classes = [IsAuthenticated, IsDoctor | IsAdmin] 
     def post(self, request, *args, **kwargs):
         # Valider les données
         patient_data = request.data.get("patient")
@@ -86,7 +86,7 @@ class creer_dpi(APIView):
 
 
 class consulter_dpi(APIView):
-    permission_classes = [IsAuthenticated, IsDoctorOrPatient]
+    permission_classes = [IsAuthenticated, IsDoctor | IsPatient] 
     def get(self, request, dpi_id, *args, **kwargs):
         # Récupérer le DPI
         dpi = get_object_or_404(DPI, id=dpi_id)
@@ -99,8 +99,8 @@ class consulter_dpi(APIView):
 
 
 class rechercher_dpi_nss(APIView):
-    #permission_classes = [IsAuthenticated, IsDoctorOrPatient]
-    def get(self, request, *args, **kwargs):
+     permission_classes = [IsAuthenticated, IsDoctor | IsPatient]  
+     def get(self, request, *args, **kwargs):
         # Récupérer le NSS depuis les paramètres GET
         nss = request.query_params.get("nss")
         if not nss:
@@ -131,7 +131,7 @@ class rechercher_dpi_nss(APIView):
 
 
 class rechercher_dpi_qrcode(APIView):
-    #permission_classes = [IsAuthenticated, IsDoctorOrPatient]
+    permission_classes = [IsAuthenticated, IsDoctor | IsPatient] 
     def post(self, request, *args, **kwargs):
         # Récupérer le fichier QR code envoyé
         qr_code_file = request.FILES.get("qr_code")
