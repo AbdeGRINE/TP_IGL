@@ -11,7 +11,7 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import ListAPIView
 from rest_framework.exceptions import NotFound
 from PIL import Image
-import zbar
+#import zbar
 from PIL import Image
 from django.utils import timezone
 from django.core.files.base import ContentFile
