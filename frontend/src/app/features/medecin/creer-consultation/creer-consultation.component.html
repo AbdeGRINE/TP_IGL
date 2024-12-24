@@ -1,0 +1,184 @@
+<app-header></app-header>
+<div class="bg-lightgray px-[10%] w-full flex h-full min-h-fit pb-10">
+    <div class="flex flex-col jusify-center items-center w-full h-full min-h-full gap-y-6">
+        <div class="w-full flex flex-col h-full min-h-full">
+            <div class="py-6 text-black text-2xl">Creation de la consultation</div>
+            <div class="w-full h-full flex justify-between gap-x-8 min-h-fit items-stretch">
+                <div class="w-full flex h-full flex-col gap-y-8 ">
+                    <div class="rounded-lg bg-white border border-darkgray">
+                        <div class="flex justify-between items-center mx-4 my-2">
+                            <div class="text-xl">Date</div>
+                            <div class="bg-lightgray text-darkgray px-6 py-2 rounded-sm">28/10/2004</div>
+                        </div>
+                    </div>
+
+
+                    <div class="bg-white px-4 py-2 rounded-lg max-h-[270px] border border-darkgray">
+                        <div class="flex justify-between items-center rounded-lg py-4">
+                            <div class="">
+                                <div class="text-xl">Ordonnances</div>
+                            </div>
+                            <button>
+                                <img src="/add.svg" alt="add icon">
+                            </button>
+                        </div>
+
+
+                        <div class="w-full flex flex-col items-center gap-y-1">
+                            <div
+                                class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center">
+                                <div class="w-1/3">ID</div>
+                                <div class="w-1/3">Date de creation</div>
+                                <div class="w-1/3 flex pr-4 justify-end">Actions</div>
+                            </div>
+
+                            <div class="w-full flex flex-col">
+                                <div *ngFor="let Ordonnance of Ordonnances" class="flex  items-center py-2 px-4 w-full">
+                                    <div class="w-1/3 flex-grow">{{Ordonnance.nom}}</div>
+                                    <div class="w-1/3 flex-grow text-black">{{Ordonnance.state}}</div>
+                                    <div class="flex flex-row gap-x-6 items-center w-1/3 flex-grow justify-end">
+                                        <button><img src="/eye.svg" alt="view icon"></button>
+                                        <button><img src="/trash.svg" alt="delete icon"></button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white py-2 rounded-lg max-h-[270px] border border-darkgray min-h-[340px] px-8">
+                        <div class="flex justify-between items-center rounded-lg py-4 text-xl">
+                            Bilan Biologiques
+                        </div>
+
+                        <!-- bilan -->
+                        <div class="w-full flex items-center gap-y-1">
+                            <div class="flex flex-col w-1/2">
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex flex-col gap-y-8 w-full">
+
+                    <div class="bg-white px-8 py-2 rounded-lg max-h-[270px] border border-darkgray min-h-[300px]">
+                        <div class="flex justify-between items-center rounded-lg py-4 text-xl">
+                            Bilan Radiologique
+                        </div>
+
+                        <div class="w-full flex items-center gap-y-1">
+                            <div class="flex flex-col w-1/2">
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+                                <div class="flex items-center gap-x-4">
+                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        placeholder="Resume de la consultation" />
+                                    <div class="text-xl">Bilan</div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="bg-white px-4 py-2 rounded-lg border border-darkgray flex flex-col h-full">
+                        <div class="flex rounded-lg py-4 text-xl">
+                            Resume
+                        </div>
+
+                        <!-- input -->
+                        <div class="w-full h-full flex">
+                            <textarea id="resume"
+                                class="resize-none text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md focus:ring-2 focus:ring-green focus:outline-none w-full h-full"
+                                placeholder="Resume de la consultation"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-end w-full">
+            <button class="bg-green text-white text-lg px-6 py-2 rounded-xl flex ">Enregistrer</button>
+        </div>
+    </div>
+</div>
