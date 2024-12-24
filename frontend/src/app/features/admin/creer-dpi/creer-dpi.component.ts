@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { NavigationService } from '../../../services/navigation.service';
 import { FormsModule } from '@angular/forms';
+import { ApiDataService } from '../../../services/api-data.service';
 
 interface Patient {
   nom: string;
@@ -20,6 +21,7 @@ interface Patient {
   templateUrl: './creer-dpi.component.html',
   styleUrl: './creer-dpi.component.css',
 })
+
 export class CreerDPIComponent {
   patient: Patient = {
     nom: '',
@@ -31,8 +33,12 @@ export class CreerDPIComponent {
     medecin: '',
     personne: '',
   };
+  
+  constructor(
+    private navigationService: NavigationService,
+    private apiDataService: ApiDataService
+  ) {}
 
-  constructor(private navigationService: NavigationService) {}
   navigateToAdminDashboard() {
     this.navigationService.navigateTo('/admin-dashboard');
   }
@@ -51,7 +57,7 @@ export class CreerDPIComponent {
       alert('Veuillez remplir tous les champs obligatoires!');
       return false;
     }
-
+    //`/^[a-zA-Z\s]+$/ is a regular expression.
     if (!/^[a-zA-Z\s]+$/.test(this.patient.nom)) {
       alert('Nom ne doit pas contenir de chiffres.');
       return false;
@@ -88,9 +94,17 @@ export class CreerDPIComponent {
 
   handleSaveDPI() {
     if (this.inputValidation()) {
-      alert('Formulaire envoyé!');
-      console.log(this.patient);
-      this.navigationService.navigateTo('/admin-dashboard');
+      this.apiDataService.post('DPIs', this.patient).subscribe({
+        next: (response) => {
+          alert('Patient saved successfully!');
+          console.log(response);
+          this.navigationService.navigateTo('/admin-dashboard');
+        },
+        error: (err) => {
+          alert('Failed to save patient. Please try again.');
+          console.error(err);
+        },
+      });
     }
   }
 }
