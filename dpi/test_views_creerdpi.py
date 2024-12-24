@@ -5,6 +5,7 @@ from users.models import DPI, Medcin, Etablissement, Patient, PersonneAContacter
 from django.contrib.auth.models import User
 from users.permissions import IsDoctor, IsAdmin, IsPatient
 from django.utils import timezone
+import base64
 
 
 
@@ -33,7 +34,9 @@ def test_creer_dpi_non_authentifie():
 
     # Vérifier qu'un utilisateur non authentifié reçoit un code 401
     assert response.status_code in [401, 403]
-
+     # Vérifier l'URL du QR code (si applicable)
+    if response.status_code == 201:
+        assert 'qr_code' in response.data 
 
 
 
@@ -64,7 +67,8 @@ def test_creer_dpi_utilisateur_non_autorise():
 
     # Vérifier qu'un utilisateur sans les bonnes permissions reçoit un code 403
     assert response.status_code == 403
-
+    if response.status_code == 201:
+        assert 'qr_code' in response.data 
 
 
 
@@ -121,15 +125,26 @@ def test_creer_dpi_utilisateur_autorise():
     url = reverse('creer_dpi')  # Remplace par le nom réel de ta vue
     response = client.post(url, payload, format='json')
 
+
+
+
+
+
     # Vérifications
     assert response.status_code == 201  # L'utilisateur est autorisé et peut créer un DPI
     assert DPI.objects.count() == 1  # Vérifier qu'un DPI a été créé
 
     # Vérifier les détails du DPI créé
     dpi = DPI.objects.first()
-    assert dpi.date_creation is not None  # Vérifier que la date de création est définie
+    assert dpi.date_creation is not None  # Vérifier que la date de création est définie 
     assert dpi.date_creation <= timezone.localdate()  # Comparer la date sans l'heure
     assert "success" in response.json()
+
+    assert 'qr_code' in response.data  # Check for the base64 encoded QR code
+
+
+  
+
 
     # Vérifier la personne à contacter
     personne_contact = PersonneAContacter.objects.first()
