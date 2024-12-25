@@ -100,13 +100,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tp_igl',
-        'USER': 'root',
-        'PASSWORD': 'abdegrine',
-        'HOST': 'localhost',  # Ou l'adresse IP du serveur MySQL
-        'PORT': '3307',       
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'tp_igl',
+    #     'USER': 'root',
+    #     'PASSWORD': 'abdegrine',
+    #     'HOST': 'localhost',  # Ou l'adresse IP du serveur MySQL
+    #     'PORT': '3307',       
+    # }
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "testdbfoudili.sqlite3",
     }
 }
 
