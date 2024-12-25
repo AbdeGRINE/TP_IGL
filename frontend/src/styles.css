@@ -1,1 +1,53 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: lightgray;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  /* Title Styling */
+  .title {
+    position: absolute;
+    top: 30%; /* Adjust this percentage to move the title vertically */
+    left: 0;  /* Align to the left side */
+    transform: translateY(-50%); /* Adjust to perfect center vertically */
+    padding: 20px;
+    font-size: 24px; /* Adjust the title font size */
+    color: #333; /* Title color */
+  }
+  
+  /* Text container styling */
+  .text {
+    display: flex;
+    flex-direction: column;  /* Stack the title and bienvenue vertically */
+    position: absolute;
+  /* Align to the top of the page */
+  top: 40%;
+    left: 0; /* Align to the left side */
+    padding-left: 20px; /* Add padding to the left */
+  }
+  
+  /* Styling for the "bienvenue" text */
+  .bienvenue h2 {
+    font-size: 16px; /* Font size for the second text */
+    color: #333; /* Text color */
+    margin-top: 16%; /*Adds space between the title and bienvenue text*/
+    /* width:70%; */
+  }
+  .bienvenue{
+    width:70%;
+  }
+  .images {
+    display: flex;
+    justify-content: center; /* Center the image horizontally */
+    margin-top: 30px; /* Adds space between text and the image */
+
+  }
+  .image {
+    width: 200px; /* Set the image width */
+    height: auto; /* Maintain aspect ratio */
+
+
+  }

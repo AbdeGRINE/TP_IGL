@@ -1,0 +1,88 @@
+
+/* Positioning the login container */
+.login-container {
+    width: 50%; 
+    padding: 20px; 
+    padding-bottom: 30px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: absolute; 
+    top: 50%;
+    
+    display: flex;
+    flex-direction: column;
+
+
+    right: 10%; /* Adjust the right positioning */
+    left:90%;
+    transform: translateY(-50%); /* Center vertically */
+  }
+  
+  /* Make the form and inputs fill the container properly */
+  h2 {
+    /* text-align: center; */
+    left: 40%;
+    right: 40%;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  label {
+    left: 30%;
+
+    display: block; 
+    
+    font-weight: 300; 
+    font-family: 'Poppins', sans-serif;
+    color: #33333375; 
+  }
+  input {
+    
+    
+    position: relative;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .emailDiv,.passDiv {
+    display: flex;
+    flex-direction: column;
+  }
+  button {
+    position: relative;
+    
+    padding: 10px;
+    background-color: #46BB91;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    
+  }
+  
+  
+  
+   .error {
+    color: red;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+  }
+   
+
+  .inputs{
+    gap:20px;
+  }
