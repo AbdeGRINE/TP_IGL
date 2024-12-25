@@ -33,6 +33,26 @@ export class CreerConsultationComponent {
   },
 ]
 
+  isAddOrdonnanceOpen = false;
 
+  openAddOrdonnance() {
+    this.isAddOrdonnanceOpen = true;
+  }
+
+  closeAddOrdonnance() {
+    this.isAddOrdonnanceOpen = false;
+  }
+
+  AnnulerOrdonnance(){
+    this.isAddOrdonnanceOpen = false;
+  }
+
+  EnregistrerOrdonnaces(){
+    this.isAddOrdonnanceOpen = false;
+  }
+
+  AjouterOrdonnance(){
+    
+  }
 
 }
