@@ -142,7 +142,7 @@ class Radiologue(models.Model):
 class Bilan(models.Model):
     nom = models.CharField(max_length=100)
     date_demande = models.DateField(auto_now_add=True)
-    date_recuperation = models.DateField()
+    date_recuperation = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=StatusBilan.choices, default=StatusBilan.EN_COURS)
     type = models.CharField(max_length=20, choices=TypeBilan.choices)
     redigant_laborantin = models.ForeignKey(Laborantin,null=True, blank=True, on_delete=models.SET_NULL)
