@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="relative bg-lightgray px-[10%] w-full flex h-full min-h-fit pb-10">
+<div class="relative bg-lightgray px-[10%] w-full flex h-full min-h-fit pb-10" [formGroup]="Consultation">
     <div class="absolute inset-0 " [ngClass]="{
     'bg-gray opacity-50': isPopupOpen,
     'hidden': !isPopupOpen
@@ -137,11 +137,11 @@
 
                         <!-- bilan -->
                         <div class="w-full flex items-center gap-y-1">
-                            <div class="flex flex-col w-1/2">
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
+                            <div class="flex flex-col w-1/2" formArrayName="bilansBiologique">
+                                <div class="flex items-center gap-x-4" *ngFor="let Bilan of bilansBiologique">
+                                    <input type="checkbox" class="border border-darkgray rounded-md h-full"
                                         placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
+                                    <div class="text-xl">{{Bilan.nom}}</div>
                                 </div>
                                 <div class="flex items-center gap-x-4">
                                     <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
@@ -197,10 +197,10 @@
 
                         <div class="w-full flex items-center gap-y-1">
                             <div class="flex flex-col w-1/2">
-                                <div class="flex items-center gap-x-4">
+                                <div class="flex items-center gap-x-4" *ngFor="let Bilan of bilansRadio">
                                     <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
                                         placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
+                                    <div class="text-xl">{{Bilan.nom}}</div>
                                 </div>
                                 <div class="flex items-center gap-x-4">
                                     <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
@@ -253,7 +253,7 @@
 
                         <!-- input -->
                         <div class="w-full h-full flex">
-                            <textarea id="resume"
+                            <textarea id="resume" formControlName="resume"
                                 class="resize-none text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md focus:ring-2 focus:ring-green focus:outline-none w-full h-full"
                                 placeholder="Resume de la consultation"></textarea>
                         </div>
@@ -262,7 +262,8 @@
             </div>
         </div>
         <div class="flex justify-end w-full">
-            <button class="bg-green text-white text-lg px-6 py-2 rounded-xl flex ">Enregistrer</button>
+            <button class="bg-green text-white text-lg px-6 py-2 rounded-xl flex "
+                (click)="onSubmit()">Enregistrer</button>
         </div>
     </div>
 </div>
