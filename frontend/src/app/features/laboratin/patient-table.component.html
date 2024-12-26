@@ -1,0 +1,50 @@
+<div class="everything">
+    <div class="p-10">
+      <h2 class="text-2xl font-semibold mb-4">Patients avec bilans biologiques:</h2>
+      <table class="min-w-full bg-white shadow-md rounded-2xl">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Nom</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">ID</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Email</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Tel.</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Date de Creation</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let DPI of DPIs" class="hover:bg-gray-50">
+            <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ DPI.nom }}</td>
+            <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.id }}</td>
+            <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.email }}</td>
+            <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.telephone }}</td>
+            <td class="px-6 py-4 text-sm text-gray-600">
+              {{ DPI.dateDeCreation | date: 'd-MMMM-yyyy' }}
+            </td>
+            <td class="flex gap-5 py-6">
+              <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="26"
+              height="25"
+              fill="none"
+              viewBox="0 0 26 25"
+            >
+              <g clip-path="url(#a)">
+                <path
+                  fill="#878787"
+                  d="m17.829.942-2.363 2.364 6.347 6.347 2.364-2.363a3.124 3.124 0 0 0 0-4.419L22.253.942a3.124 3.124 0 0 0-4.42 0h-.004ZM14.362 4.41 2.98 15.796a4.33 4.33 0 0 0-1.084 1.826L.168 23.496a1.172 1.172 0 0 0 1.45 1.46l5.874-1.729a4.33 4.33 0 0 0 1.826-1.083L20.71 10.757l-6.348-6.348Z"
+                />
+              </g>
+              <defs>
+                <clipPath id="a">
+                  <path fill="#fff" d="M.12 0h25v25h-25z" />
+                </clipPath>
+              </defs>
+            </svg>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

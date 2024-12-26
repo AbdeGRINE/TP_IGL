@@ -1,0 +1,22 @@
+.everything {
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start; 
+    height: 100vh; 
+    padding-top: 160px; 
+    /* top: 90%; */
+  }
+  
+  .p-10 {
+    width: 100%;
+    max-width: 1200px; 
+    padding: 0 20px; 
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px; 
+
+  }
+  

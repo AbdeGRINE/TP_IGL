@@ -1,0 +1,15 @@
+{
+  "DPIs": [
+    {
+      "id": "a9c3",
+      "nom": "Benziada",
+      "prenom": "Fares",
+      "nss": "123456789",
+      "adresse": "ESI, El maqbara",
+      "n_tlph": "0555555559",
+      "mutuelle": "/",
+      "medecin": "Grine Les Hommes",
+      "personne": "Carlos Zafon"
+    }
+  ]
+}
