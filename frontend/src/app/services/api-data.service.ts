@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 
-//I creat a db.json file, a simulation for our Data Base.
+//I create a db.json file, a simulation for our Data Base.
 //You can GET, POST, PUSH from/to this Data Base simulation,
 //using the methodes declared in this service.
 //Run the db with: `json-server --watch db.json --port 3000`,
