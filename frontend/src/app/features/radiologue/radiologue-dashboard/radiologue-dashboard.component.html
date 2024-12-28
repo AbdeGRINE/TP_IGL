@@ -1,0 +1,34 @@
+<app-header></app-header>
+<div class="bg-lightgray px-[8%]">
+    <div class="flex w-full h-full">
+        <div class="flex flex-row justify-between items-center gap-x-20 min-h-fit w-full">
+            <div
+                class="bg-white border rounded-xl border-darkgray w-full h-full flex flex-col items-center p-8 gap-y-4">
+                <div class="w-full text-left text-xl">Patients avec bilans radiologiques</div>
+                <div class="w-full flex flex-col items-center gap-y-1">
+                    <div
+                        class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center justify-between">
+                        <div>Nom</div>
+                        <div>ID</div>
+                        <div>Medecin traitant</div>
+                        <div>Date</div>
+                        <div>Actions</div>
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <div *ngFor="let demande of Demandes" class="flex justify-between items-center py-2 px-4">
+                            <div class="text-black">{{demande.nom}}</div>
+                            <div class="font-semibold text-black">{{demande.id}}</div>
+                            <div class="text-black">{{demande.medecin}}
+                            </div>
+                            <div class="text-black">{{demande.date}}</div>
+                            <div class="flex flex-row gap-x-6 items-center justify-between">
+                                <button><img src="/eye.svg" alt="view icon"></button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
