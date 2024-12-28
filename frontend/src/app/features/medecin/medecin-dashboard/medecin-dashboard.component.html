@@ -1,7 +1,8 @@
 <!-- Header  -->
 <app-header></app-header>
 <!-- Body -->
-<div class="bg-[#EEEFF1]">
+ <!-- min-h-screen to take all the free space! -->
+<div class="bg-[#EEEFF1] min-h-screen">
   <!-- Search Section -->
   <div class="flex justify-between items-center p-10">
     <div class="flex gap-5">
@@ -9,7 +10,11 @@
         type="text"
         placeholder="Rechercher un DPI par NSS..."
         class="rounded-xl p-2"
+        [(ngModel)]="searchedNSS"
       />
+      <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32 " (click)="matchDPIbyNSS()">
+        Rechercher
+      </button>
       <!-- QRcode icon -->
       <label for="QRbutton">
         <svg
@@ -31,7 +36,7 @@
         type="file"
         name="QRbutton"
         id="QRbutton"
-        accept="image/png, image/jpeg"
+        accept="image/*"
         (change)="onFileChange($event)"
       />
       <!-- fin QR code icon -->
