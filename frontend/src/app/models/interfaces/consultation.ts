@@ -5,6 +5,7 @@ export interface Traitement {
 }
 
 export interface Consultation {
+    id : number,
     dateDeCreation: Date,
     ordonnances : Ordonnance[],
     resume : String,
@@ -14,8 +15,14 @@ export interface Consultation {
 
 export interface DPI {
   id: string;
-  //info patient
   nom: string;
+  prenom : string,
+  NSS : number,
+  dateNaissance : Date,
+  adresse : string,
+  telephone : string,
+  mutuelle: string,
+  personneAContacter :string,
   medecin: string;
   dateDeCreation: Date;
   consultations : Consultation[]

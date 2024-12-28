@@ -21,6 +21,13 @@ export class CreerConsultationComponent implements OnInit {
     {
       id: 'P12345',
       nom: 'Benziada',
+      prenom : 'Fares',
+      NSS : 123456,
+      dateNaissance :new Date("01-01-2004"),
+      adresse : "Reghaia",
+      telephone : "0666666666",
+      mutuelle: "/",
+      personneAContacter :"/",
       medecin: 'Grine',
       dateDeCreation: new Date('2023-01-01'),
       consultations: [
@@ -46,6 +53,7 @@ export class CreerConsultationComponent implements OnInit {
   };
 
   newConsultation: Consultation = {
+    id :0,
     dateDeCreation: new Date(),
     ordonnances: [],
     bilanRadiologique: [],
@@ -64,6 +72,7 @@ export class CreerConsultationComponent implements OnInit {
   constructor(private fb:FormBuilder){
     this.selectedPatient = this.patient;
     this.selectedOrdonnance = null;
+    this.newConsultation.id =  this.selectedPatient.consultations.length + 1,
     console.log(this.selectedPatient);
     // this.Consultation = this.fb.group({
     //   date: new Date().toISOString().split('T')[0],
@@ -142,6 +151,7 @@ export class CreerConsultationComponent implements OnInit {
       //this.selectedPatient.consultations.
       this.newConsultation.ordonnances.push({ ...this.newOrdonnace });
       this.newConsultation.bilansBiologique = [...this.selectedBilanBiologique];
+      this.newConsultation.bilanRadiologique = [...this.selectedBilanRadiologique];
       console.log(this.selectedPatient);
       this.newOrdonnace = {titre: `Ordonnance ${this.newConsultation.ordonnances.length + 1}`,
         state : 'en attente',
@@ -200,14 +210,14 @@ export class CreerConsultationComponent implements OnInit {
 ]
 
 bilansRadio = [{
-  "id": 1,
-  "nom" : "bilan 1",
+  id: '1',
+  nom : "bilan 1",
 },{
-  "id": 2,
-  "nom" : "bilan 2",
+  id: '2',
+  nom : "bilan 2",
 },{
-  "id": 3,
-  "nom" : "bilan 3",
+  id: '3',
+  nom : "bilan 3",
 }
 ]
 
@@ -262,6 +272,14 @@ onSubmit(){
     this.newConsultation.bilansBiologique = this.selectedBilanBiologique;
     this.newConsultation.bilanRadiologique = this.selectedBilanRadiologique;
     this.selectedPatient.consultations.push({ ...this.newConsultation });
+    this.newConsultation = {
+      id:  this.selectedPatient.consultations.length,
+      bilanRadiologique : [],
+      bilansBiologique : [],
+      dateDeCreation: new Date,
+      ordonnances : [],
+      resume : "",
+    }
 
   } else {
     alert("Veuillez remplir tous les champs avant d'ajouter une consultation.");

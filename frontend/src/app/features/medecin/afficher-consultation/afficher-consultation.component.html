@@ -1,9 +1,9 @@
 <app-header></app-header>
 <div class="relative bg-lightgray px-[10%] w-full flex h-full min-h-fit pb-10">
-    <div class="absolute inset-0 " [ngClass]="{
+    <!-- <div class="absolute inset-0 " [ngClass]="{
     'bg-gray opacity-50': isPopupOpen,
-    'hidden': !isPopupOpen
-  }"></div>
+    'bg-transparent hidden': !isPopupOpen
+  }"></div> -->
 
 
     <div *ngIf="isViewOrdonnanceOpen"
@@ -19,10 +19,11 @@
                 </div>
 
                 <div class="w-full flex flex-col">
-                    <div class="flex  items-center py-2 px-4 w-full">
-                        <div class="w-1/3 flex-grow">{{Ordonnance.medicament}}</div>
-                        <div class="w-1/3 flex-grow text-black">{{Ordonnance.dose}}</div>
-                        <div class="w-1/3 flex-grow text-black">{{Ordonnance.duree}}</div>
+                    <div class="flex  items-center py-2 px-4 w-full"
+                        *ngFor="let traitement of selectedOrdonnance?.traitements">
+                        <div class="w-1/3 flex-grow">{{traitement.medicament}}</div>
+                        <div class="w-1/3 flex-grow text-black">{{traitement.dose}}</div>
+                        <div class="w-1/3 flex-grow text-black">{{traitement.duree}}</div>
                     </div>
                 </div>
             </div>
@@ -70,7 +71,7 @@
             <div class="w-full flex flex-col gap-y-4">
                 <div class="w-full text-left">Compte Rendu</div>
                 <div class="text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md w-full h-60"
-                    placeholder="Resume de la consultation">{{Resume}}
+                    placeholder="Resume de la consultation">{{selectedConsultation.resume}}
                 </div>
             </div>
 
@@ -93,17 +94,17 @@
                     <div class="rounded-lg bg-white border border-darkgray">
                         <div class="flex justify-between items-center mx-4 my-2">
                             <div class="text-xl">Date</div>
-                            <div class="bg-lightgray text-darkgray px-6 py-2 rounded-sm">{{date}}</div>
+                            <div class="bg-lightgray text-darkgray px-6 py-2 rounded-sm">
+                                {{selectedPatient.dateDeCreation | date : "dd/MM/YYYY"}}</div>
                         </div>
                     </div>
 
 
-                    <div class="bg-white px-4 py-2 rounded-lg max-h-[270px] border border-darkgray">
+                    <div class="bg-white px-4 py-2 rounded-lg h-[270px] overflow-y-auto border border-darkgray">
                         <div class="flex justify-between items-center rounded-lg py-4">
                             <div class="">
                                 <div class="text-xl">Ordonnances</div>
                             </div>
-
                         </div>
 
 
@@ -115,15 +116,15 @@
                                 <div class="w-1/3 flex pr-4 justify-end">Actions</div>
                             </div>
 
-                            <div class="w-full flex flex-col">
-                                <div *ngFor="let Ordonnance of Ordonnances" class="flex  items-center py-2 px-4 w-full">
-                                    <div class="w-1/3 flex-grow">{{Ordonnance.nom}}</div>
-                                    <div class="w-1/3 flex-grow text-black">{{Ordonnance.state}}</div>
+                            <div class="w-full flex flex-col ">
+
+                                <div *ngFor="let ord of selectedConsultation.ordonnances"
+                                    class="flex items-center py-2 px-4 w-full text-black">
+                                    <div class="w-1/3 flex-grow">{{ord.titre}}</div>
+                                    <div class="w-1/3 flex-grow text-black">{{ord.state}}</div>
                                     <div class="flex flex-row gap-x-6 items-center w-1/3 flex-grow justify-end">
                                         <button><img src="/eye.svg" alt="view icon"
-                                                (click)="openViewOrdonnance()"></button>
-                                        <!-- <button><img src="/trash.svg" alt="delete icon"
-                                                (click)="openWantsToDelete()"></button> -->
+                                                (click)="openViewOrdonnance(ord)"></button>
                                     </div>
 
                                 </div>
@@ -145,12 +146,13 @@
                             </div>
 
                             <div class="w-full flex flex-col">
-                                <div *ngFor="let Bilan of bilansBiologique" class="flex  items-center py-2 px-4 w-full">
+                                <div *ngFor="let Bilan of selectedConsultation.bilansBiologique"
+                                    class="flex  items-center py-2 px-4 w-full">
                                     <div class="w-1/3 flex-grow">{{Bilan.id}}</div>
                                     <div class="w-1/3 flex-grow text-black">{{Bilan.nom}}</div>
                                     <div class="flex flex-row gap-x-6 items-center w-1/3 flex-grow justify-end">
                                         <button><img src="/eye.svg" alt="view icon"
-                                                (click)="openViewBilanBio()"></button>
+                                                (click)="openViewBilanBio(Bilan)"></button>
                                         <!-- <button><img src="/trash.svg" alt="delete icon"
                                                 (click)="openWantsToDelete()"></button> -->
                                     </div>
@@ -178,12 +180,13 @@
                             </div>
 
                             <div class="w-full flex flex-col">
-                                <div *ngFor="let Bilan of bilansRadio" class="flex  items-center py-2 px-4 w-full">
+                                <div *ngFor="let Bilan of selectedConsultation.bilanRadiologique"
+                                    class="flex  items-center py-2 px-4 w-full">
                                     <div class="w-1/3 flex-grow">{{Bilan.id}}</div>
                                     <div class="w-1/3 flex-grow text-black">{{Bilan.nom}}</div>
                                     <div class="flex flex-row gap-x-6 items-center w-1/3 flex-grow justify-end">
                                         <button><img src="/eye.svg" alt="view icon"
-                                                (click)="openViewBilanRadio()"></button>
+                                                (click)="openViewBilanRadio(Bilan)"></button>
                                         <!-- <button><img src="/trash.svg" alt="delete icon"
                                                 (click)="openWantsToDelete()"></button> -->
                                     </div>
@@ -199,16 +202,17 @@
                             Resume
                         </div>
 
+                        <!-- input -->
                         <div class="w-full h-full flex">
-                            <div class="text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md w-full h-full"
-                                placeholder="Resume de la consultation">{{Resume}}</div>
+                            <div class="resize-none text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md focus:ring-2 focus:ring-green focus:outline-none w-full h-full"
+                                placeholder="Resume de la consultation">{{selectedConsultation.resume}}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="flex justify-end w-full">
-            <button class="bg-white text-green text-lg px-6 py-2 rounded-xl flex border border-green">Retour</button>
+            <button class="bg-green text-white text-lg px-6 py-2 rounded-xl flex ">Enregistrer</button>
         </div>
     </div>
 </div>

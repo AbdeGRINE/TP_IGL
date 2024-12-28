@@ -173,7 +173,9 @@
                         <div class="w-full flex items-center gap-y-1">
                             <div class="flex flex-col w-1/2">
                                 <div class="flex items-center gap-x-4" *ngFor="let Bilan of bilansRadio">
-                                    <input type="checkbox" class="border border-darkgray rounded-md h-full" />
+                                    <input type="checkbox" class="border border-darkgray rounded-md h-full"
+                                        (change)="onCheckboxChangeRadio(Bilan , $event)"
+                                        [checked]="selectedBilanRadiologique.includes(Bilan)" />
                                     <div class="text-xl">{{Bilan.nom}}</div>
                                 </div>
 

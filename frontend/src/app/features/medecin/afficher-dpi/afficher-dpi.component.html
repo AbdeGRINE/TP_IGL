@@ -11,15 +11,49 @@
             </div>
 
             <div class="w-2/3 bg-white border border-darkgray rounded-xl h-full flex items-center">
-                <div class="flex flex-col p-14 h-full justify-between text-xl">
-                    <div>Nom :</div>
-                    <div>Prenom :</div>
-                    <div>NSS :</div>
-                    <div>Date de naissance :</div>
-                    <div>Adresse :</div>
-                    <div>N tel. :</div>
-                    <div>Mutuelle :</div>
-                    <div>Personne à contacter :</div>
+                <div class="flex flex-col p-14 h-full justify-between text-xl w-full">
+                    <div class="flex w-full gap-x-2">
+                        <div class="font-semibold">Nom :
+                        </div>
+                        <div>{{patient.nom}}</div>
+                    </div>
+
+                    <div class="flex w-full gap-x-2">
+                        <div class="font-semibold">Prenom :
+                        </div>
+                        <div>{{patient.prenom}}</div>
+                    </div>
+                    <div class="flex w-full gap-x-2">
+                        <div class="font-semibold">NSS :
+                        </div>
+                        <div>{{patient.NSS}}</div>
+                    </div>
+                    <div class="flex w-full gap-x-2">
+                        <div class="font-semibold">Date de naissance :
+                        </div>
+                        <div>{{patient.dateNaissance}}</div>
+                    </div>
+                    <div class="flex w-full gap-x-2">
+                        <div class="font-semibold">Adresse :
+                        </div>
+                        <div>{{patient.adresse}}</div>
+                    </div>
+                    <div class="flex w-full gap-x-2">
+                        <div class="font-semibold">N tel. :
+                        </div>
+                        <div>{{patient.telephone}}</div>
+                    </div>
+                    <div class="flex w-full gap-x-2">
+                        <div class="font-semibold">Mutuelle :
+                        </div>
+                        <div>{{patient.mutuelle}}</div>
+                    </div>
+                    <div class="flex w-full gap-x-2">
+                        <div class="font-semibold">Personne à contacter :
+                        </div>
+                        <div>{{patient.personneAContacter}}</div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -37,7 +71,7 @@
                         <div>Actions</div>
                     </div>
                     <div class="w-full flex flex-col">
-                        <div *ngFor="let Consultation of Consultations"
+                        <div *ngFor="let Consultation of patient.consultations"
                             class="flex justify-between items-center py-2 px-4">
                             <div>{{Consultation.id}}</div>
                             <div>
