@@ -39,7 +39,7 @@ export class InfirmierDashboardComponent {
       id: 'P12345',
       nom: 'Benziada',
       medecin: 'Grine',
-      dateDeCreation: new Date('2023-01-01'),
+      dateDeCreation: new Date('2023-01-01'), //?
       ordonnances: [
         {
           titre: 'ordonnance 1',
@@ -49,6 +49,56 @@ export class InfirmierDashboardComponent {
               dose: '500mg',
               duree: '7 jours',
             },
+            {
+              medicament: 'Ibuprofen',
+              dose: '200mg',
+              duree: '5 jours',
+            },
+            {
+              medicament: 'Ibuprofen',
+              dose: '200mg',
+              duree: '5 jours',
+            },
+            {
+              medicament: 'Ibuprofen',
+              dose: '200mg',
+              duree: '5 jours',
+            },
+            {
+              medicament: 'Ibuprofen',
+              dose: '200mg',
+              duree: '5 jours',
+            },
+            {
+              medicament: 'Ibuprofen',
+              dose: '200mg',
+              duree: '5 jours',
+            },
+            {
+              medicament: 'Ibuprofen',
+              dose: '200mg',
+              duree: '5 jours',
+            },
+            {
+              medicament: 'Ibuprofen',
+              dose: '200mg',
+              duree: '5 jours',
+            },
+            {
+              medicament: 'Ibuprofen',
+              dose: '200mg',
+              duree: '5 jours',
+            },
+            {
+              medicament: 'Ibuprofen',
+              dose: '200mg',
+              duree: '5 jours',
+            },
+          ],
+        },
+        {
+          titre: 'Ordonnance 2',
+          traitements: [
             {
               medicament: 'Ibuprofen',
               dose: '200mg',
@@ -74,18 +124,28 @@ export class InfirmierDashboardComponent {
     titre: '',
     observation: '',
   };
+  originalSoins: Soin[] = []; // To store the original soins
   selectedOrdonnance: Ordonnance | null = null;
   ordonnanceModalVisible = false;
 
   //Methodes:
   openSoinsModal(patient: Patient) {
     this.selectedPatient = patient;
+    this.originalSoins = JSON.parse(JSON.stringify(patient.soins)); // Deep copy of patient.soins
     this.soinsModalVisible = true;
   }
 
   closeSoinsModal() {
     this.soinsModalVisible = false;
     this.selectedPatient = null;
+  }
+
+  cancelSoinsModal() {
+    //it can be null.
+    if (this.selectedPatient) {
+      this.selectedPatient.soins = this.originalSoins; // Revert to original, this means that patient also will be reverted.
+    }
+    this.closeSoinsModal();
   }
 
   openOrdonnanceModal(ordonnance: Ordonnance) {
@@ -104,15 +164,18 @@ export class InfirmierDashboardComponent {
       this.newSoin.titre &&
       this.newSoin.observation
     ) {
+      //when pushing to selectedPatient, we push also into to the patient.
+      //because the two variables refrences the same object.
+      //this.selectedPatient = patient is an assignement by reference.
       this.selectedPatient.soins.push({ ...this.newSoin });
-      this.newSoin = { titre: '', observation: '' }; // Reset input fields
+      this.newSoin = { titre: '', observation: '' }; // Reset input fields to null.
     } else {
       alert("Veuillez remplir tous les champs avant d'ajouter un soin.");
     }
   }
 
   handleSaveSoins() {
-    //save logic here.
+    //now you need just to push the patients to data base.
     this.closeSoinsModal();
   }
 }

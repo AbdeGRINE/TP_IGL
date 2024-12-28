@@ -1,20 +1,11 @@
 <!-- TO DO:
- - Make a scroll button to the two tables: Soins et Ordonnance (table 1 and 2).
-- Fix the Fermer button (in bottom).
-- add date to Afficher ordonnace?
-- review the pages doc in UI/UX drive.
-- Review the HTML code.
-
-Meeting:
- - simulate sumbiting by http:
-  * after the backend is almost done, the team should build an API docs (example in Downloads/TP_IGL/API-docs-example.txt).
+- Add the date of Ordonnance when display it?
 -->
-
 <!-- Header  -->
 <app-header></app-header>
 <!-- Body -->
 <div class="bg-[#EEEFF1] min-h-screen">
-  <!-- Table Section-->
+  <!-- Patients Table Section-->
   <div class="p-10">
     <h2 class="text-2xl font-semibold mb-4">
       Patients qui ont besoin des soins:
@@ -83,13 +74,18 @@ Meeting:
       class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
       *ngIf="soinsModalVisible"
     >
-      <div class="bg-white rounded-lg shadow-xl p-6 h-[700px] w-[500px]">
-        <div *ngIf="selectedPatient" class="flex flex-col gap-5">
-          <h1 class="text-2xl">
-            Soins de <span class="font-bold">{{ selectedPatient.nom }}</span>
-          </h1>
-          <h1>Derniere ordonnances:</h1>
-          <!-- Ordonnance table -->
+      <div
+        *ngIf="selectedPatient"
+        class="bg-white rounded-lg shadow-xl p-6 h-[700px] w-[500px] flex flex-col gap-4"
+      >
+        <h1 class="text-2xl">
+          Soins de <span class="font-bold">{{ selectedPatient.nom }}</span>
+        </h1>
+        <h1>Dernieres ordonnances:</h1>
+        <!-- Ordonnance table -->
+        <div
+          class="w-full max-w-[450px] h-52 overflow-auto bg-white rounded-lg"
+        >
           <table class="min-w-full bg-white">
             <thead>
               <tr class="bg-gray-100 rounded-xl">
@@ -139,33 +135,37 @@ Meeting:
               </tr>
             </tbody>
           </table>
-          <hr />
-          <h1>Ajouter des soins:</h1>
-          <div class="flex flex-row gap-3">
-            <input
-              type="text"
-              name="soin"
-              id="soin"
-              class="bg-gray-100 rounded-md w-[80px] text-gray-900 p-2"
-              placeholder="Soin"
-              [(ngModel)]="newSoin.titre"
-            />
-            <input
-              type="text"
-              name="observation"
-              id="oservation"
-              class="bg-gray-100 rounded-md w-[270px] text-gray-900 p-2"
-              placeholder="Observation"
-              [(ngModel)]="newSoin.observation"
-            />
-            <button
-              class="bg-[#46BB91] rounded-md w-[80px] text-white p-2"
-              (click)="addNewSoin()"
-            >
-              Ajouter
-            </button>
-          </div>
-          <!-- Soins Table: -->
+        </div>
+        <hr />
+        <h1>Ajouter des soins:</h1>
+        <div class="flex flex-row gap-3">
+          <input
+            type="text"
+            name="soin"
+            id="soin"
+            class="bg-gray-100 rounded-md w-[80px] text-gray-900 p-2"
+            placeholder="Soin"
+            [(ngModel)]="newSoin.titre"
+          />
+          <input
+            type="text"
+            name="observation"
+            id="oservation"
+            class="bg-gray-100 rounded-md w-[270px] text-gray-900 p-2"
+            placeholder="Observation"
+            [(ngModel)]="newSoin.observation"
+          />
+          <button
+            class="bg-[#46BB91] rounded-md w-[80px] text-white p-2"
+            (click)="addNewSoin()"
+          >
+            Ajouter
+          </button>
+        </div>
+        <!-- Soins Table: -->
+        <div
+          class="w-full max-w-[450px] h-64 overflow-auto bg-white rounded-lg"
+        >
           <table class="min-w-full bg-white">
             <thead>
               <tr class="bg-gray-100 rounded-xl">
@@ -195,65 +195,76 @@ Meeting:
               </tr>
             </tbody>
           </table>
-          <div class="flex flex-row self-center mt-28 ml-36">
-            <button
-              class="text-[#46BB91] rounded-xl p-2 w-32"
-              (click)="closeSoinsModal()"
-            >
-              Annuler
-            </button>
-            <button
-              class="bg-[#46BB91] rounded-xl p-2 text-white w-32"
-              (click)="handleSaveSoins()"
-            >
-              Enregistrer
-            </button>
-          </div>
+        </div>
+        <div class="flex flex-row self-end justify-self-end">
+          <button
+            class="text-[#46BB91] rounded-xl p-2 w-32"
+            (click)="cancelSoinsModal()"
+          >
+            Annuler
+          </button>
+          <button
+            class="bg-[#46BB91] rounded-xl p-2 text-white w-32"
+            (click)="handleSaveSoins()"
+          >
+            Enregistrer
+          </button>
         </div>
       </div>
     </div>
     <!-- Ordonnace Modal Section: -->
     <div
-      class="fixed inset-0 flex justify-center items-center"
+      class="fixed inset-0 flex flex-col justify-center items-center"
       *ngIf="ordonnanceModalVisible"
     >
       <div
         class="flex flex-col gap-4 bg-white rounded-lg shadow-xl p-6 h-[600px] w-[600px]"
       >
         <h1 class="text-2xl mb-4">Affichage d'Ordonnance:</h1>
-        <table class="min-w-full bg-white mb-6">
-          <thead>
-            <tr class="bg-gray-100">
-              <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Medicaments
-              </th>
-              <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Doses
-              </th>
-              <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Durées
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let traitement of selectedOrdonnance?.traitements"
-              class="hover:bg-gray-50"
-            >
-              <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                {{ traitement.medicament }}
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-600">
-                {{ traitement.dose }}
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-600">
-                {{ traitement.duree }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- Ordonnace table: -->
+        <div
+          class="w-full max-w-[600px] h-[500px] overflow-auto bg-white rounded-lg"
+        >
+          <table class="min-w-full bg-white mb-6">
+            <thead>
+              <tr class="bg-gray-100">
+                <th
+                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
+                >
+                  Medicaments
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
+                >
+                  Doses
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
+                >
+                  Durées
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let traitement of selectedOrdonnance?.traitements"
+                class="hover:bg-gray-50"
+              >
+                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                  {{ traitement.medicament }}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">
+                  {{ traitement.dose }}
+                </td>
+                <td class="px-6 py-4 text-sm text-gray-600">
+                  {{ traitement.duree }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <button
-          class="bg-[#46BB91] rounded-xl p-2 text-white w-32 self-end justify-self-end"
+          class="bg-[#46BB91] rounded-xl p-2 text-white w-32 self-end"
           (click)="closeOrdonnanceModal()"
         >
           Fermer
