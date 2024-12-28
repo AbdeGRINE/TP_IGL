@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
 import { NavigationService } from '../../../services/navigation.service';
@@ -11,7 +11,7 @@ import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../model
   templateUrl: './afficher-dpi.component.html',
   styleUrl: './afficher-dpi.component.css'
 })
-export class AfficherDpiComponent {
+export class AfficherDpiComponent implements OnInit{
 
     patient: DPI = 
         {
@@ -48,5 +48,10 @@ export class AfficherDpiComponent {
       link.href = image.src;  
       link.download = 'qr_code.png';  
       link.click();
+    }
+
+    ngOnInit() {
+      this.patient = history.state; // Access the state object
+      console.log(this.patient);
     }
 }
