@@ -1,9 +1,9 @@
 <app-header></app-header>
-<div class="relative bg-lightgray px-[10%] w-full flex h-full min-h-fit pb-10" [formGroup]="Consultation">
-    <div class="absolute inset-0 " [ngClass]="{
+<div class="relative bg-lightgray px-[10%] w-full flex h-full min-h-fit pb-10">
+    <!-- <div class="absolute inset-0 " [ngClass]="{
     'bg-gray opacity-50': isPopupOpen,
-    'hidden': !isPopupOpen
-  }"></div>
+    'bg-transparent hidden': !isPopupOpen
+  }"></div> -->
     <div *ngIf="isAddOrdonnanceOpen"
         class="absolute top-16 left-1/2 transform -translate-x-1/2  bg-white flex flex-col justify-center items-center border border-darkgray rounded-lg gap-y-6 w-2/3 px-4 py-4 h-96">
         <div class="w-full justify-self-start text-xl">Ajouter Ordonnance</div>
@@ -11,13 +11,13 @@
             <div class="w-full flex justify-between text-sm gap-x-1">
                 <input
                     class="w-5/12 flex bg-lightgray py-2 px-4 text-darkgray focus:outline-none focus:text-black  rounded-lg"
-                    type="text" id="medicament" placeholder="médicament" />
+                    type="text" id="medicament" placeholder="médicament" [(ngModel)]="newTraitement.medicament" />
                 <input class="flex bg-lightgray py-2 px-4 text-darkgray focus:outline-none focus:text-black  rounded-lg"
-                    type="text" id="Dose" placeholder="Dose" />
+                    type="number" id="Dose" placeholder="Dose" [(ngModel)]="newTraitement.dose" />
                 <input class="flex bg-lightgray py-2 px-4 text-darkgray focus:outline-none focus:text-black  rounded-lg"
-                    type="text" id="Durée" placeholder="Durée" />
+                    type="number" id="Durée" placeholder="Durée" [(ngModel)]="newTraitement.duree" />
                 <button class="bg-green text-white text-sm px-6 py-2 rounded-xl flex "
-                    (click)="AjouterOrdonnance()">Ajouter</button>
+                    (click)="addNewTrait()">Ajouter</button>
             </div>
             <div class="w-full flex flex-col items-center gap-y-1">
                 <div class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center">
@@ -26,11 +26,11 @@
                     <div class="w-1/3 flex pr-4">Durée</div>
                 </div>
 
-                <div class="w-full flex flex-col">
+                <div class="w-full flex flex-col" *ngFor="let traitement of selectedOrdonnance?.traitements">
                     <div class="flex  items-center py-2 px-4 w-full">
-                        <div class="w-1/3 flex-grow">{{Ordonnance.medicament}}</div>
-                        <div class="w-1/3 flex-grow text-black">{{Ordonnance.dose}}</div>
-                        <div class="w-1/3 flex-grow text-black">{{Ordonnance.duree}}</div>
+                        <div class="w-1/3 flex-grow">{{traitement.medicament}}</div>
+                        <div class="w-1/3 flex-grow text-black">{{traitement.dose}}</div>
+                        <div class="w-1/3 flex-grow text-black">{{traitement.duree}}</div>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
         <div class="flex justify-end w-full gap-x-5 self-end">
             <button class="text-lg px-6 py-2 rounded-xl flex " (click)="AnnulerOrdonnance()">Annuler</button>
             <button class="bg-green text-white text-lg px-6 py-2 rounded-xl flex "
-                (click)="EnregistrerOrdonnaces()">Enregistrer</button>
+                (click)="EnregistrerOrdonnace()">Enregistrer</button>
         </div>
     </div>
 
@@ -56,10 +56,11 @@
                 </div>
 
                 <div class="w-full flex flex-col">
-                    <div class="flex  items-center py-2 px-4 w-full">
-                        <div class="w-1/3 flex-grow">{{Ordonnance.medicament}}</div>
-                        <div class="w-1/3 flex-grow text-black">{{Ordonnance.dose}}</div>
-                        <div class="w-1/3 flex-grow text-black">{{Ordonnance.duree}}</div>
+                    <div class="flex  items-center py-2 px-4 w-full"
+                        *ngFor="let traitement of selectedOrdonnance?.traitements">
+                        <div class="w-1/3 flex-grow">{{traitement.medicament}}</div>
+                        <div class="w-1/3 flex-grow text-black">{{traitement.dose}}</div>
+                        <div class="w-1/3 flex-grow text-black">{{traitement.duree}}</div>
                     </div>
                 </div>
             </div>
@@ -73,7 +74,7 @@
         class="absolute top-16 left-1/2 transform -translate-x-1/2  bg-white flex flex-col border border-darkgray rounded-lg gap-y-6 w-1/2 px-4 py-4 h-40">
         <div class="w-full flex flex-col h-full min-h-full  justify-center items-center">
             <div class="py-6 text-black text-xl text-center">Etes vous sure de vouloir supprimer l'ordonnance
-                {{Ordonnances[0].nom}}?</div>
+                {{Ordonnances[0].titre}}?</div>
             <div class="flex justify-center w-full gap-x-5">
                 <button class="text-lg px-6 py-2 rounded-xl flex " (click)="closeWantsToDelete()">Annuler</button>
                 <button class="bg-red text-white text-lg px-6 py-2 rounded-xl flex "
@@ -90,12 +91,13 @@
                     <div class="rounded-lg bg-white border border-darkgray">
                         <div class="flex justify-between items-center mx-4 my-2">
                             <div class="text-xl">Date</div>
-                            <div class="bg-lightgray text-darkgray px-6 py-2 rounded-sm">28/10/2004</div>
+                            <div class="bg-lightgray text-darkgray px-6 py-2 rounded-sm">
+                                {{selectedPatient.dateDeCreation | date : "dd/MM/YYYY"}}</div>
                         </div>
                     </div>
 
 
-                    <div class="bg-white px-4 py-2 rounded-lg max-h-[270px] border border-darkgray">
+                    <div class="bg-white px-4 py-2 rounded-lg h-[270px] overflow-y-auto border border-darkgray">
                         <div class="flex justify-between items-center rounded-lg py-4">
                             <div class="">
                                 <div class="text-xl">Ordonnances</div>
@@ -114,15 +116,17 @@
                                 <div class="w-1/3 flex pr-4 justify-end">Actions</div>
                             </div>
 
-                            <div class="w-full flex flex-col">
-                                <div *ngFor="let Ordonnance of Ordonnances" class="flex  items-center py-2 px-4 w-full">
-                                    <div class="w-1/3 flex-grow">{{Ordonnance.nom}}</div>
-                                    <div class="w-1/3 flex-grow text-black">{{Ordonnance.state}}</div>
+                            <div class="w-full flex flex-col ">
+
+                                <div *ngFor="let ord of newConsultation.ordonnances"
+                                    class="flex items-center py-2 px-4 w-full text-black">
+                                    <div class="w-1/3 flex-grow">{{ord.titre}}</div>
+                                    <div class="w-1/3 flex-grow text-black">{{ord.state}}</div>
                                     <div class="flex flex-row gap-x-6 items-center w-1/3 flex-grow justify-end">
                                         <button><img src="/eye.svg" alt="view icon"
-                                                (click)="openViewOrdonnance()"></button>
+                                                (click)="openViewOrdonnance(ord)"></button>
                                         <button><img src="/trash.svg" alt="delete icon"
-                                                (click)="openWantsToDelete()"></button>
+                                                (click)="openWantsToDelete(ord)"></button>
                                     </div>
 
                                 </div>
@@ -137,48 +141,19 @@
 
                         <!-- bilan -->
                         <div class="w-full flex items-center gap-y-1">
-                            <div class="flex flex-col w-1/2" formArrayName="bilansBiologique">
+                            <div class="flex flex-col w-1/2">
                                 <div class="flex items-center gap-x-4" *ngFor="let Bilan of bilansBiologique">
                                     <input type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
+                                        (change)="onCheckboxChangeBio(Bilan, $event)"
+                                        [checked]="selectedBilanBiologique.includes(Bilan)" />
                                     <div class="text-xl">{{Bilan.nom}}</div>
                                 </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
+
 
                             </div>
                             <div class="flex flex-col">
                                 <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
+                                    <input type="checkbox" class="border border-darkgray rounded-md h-full" />
                                     <div class="text-xl">Bilan</div>
                                 </div>
 
@@ -198,48 +173,17 @@
                         <div class="w-full flex items-center gap-y-1">
                             <div class="flex flex-col w-1/2">
                                 <div class="flex items-center gap-x-4" *ngFor="let Bilan of bilansRadio">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
+                                    <input type="checkbox" class="border border-darkgray rounded-md h-full" />
                                     <div class="text-xl">{{Bilan.nom}}</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
                                 </div>
 
                             </div>
                             <div class="flex flex-col">
                                 <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
+                                    <input type="checkbox" class="border border-darkgray rounded-md h-full" />
                                     <div class="text-xl">Bilan</div>
                                 </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <input id="resume" type="checkbox" class="border border-darkgray rounded-md h-full"
-                                        placeholder="Resume de la consultation" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
+
 
                             </div>
                         </div>
@@ -253,7 +197,7 @@
 
                         <!-- input -->
                         <div class="w-full h-full flex">
-                            <textarea id="resume" formControlName="resume"
+                            <textarea id="resume" [(ngModel)]="newConsultation.resume"
                                 class="resize-none text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md focus:ring-2 focus:ring-green focus:outline-none w-full h-full"
                                 placeholder="Resume de la consultation"></textarea>
                         </div>
