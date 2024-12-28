@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import {
-  RouterLink,
-  RouterLinkActive,
-} from '@angular/router';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, RouterLinkActive],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'],
+  imports: [],
 })
-export class LoginComponent {}
+export class LoginComponent {
+}
