@@ -21,7 +21,6 @@ interface Patient {
   templateUrl: './creer-dpi.component.html',
   styleUrl: './creer-dpi.component.css',
 })
-
 export class CreerDPIComponent {
   patient: Patient = {
     nom: '',
@@ -33,7 +32,7 @@ export class CreerDPIComponent {
     medecin: '',
     personne: '',
   };
-  
+
   constructor(
     private navigationService: NavigationService,
     private apiDataService: ApiDataService
@@ -93,6 +92,7 @@ export class CreerDPIComponent {
   }
 
   handleSaveDPI() {
+    //subscibe methode handle the success or error.
     if (this.inputValidation()) {
       this.apiDataService.post('DPIs', this.patient).subscribe({
         next: (response) => {

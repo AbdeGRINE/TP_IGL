@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ApiDataService } from '../../../services/api-data.service';
+
 interface Patient {
   id: string;
   nom: string;
@@ -34,87 +36,97 @@ interface Soin {
   styleUrl: './infirmier-dashboard.component.css',
 })
 export class InfirmierDashboardComponent {
-  patients: Patient[] = [
-    {
-      id: 'P12345',
-      nom: 'Benziada',
-      medecin: 'Grine',
-      dateDeCreation: new Date('2023-01-01'), //?
-      ordonnances: [
-        {
-          titre: 'ordonnance 1',
-          traitements: [
-            {
-              medicament: 'Paracetamol',
-              dose: '500mg',
-              duree: '7 jours',
-            },
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-          ],
-        },
-        {
-          titre: 'Ordonnance 2',
-          traitements: [
-            {
-              medicament: 'Ibuprofen',
-              dose: '200mg',
-              duree: '5 jours',
-            },
-          ],
-        },
-      ],
-      soins: [
-        {
-          titre: 'soin 1',
-          observation: "Ce soin là est un soin d'un module qui s'appelle IGL.",
-        },
-      ],
-    },
-  ];
+  // patients: Patient[] = [
+  //   {
+  //     id: 'P12345',
+  //     nom: 'Benziada',
+  //     medecin: 'Grine',
+  //     dateDeCreation: new Date('2023-01-01'), //?
+  //     ordonnances: [
+  //       {
+  //         titre: 'ordonnance 1',
+  //         traitements: [
+  //           {
+  //             medicament: 'Paracetamol',
+  //             dose: '500mg',
+  //             duree: '7 jours',
+  //           },
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         titre: 'Ordonnance 2',
+  //         traitements: [
+  //           {
+  //             medicament: 'Ibuprofen',
+  //             dose: '200mg',
+  //             duree: '5 jours',
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //     soins: [
+  //       {
+  //         titre: 'soin 1',
+  //         observation: "Ce soin là est un soin d'un module qui s'appelle IGL.",
+  //       },
+  //     ],
+  //   },
+  // ];
+
+  constructor(private apiDataService: ApiDataService) {}
+  patients: Patient[] | null = null;
+  // Fetching data from the backend once the pages is loaded:
+  ngOnInit() {
+    this.apiDataService.get<Patient[]>('Patients').subscribe({
+      next: (data) => (this.patients = data),
+      error: (err) => console.error('Error fetching users:', err),
+    });
+  }
 
   // Soin and Ordonnace modals logic:
   //Initialization:
@@ -174,8 +186,20 @@ export class InfirmierDashboardComponent {
     }
   }
 
+  //it's better to put just the soins,
+  //but I am putting all the patient,
+  //because there is no end point of `/Patients/id/soins` in my data base.
   handleSaveSoins() {
-    //now you need just to push the patients to data base.
-    this.closeSoinsModal();
+    this.apiDataService.put(`Patients/${this.selectedPatient?.id}`, this.selectedPatient).subscribe({
+      next: (response) => {
+        alert('Les soins du patient ont été enregistrées avec succès!');
+        this.closeSoinsModal();
+        console.log(response);
+      },
+      error: (err) => {
+        alert('Impossible d"enregistrer le patient. Veuillez réessayer.');
+        console.error(err);
+      },
+    });
   }
 }
