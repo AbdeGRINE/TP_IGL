@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router , RouterModule,NavigationEnd } from '@angular/router';
+import { Router , RouterModule,NavigationEnd, ActivatedRoute } from '@angular/router';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/consultation';
 import { DpiService } from '../../../services/dpi.service';
@@ -213,13 +213,13 @@ export class MedecinDashboardComponent implements OnInit{
   }
   ];
 
-  constructor(private router: Router, private dpiService: DpiService){}
+  constructor(private router: Router,private route: ActivatedRoute , private dpiService: DpiService){}
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         // Check the current URL to determine if the child route is active
         const currentRoute = this.router.url;
-        this.showParentUI = !currentRoute.includes('afficher-dpi');
+        this.showParentUI = !(currentRoute.includes('afficher-dpi') || currentRoute.includes('creer-dpi'));
       }
     });
   }
@@ -229,5 +229,9 @@ export class MedecinDashboardComponent implements OnInit{
   navigateToViewDPI(DPI: DPI) {
     this.dpiService.setDPI(DPI);
     this.router.navigate(['/medecin-dashboard/afficher-dpi', DPI.id]);
+  }
+
+  navigateToCreerDPI(){
+    this.router.navigate(['./creer-dpi'], { relativeTo: this.route });
   }
 }

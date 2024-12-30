@@ -13,6 +13,11 @@ export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
   { path: 'login', component: LoginComponent, title: 'Login' },
   {
+    path: 'creer-dpi',
+    component: CreerDPIComponent,
+    title: 'Creer DPI',
+  },
+  {
     path: 'medecin-dashboard',
     component: MedecinDashboardComponent,
     title: 'Medecin Dashboard',
@@ -29,17 +34,17 @@ export const routes: Routes = [
           },
         ]
       },
+      {
+        path: 'creer-dpi',
+        component: CreerDPIComponent,
+        title: 'Creer DPI',
+      },
     ]
   },
   {
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
     title: 'Admin Dashboard',
-  },
-  {
-    path: 'creer-dpi',
-    component: CreerDPIComponent,
-    title: 'Creer DPI',
   },
   {
     path : 'dashboard-patient',

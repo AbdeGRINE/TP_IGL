@@ -17,7 +17,7 @@ export interface DPI {
   id: string;
   nom: string;
   prenom : string,
-  NSS : number,
+  NSS : string,
   dateNaissance : Date,
   adresse : string,
   telephone : string,
