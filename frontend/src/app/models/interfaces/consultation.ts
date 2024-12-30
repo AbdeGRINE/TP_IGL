@@ -27,7 +27,7 @@ export interface DPI {
   dateDeCreation: Date;
   consultations : Consultation[]
   soins: Soin[];
-  //graphe?
+  decodeBase64 : string;
 }
 
 export interface Ordonnance {

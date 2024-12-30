@@ -1,6 +1,7 @@
 <!-- Header  -->
 <app-header *ngIf="showParentUI"></app-header>
 <!-- Body -->
+<<<<<<< HEAD
 <div class="bg-[#EEEFF1]" *ngIf="showParentUI">
   <!-- Search Section -->
   <div class="flex justify-between items-center p-10">
@@ -12,6 +13,47 @@
         <path fill="#878787"
           d="M10 12.679A2.68 2.68 0 0 1 12.679 10h5.357a2.68 2.68 0 0 1 2.678 2.679v5.357a2.68 2.68 0 0 1-2.678 2.678h-5.357A2.68 2.68 0 0 1 10 18.036v-5.357Zm3.571.892v3.572h3.572V13.57H13.57ZM10 26.964a2.68 2.68 0 0 1 2.679-2.678h5.357a2.68 2.68 0 0 1 2.678 2.678v5.357A2.68 2.68 0 0 1 18.036 35h-5.357A2.68 2.68 0 0 1 10 32.321v-5.357Zm3.571.893v3.572h3.572v-3.572H13.57ZM26.964 10h5.357A2.68 2.68 0 0 1 35 12.679v5.357a2.68 2.68 0 0 1-2.679 2.678h-5.357a2.68 2.68 0 0 1-2.678-2.678v-5.357A2.68 2.68 0 0 1 26.964 10Zm4.465 3.571h-3.572v3.572h3.572V13.57ZM24.286 25.18c0-.491.401-.893.893-.893h3.571c.491 0 .893.401.893.893 0 .49.402.892.893.892h1.785a.895.895 0 0 0 .893-.892c0-.491.402-.893.893-.893s.893.401.893.893v5.357a.896.896 0 0 1-.893.893h-3.571a.895.895 0 0 1-.893-.893.895.895 0 0 0-.893-.893.895.895 0 0 0-.893.893v3.571a.895.895 0 0 1-.893.893H25.18a.896.896 0 0 1-.893-.893V25.18Zm6.25 9.82a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Zm3.571 0a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Z" />
       </svg>
+=======
+ <!-- min-h-screen to take all the free space! -->
+<div class="bg-[#EEEFF1] min-h-screen">
+  <!-- Search Section -->
+  <div class="flex justify-between items-center p-10">
+    <div class="flex gap-5">
+      <input
+        type="text"
+        placeholder="Rechercher un DPI par NSS..."
+        class="rounded-xl p-2"
+        [(ngModel)]="searchedNSS"
+      />
+      <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32 " (click)="matchDPIbyNSS()">
+        Rechercher
+      </button>
+      <!-- QRcode icon -->
+      <label for="QRbutton">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="45"
+          height="45"
+          fill="none"
+          viewBox="0 0 45 45"
+        >
+          <rect width="45" height="45" fill="#fff" rx="12" />
+          <path
+            fill="#878787"
+            d="M10 12.679A2.68 2.68 0 0 1 12.679 10h5.357a2.68 2.68 0 0 1 2.678 2.679v5.357a2.68 2.68 0 0 1-2.678 2.678h-5.357A2.68 2.68 0 0 1 10 18.036v-5.357Zm3.571.892v3.572h3.572V13.57H13.57ZM10 26.964a2.68 2.68 0 0 1 2.679-2.678h5.357a2.68 2.68 0 0 1 2.678 2.678v5.357A2.68 2.68 0 0 1 18.036 35h-5.357A2.68 2.68 0 0 1 10 32.321v-5.357Zm3.571.893v3.572h3.572v-3.572H13.57ZM26.964 10h5.357A2.68 2.68 0 0 1 35 12.679v5.357a2.68 2.68 0 0 1-2.679 2.678h-5.357a2.68 2.68 0 0 1-2.678-2.678v-5.357A2.68 2.68 0 0 1 26.964 10Zm4.465 3.571h-3.572v3.572h3.572V13.57ZM24.286 25.18c0-.491.401-.893.893-.893h3.571c.491 0 .893.401.893.893 0 .49.402.892.893.892h1.785a.895.895 0 0 0 .893-.892c0-.491.402-.893.893-.893s.893.401.893.893v5.357a.896.896 0 0 1-.893.893h-3.571a.895.895 0 0 1-.893-.893.895.895 0 0 0-.893-.893.895.895 0 0 0-.893.893v3.571a.895.895 0 0 1-.893.893H25.18a.896.896 0 0 1-.893-.893V25.18Zm6.25 9.82a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Zm3.571 0a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Z"
+          />
+        </svg>
+      </label>
+      <input
+        hidden=""
+        type="file"
+        name="QRbutton"
+        id="QRbutton"
+        accept="image/*"
+        (change)="onFileChange($event)"
+      />
+      <!-- fin QR code icon -->
+>>>>>>> 47906f37c05c4a728ac07d4eb09b830195356a7f
     </div>
     <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32" (click)="navigateToCreerDPI()">
       Creer DPI
@@ -45,7 +87,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let DPI of DPIs" class="hover:bg-gray-50">
+        <tr *ngFor="let DPI of DPIsList" class="hover:bg-gray-50">
           <td class="px-6 py-4 text-sm font-medium text-gray-900">
             {{ DPI.nom }}
           </td>
