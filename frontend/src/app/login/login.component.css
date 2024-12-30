@@ -15,15 +15,15 @@ body {
     height: 100%;
   }
   
-  /* Title Styling */
+  
   .title {
     position: absolute;
-    top: 30%; /* Adjust this percentage to move the title vertically */
-    left: 0;  /* Align to the left side */
-    transform: translateY(-50%); /* Adjust to perfect center vertically */
+    top: 35%; 
+    left: 0;
+    transform: translateY(-50%);
     padding: 20px;
-    font-size: 36px; /* Adjust the title font size */
-    color: #333; /* Title color */
+    font-size: 36px;
+    color: #333;
   }
   
   /* Text container styling */
@@ -47,17 +47,20 @@ body {
   .bienvenue{
     width:70%;
   }
-  /* .images {
-    display: flex;
-    justify-content: center; 
-    margin-top: 30px; 
-  
-  } */
   .image {
-    width: 250px; 
-    height: auto; 
-
+    width: 250px;
+    height: auto;
+    position: absolute;
+    top: 30%; /* Adjust this value as needed */
+    left: 20px;
+    z-index: 1;
   }
+  
+  .image img {
+    width: 30%;
+    height: auto;
+  }
+  
   .login-container {
       width: 30%; 
       padding: 20px; 
