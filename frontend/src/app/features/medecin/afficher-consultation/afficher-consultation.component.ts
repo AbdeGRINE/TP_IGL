@@ -1,128 +1,100 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
+import { Router, ActivatedRoute} from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
+import { NavigationService } from '../../../services/navigation.service';
+import { FormBuilder, FormGroup, FormArray, FormControl , ReactiveFormsModule, FormsModule} from '@angular/forms';
+import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/consultation';
+import { ConsultationService } from '../../../services/consultation.service';
 
-
-interface OrdonnanceGlobale  {
-  nom: string,
-  state: string,
-}
-
-interface Ordonnance  {
-  medicament: string,
-  dose: string,
-  duree: string,
-}
-
-interface Bilan {
-  id: string;
-  nom: string;
-  checked : boolean;
-}
-
-interface ResulatsBilan {
-  glycemie : number,
-  cholestrol : number,
-}
 
 
 @Component({
-  selector: 'app-afficher-consultation',
-  imports: [CommonModule, HeaderComponent],
+  selector: 'app-creer-consultation',
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './afficher-consultation.component.html',
   styleUrl: './afficher-consultation.component.css'
 })
-export class AfficherConsultationComponent {
-  date = new Date().toISOString().split('T')[0];
+export class AfficherConsultationComponent implements OnInit {
   ResultatBilan1 = {
-    "glycemie": 0,
-    "cholestrol": 0,
+    glycemie: 0,
+    cholestrol: 0,
   }
-  bilansBiologique = [{
-    "id": 1,
-    "nom" : "bilan 1",
-    "checked" : false
-  },{
-    "id": 2,
-    "nom" : "bilan 2",
-    "checked" : false
-  },{
-    "id": 3,
-    "nom" : "bilan 3",
-    "checked" : false
+
+  selectedConsultation :Consultation | null = null ;
+
+  selectedOrdonnance: Ordonnance | null = null;
+  selectedBilanBiologique: Bilan | null = null;
+  selectedBilanRadiologique: Bilan | null = null ;
+
+  constructor(private router: Router, private route: ActivatedRoute,private consultationService : ConsultationService){
+    this.selectedOrdonnance = null;
+    
   }
-]
 
-bilansRadio = [{
-  "id": 1,
-  "nom" : "bilan 1",
-},{
-  "id": 2,
-  "nom" : "bilan 2",
-},{
-  "id": 3,
-  "nom" : "bilan 3",
-}
-]
+  ngOnInit() {
+    this.selectedConsultation = this.consultationService.getConsultation();
+    if (this.selectedConsultation) {
+      // You can now use the DPI object in your template
+      console.log('Consultatio object:', this.selectedConsultation);
+    } else {
+      // If DPI is not found (e.g., user navigated directly), handle accordingly
+      console.log('No Consultatio object found.');
+  }
+  }
 
 
-Ordonnances : OrdonnanceGlobale[] = [
-  {
-    nom: 'Ordonnance 1',
-    state: 'En attente',
-  },
-  {
-    nom: 'Ordonnance 1',
-    state: 'En attente',
-  },
-{
-  nom: 'Ordonnance 1',
-  state: 'En attente',
-},
-]
-
-Ordonnance : Ordonnance = {
-  medicament : 'doliprane',
-  dose : '2000mg',
-  duree: '2 jours',
-}
-
-Resume = "Blablabalblabla"
-
+  trait : Traitement = {
+    medicament : 'doliprane',
+    dose : '2000mg',
+    duree: '2 jours',
+  }
 
   isViewOrdonnanceOpen = false;
   isPopupOpen = false;
   isViewBilanBioOpen = false;
   isViewBilanRadioOpen = false;
 
-openViewOrdonnance() {
-  this.isViewOrdonnanceOpen = true;
-  this.isPopupOpen = true;
-}
 
-closeViewOrdonnance() {
-  this.isViewOrdonnanceOpen = false;
-  this.isPopupOpen = false;
-}
+  openViewOrdonnance(ordonnance: Ordonnance) {
+    this.selectedOrdonnance = ordonnance;
+    this.isViewOrdonnanceOpen = true;
+    this.isPopupOpen = true;
+    console.log(this.selectedOrdonnance);
+  }
 
-openViewBilanBio(){
-  this.isViewBilanBioOpen = true;
-  this.isPopupOpen = true;
-}
+  closeViewOrdonnance() {
+    this.isViewOrdonnanceOpen = false;
+    this.isPopupOpen = false;
+  }
 
-closeViewBilanBio(){
-  this.isViewBilanBioOpen = false;
-  this.isPopupOpen = false;
-}
+  openViewBilanBio(bilan: Bilan){
+    this.isViewBilanBioOpen = true;
+    this.isPopupOpen = true;
+    this.selectedBilanBiologique = bilan;
+  }
+  
+  closeViewBilanBio(){
+    this.isViewBilanBioOpen = false;
+    this.isPopupOpen = false;
+  }
+  
+  openViewBilanRadio(bilan: Bilan){
+    this.isViewBilanRadioOpen = true;
+    this.isPopupOpen = true;
+    this.selectedBilanRadiologique = bilan;
+  }
+  
+  closeViewBilanRadio(){
+    this.isViewBilanRadioOpen = false;
+    this.isPopupOpen = false;
+  }
 
-openViewBilanRadio(){
-  this.isViewBilanRadioOpen = true;
-  this.isPopupOpen = true;
-}
 
-closeViewBilanRadio(){
-  this.isViewBilanRadioOpen = false;
-  this.isPopupOpen = false;
-}
+  goBack(){
+    this.router.navigate(['../..'], { relativeTo: this.route });
+  }
+
 
 }

@@ -7,30 +7,48 @@ import { AfficherDpiComponent } from './features/medecin/afficher-dpi/afficher-d
 import { DashboardPatientComponent } from './features/patient/dashboard-patient/dashboard-patient.component';
 import { CreerConsultationComponent } from './features/medecin/creer-consultation/creer-consultation.component';
 import { AfficherConsultationComponent } from './features/medecin/afficher-consultation/afficher-consultation.component';
+<<<<<<< HEAD
 import { RadiologueDashboardComponent } from './features/radiologue/radiologue-dashboard/radiologue-dashboard.component';
+=======
+import { InfirmierDashboardComponent } from './infirmier/infirmier-dashboard/infirmier-dashboard.component';
+>>>>>>> f31468cfa8075337605da8df492b626650ee1f2b
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
   { path: 'login', component: LoginComponent, title: 'Login' },
-  {
-    path: 'medecin-dashboard',
-    component: MedecinDashboardComponent,
-    title: 'Medecin Dashboard',
-  },
-  {
-    path: 'admin-dashboard',
-    component: AdminDashboardComponent,
-    title: 'Admin Dashboard',
-  },
   {
     path: 'creer-dpi',
     component: CreerDPIComponent,
     title: 'Creer DPI',
   },
   {
-    path: 'afficher-dpi',
-    component: AfficherDpiComponent,
-    title: 'Afficher DPI',
+    path: 'medecin-dashboard',
+    component: MedecinDashboardComponent,
+    title: 'Medecin Dashboard',
+    children : [
+      {
+        path: 'afficher-dpi/:id',
+        component: AfficherDpiComponent,
+        title: 'Afficher DPI',
+        children : [
+          {
+            path: 'afficher-consultation/:id',
+            component: AfficherConsultationComponent,
+            title: 'Afficher Consultation',
+          },
+        ]
+      },
+      {
+        path: 'creer-dpi',
+        component: CreerDPIComponent,
+        title: 'Creer DPI',
+      },
+    ]
+  },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent,
+    title: 'Admin Dashboard',
   },
   {
     path : 'dashboard-patient',
@@ -42,10 +60,11 @@ export const routes: Routes = [
     component: CreerConsultationComponent,
     title: 'Creer Consultation',
   },
+
   {
-    path: 'afficher-consultation',
-    component: AfficherConsultationComponent,
-    title: 'Afficher Consultation',
+    path: 'infirmier-dashboard',
+    component: InfirmierDashboardComponent,
+    title: 'Infirmier Dashboard',
   },
   {
     path : 'dashboard-radiologue',
