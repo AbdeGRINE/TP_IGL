@@ -1,7 +1,7 @@
 <!-- Header  -->
-<app-header></app-header>
+<app-header *ngIf="showParentUI"></app-header>
 <!-- Body -->
-<div class="bg-[#EEEFF1]">
+<div class="bg-[#EEEFF1]" *ngIf="showParentUI">
   <!-- Search Section -->
   <div class="flex justify-between items-center p-10">
     <div class="flex gap-5">
@@ -66,3 +66,4 @@
     </table>
   </div>
 </div>
+<router-outlet></router-outlet>

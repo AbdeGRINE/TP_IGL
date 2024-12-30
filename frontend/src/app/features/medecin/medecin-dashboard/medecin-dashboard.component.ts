@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router , RouterModule,NavigationEnd } from '@angular/router';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/consultation';
+import { DpiService } from '../../../services/dpi.service';
 
 
 @Component({
   selector: 'app-medecin-dashboard',
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, HeaderComponent,RouterModule],
   templateUrl: './medecin-dashboard.component.html',
   styleUrl: './medecin-dashboard.component.css',
 })
-export class MedecinDashboardComponent {
+export class MedecinDashboardComponent implements OnInit{
+
+  showParentUI: boolean = true;
+
   DPIs: DPI[] = [{
     id: 'P12345',
     nom: 'Benziada',
@@ -26,11 +30,11 @@ export class MedecinDashboardComponent {
     dateDeCreation: new Date('2023-01-01'),
     consultations: [{
       id : 1,
-      dateDeCreation : new Date('2023-01-01'),
+      dateDeCreation : new Date('2024-12-30'),
       resume : 'doit etre hospitalise',
       bilanRadiologique : [{
-        id : "1",
-        nom : "Bilan 1",
+        id : "2",
+        nom : "Bilan 2",
       }],
       bilansBiologique : [{
         id : "1",
@@ -182,11 +186,11 @@ export class MedecinDashboardComponent {
     dateDeCreation: new Date('2023-01-01'),
     consultations: [{
       id : 1,
-      dateDeCreation : new Date('2023-01-01'),
+      dateDeCreation : new Date('2024-12-30'),
       resume : 'doit etre hospitalise',
       bilanRadiologique : [{
-        id : "1",
-        nom : "Bilan 1",
+        id : "2",
+        nom : "Bilan 2",
       }],
       bilansBiologique : [{
         id : "1",
@@ -209,9 +213,21 @@ export class MedecinDashboardComponent {
   }
   ];
 
-  constructor(private router: Router){}
+  constructor(private router: Router, private dpiService: DpiService){}
+  ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Check the current URL to determine if the child route is active
+        const currentRoute = this.router.url;
+        this.showParentUI = !currentRoute.includes('afficher-dpi');
+      }
+    });
+  }
+
+  
 
   navigateToViewDPI(DPI: DPI) {
-    this.router.navigateByUrl('/afficher-dpi', { state: DPI });
+    this.dpiService.setDPI(DPI);
+    this.router.navigate(['/medecin-dashboard/afficher-dpi', DPI.id]);
   }
 }

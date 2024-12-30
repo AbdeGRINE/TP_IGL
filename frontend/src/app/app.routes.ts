@@ -16,6 +16,20 @@ export const routes: Routes = [
     path: 'medecin-dashboard',
     component: MedecinDashboardComponent,
     title: 'Medecin Dashboard',
+    children : [
+      {
+        path: 'afficher-dpi/:id',
+        component: AfficherDpiComponent,
+        title: 'Afficher DPI',
+        children : [
+          {
+            path: 'afficher-consultation/:id',
+            component: AfficherConsultationComponent,
+            title: 'Afficher Consultation',
+          },
+        ]
+      },
+    ]
   },
   {
     path: 'admin-dashboard',
@@ -28,11 +42,6 @@ export const routes: Routes = [
     title: 'Creer DPI',
   },
   {
-    path: 'afficher-dpi',
-    component: AfficherDpiComponent,
-    title: 'Afficher DPI',
-  },
-  {
     path : 'dashboard-patient',
     component: DashboardPatientComponent,
     title: 'Patient Dashboard',
@@ -42,11 +51,7 @@ export const routes: Routes = [
     component: CreerConsultationComponent,
     title: 'Creer Consultation',
   },
-  {
-    path: 'afficher-consultation',
-    component: AfficherConsultationComponent,
-    title: 'Afficher Consultation',
-  },
+
   {
     path: 'infirmier-dashboard',
     component: InfirmierDashboardComponent,

@@ -1,11 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
+import { Router, ActivatedRoute} from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { NavigationService } from '../../../services/navigation.service';
 import { FormBuilder, FormGroup, FormArray, FormControl , ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/consultation';
-
+import { ConsultationService } from '../../../services/consultation.service';
 
 
 
@@ -15,89 +16,32 @@ import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../model
   templateUrl: './afficher-consultation.component.html',
   styleUrl: './afficher-consultation.component.css'
 })
-export class AfficherConsultationComponent {
+export class AfficherConsultationComponent implements OnInit {
   ResultatBilan1 = {
     glycemie: 0,
     cholestrol: 0,
   }
 
-  selectedConsultation :Consultation = {id : 1,
-    dateDeCreation : new Date('2023-01-01'),
-    resume : 'doit etre hospitalise',
-    bilanRadiologique : [{
-      id : "1",
-      nom : "Bilan 1",
-    }],
-    bilansBiologique : [{
-      id : "1",
-      nom : "Bilan 1",
-    }],
-    ordonnances : [
-      {
-        titre: 'Ordonnance 1',
-        state: 'En attente',
-        traitements : [{
-          medicament : 'doliprane',
-          dose : '2000mg',
-          duree: '2 jours',
-        }]
-      },
-  ]
-  }
-
-  patient: DPI = 
-    {
-      id: 'P12345',
-      nom: 'Benziada',
-      prenom : 'Fares',
-      NSS : 123456,
-      dateNaissance :new Date("01-01-2004"),
-      adresse : "Reghaia",
-      telephone : "0666666666",
-      mutuelle: "/",
-      personneAContacter :"/",
-      medecin: 'Grine',
-      dateDeCreation: new Date('2023-01-01'),
-      consultations: [{
-        id : 1,
-        dateDeCreation : new Date('2023-01-01'),
-        resume : 'doit etre hospitalise',
-        bilanRadiologique : [{
-          id : "1",
-          nom : "Bilan 1",
-        }],
-        bilansBiologique : [{
-          id : "1",
-          nom : "Bilan 1",
-        }],
-        ordonnances : [
-          {
-            titre: 'Ordonnance 1',
-            state: 'En attente',
-            traitements : [{
-              medicament : 'doliprane',
-              dose : '2000mg',
-              duree: '2 jours',
-            }]
-          },
-      ]}
-      ],
-      soins: [
-      ],
-    };
-
-  selectedPatient: DPI;
+  selectedConsultation :Consultation | null = null ;
 
   selectedOrdonnance: Ordonnance | null = null;
-
   selectedBilanBiologique: Bilan | null = null;
   selectedBilanRadiologique: Bilan | null = null ;
 
-  constructor(){
-    this.selectedPatient = this.patient;
+  constructor(private router: Router, private route: ActivatedRoute,private consultationService : ConsultationService){
     this.selectedOrdonnance = null;
-    console.log(this.selectedPatient);
     
+  }
+
+  ngOnInit() {
+    this.selectedConsultation = this.consultationService.getConsultation();
+    if (this.selectedConsultation) {
+      // You can now use the DPI object in your template
+      console.log('Consultatio object:', this.selectedConsultation);
+    } else {
+      // If DPI is not found (e.g., user navigated directly), handle accordingly
+      console.log('No Consultatio object found.');
+  }
   }
 
 
@@ -145,6 +89,11 @@ export class AfficherConsultationComponent {
   closeViewBilanRadio(){
     this.isViewBilanRadioOpen = false;
     this.isPopupOpen = false;
+  }
+
+
+  goBack(){
+    this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
 
