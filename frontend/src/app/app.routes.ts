@@ -3,18 +3,11 @@ import { MedecinDashboardComponent } from './features/medecin/medecin-dashboard/
 import { LoginComponent } from './features/auth/login/login.component';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard.component';
 import { CreerDPIComponent } from './features/admin/creer-dpi/creer-dpi.component';
-<<<<<<< HEAD
-=======
 import { InfirmierDashboardComponent } from './features/infirmier/infirmier-dashboard/infirmier-dashboard.component';
->>>>>>> 47906f37c05c4a728ac07d4eb09b830195356a7f
 import { AfficherDpiComponent } from './features/medecin/afficher-dpi/afficher-dpi.component';
 import { DashboardPatientComponent } from './features/patient/dashboard-patient/dashboard-patient.component';
 import { CreerConsultationComponent } from './features/medecin/creer-consultation/creer-consultation.component';
 import { AfficherConsultationComponent } from './features/medecin/afficher-consultation/afficher-consultation.component';
-<<<<<<< HEAD
-import { InfirmierDashboardComponent } from './infirmier/infirmier-dashboard/infirmier-dashboard.component';
-=======
->>>>>>> 47906f37c05c4a728ac07d4eb09b830195356a7f
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
@@ -25,7 +18,6 @@ export const routes: Routes = [
     title: 'Creer DPI',
   },
   {
-<<<<<<< HEAD
     path: 'medecin-dashboard',
     component: MedecinDashboardComponent,
     title: 'Medecin Dashboard',
@@ -53,16 +45,6 @@ export const routes: Routes = [
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
     title: 'Admin Dashboard',
-=======
-    path: 'infirmier-dashboard',
-    component: InfirmierDashboardComponent,
-    title: 'Infirmier Dashboard',
-  },
-  {
-    path: 'afficher-dpi',
-    component: AfficherDpiComponent,
-    title: 'Afficher DPI',
->>>>>>> 47906f37c05c4a728ac07d4eb09b830195356a7f
   },
   {
     path: 'dashboard-patient',
@@ -76,14 +58,8 @@ export const routes: Routes = [
   },
 
   {
-<<<<<<< HEAD
     path: 'infirmier-dashboard',
     component: InfirmierDashboardComponent,
     title: 'Infirmier Dashboard',
-=======
-    path: 'afficher-consultation',
-    component: AfficherConsultationComponent,
-    title: 'Afficher Consultation',
->>>>>>> 47906f37c05c4a728ac07d4eb09b830195356a7f
   },
 ];

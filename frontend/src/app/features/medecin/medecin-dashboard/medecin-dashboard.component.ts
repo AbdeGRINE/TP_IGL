@@ -56,7 +56,7 @@ export class MedecinDashboardComponent implements OnInit{
     }
     ],
     soins: [],
-    decodeBase64: ''
+    decodeBase64: 'SGVsbG8sIFdvcmxkIQ=='
   },
   {
     id: 'P12345',
@@ -221,6 +221,8 @@ export class MedecinDashboardComponent implements OnInit{
   ];
 
   constructor(private router: Router,private route: ActivatedRoute , private dpiService: DpiService){}
+
+  
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -230,8 +232,6 @@ export class MedecinDashboardComponent implements OnInit{
       }
     });
   }
-
-  
 
   navigateToViewDPI(DPI: DPI) {
     this.dpiService.setDPI(DPI);

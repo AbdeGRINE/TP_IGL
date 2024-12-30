@@ -27,7 +27,8 @@ export class CreerDPIComponent implements OnInit{
     dateNaissance: new Date(),
     dateDeCreation:  new Date(),
     consultations: [],
-    soins: []
+    soins: [],
+    decodeBase64 : '',
   };
   
   constructor(

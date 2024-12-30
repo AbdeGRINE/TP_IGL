@@ -3,17 +3,8 @@ import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
 import { NavigationService } from '../../../services/navigation.service';
 import * as QRCode from 'qrcode';
-
-//to test:
-interface Patient {
-  nom: string;
-  QR_code_base64: string;
-}
-
-interface Consultation {
-  id: string;
-  dateDeCreation: Date;
-}
+import { DPI, Consultation} from '../../../models/interfaces/consultation';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-patient',
@@ -22,35 +13,71 @@ interface Consultation {
   styleUrl: './dashboard-patient.component.css',
 })
 export class DashboardPatientComponent {
-  patient: Patient = {
+  patient: DPI = {
     nom: 'Ammar',
-    QR_code_base64: 'SGVsbG8sIFdvcmxkIQ==',
+    decodeBase64: 'SGVsbG8sIFdvcmxkIQ==',
+    id: '',
+    prenom: '',
+    NSS: '',
+    dateNaissance: new Date(),
+    adresse: '',
+    telephone: '',
+    mutuelle: '',
+    personneAContacter: '',
+    medecin: '',
+    dateDeCreation: new Date(),
+    consultations: [],
+    soins: []
   };
 
   Consultations: Consultation[] = [
     {
-      id: '1',
+      id: 1,
       dateDeCreation: new Date('2023-01-01'),
+      ordonnances: [],
+      resume: '',
+      bilansBiologique: [],
+      bilanRadiologique: []
     },
     {
-      id: '1',
+      id: 1,
       dateDeCreation: new Date('2023-01-01'),
+      ordonnances: [],
+      resume: '',
+      bilansBiologique: [],
+      bilanRadiologique: []
     },
     {
-      id: '1',
+      id: 1,
       dateDeCreation: new Date('2023-01-01'),
+      ordonnances: [],
+      resume: '',
+      bilansBiologique: [],
+      bilanRadiologique: []
     },
     {
-      id: '1',
+      id: 1,
       dateDeCreation: new Date('2023-01-01'),
+      ordonnances: [],
+      resume: '',
+      bilansBiologique: [],
+      bilanRadiologique: []
     },
     {
-      id: '1',
+      id: 1,
       dateDeCreation: new Date('2023-01-01'),
+      ordonnances: [],
+      resume: '',
+      bilansBiologique: [],
+      bilanRadiologique: []
     },
     {
-      id: '1',
+      id: 1,
       dateDeCreation: new Date('2023-01-01'),
+      ordonnances: [],
+      resume: '',
+      bilansBiologique: [],
+      bilanRadiologique: []
     },
   ];
 
@@ -61,7 +88,7 @@ export class DashboardPatientComponent {
   }
 
   generateQRCode(): void {
-    QRCode.toDataURL(this.patient.QR_code_base64, {
+    QRCode.toDataURL(this.patient.decodeBase64, {
       errorCorrectionLevel: 'H',
       width: 351,
     })

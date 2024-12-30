@@ -21,19 +21,18 @@ export class CreerConsultationComponent implements OnInit {
     {
       id: 'P12345',
       nom: 'Benziada',
-      prenom : 'Fares',
-      NSS : 123456,
-      dateNaissance :new Date("01-01-2004"),
-      adresse : "Reghaia",
-      telephone : "0666666666",
+      prenom: 'Fares',
+      NSS: '123456',
+      dateNaissance: new Date("01-01-2004"),
+      adresse: "Reghaia",
+      telephone: "0666666666",
       mutuelle: "/",
-      personneAContacter :"/",
+      personneAContacter: "/",
       medecin: 'Grine',
       dateDeCreation: new Date('2023-01-01'),
-      consultations: [
-      ],
-      soins: [
-      ],
+      consultations: [],
+      soins: [],
+      decodeBase64: '',
     };
 
   // Soin and Ordonnace modals logic:
