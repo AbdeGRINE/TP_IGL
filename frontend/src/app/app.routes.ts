@@ -9,7 +9,12 @@ import { AfficherDpiComponent } from './features/medecin/afficher-dpi/afficher-d
 import { DashboardPatientComponent } from './features/patient/dashboard-patient/dashboard-patient.component';
 import { CreerConsultationComponent } from './features/medecin/creer-consultation/creer-consultation.component';
 import { AfficherConsultationComponent } from './features/medecin/afficher-consultation/afficher-consultation.component';
+<<<<<<< HEAD
 import { LaboratinDashboardComponent } from './features/laboratin/laboratin-dashboard/laboratin-dashboard.component';
+=======
+import { RadiologueDashboardComponent } from './features/radiologue/radiologue-dashboard/radiologue-dashboard.component';
+import { InfirmierDashboardComponent } from './infirmier/infirmier-dashboard/infirmier-dashboard.component';
+>>>>>>> 4c9d319a2322b8e3308614a562da0c0cbd65824b
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
@@ -64,8 +69,14 @@ export const routes: Routes = [
     title: 'Infirmier Dashboard',
   },
   {
+<<<<<<< HEAD
     path: 'laboratin-dashboard',
     component: LaboratinDashboardComponent,
     title: 'Laboratin Dashboard',
+=======
+    path : 'dashboard-radiologue',
+    component: RadiologueDashboardComponent,
+    title: 'Radiologue Dashboard',
+>>>>>>> 4c9d319a2322b8e3308614a562da0c0cbd65824b
   },
 ];

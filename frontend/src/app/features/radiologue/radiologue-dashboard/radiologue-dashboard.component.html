@@ -1,0 +1,54 @@
+<app-header></app-header>
+<div class="bg-lightgray px-[8%] w-full h-screen overflow-y-auto">
+    <!-- <div *ngIf="isViewBilanRadioOpen"
+        class="absolute top-6 left-1/2 transform -translate-x-1/2  bg-white flex flex-col justify-center items-center border border-darkgray rounded-lg gap-y-6 w-1/2 px-4 py-4">
+        <div class="w-full justify-self-start text-xl flex">Affichage du Bilan</div>
+
+        <div class="w-full flex flex-col items-center gap-y-8 ">
+            <div class="w-full flex flex-col gap-y-4">
+                <div class="w-full text-left">Compte Rendu</div>
+                <div class="text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md w-full h-60"
+                    placeholder="Resume de la consultation">{{selectedBilan?.resume}}
+                </div>
+            </div>
+
+            <div class="h-full w-full flex flex-col gap-y-4">
+                <div class="w-full text-left">Radio</div>
+                <img src="/IRM.png" class="" />
+            </div>
+        </div>
+        <div class="flex justify-end w-full gap-x-5 self-end">
+            <button class="text-lg px-6 py-2 rounded-xl flex " (click)="closeViewBilanRadio()">Retour</button>
+        </div>
+    </div> -->
+    <div class="flex w-full">
+        <div class="flex flex-row justify-between gap-x-20 min-h-fit w-full">
+            <div class="bg-white border rounded-xl border-darkgray w-full flex flex-col items-center p-8 gap-y-4">
+                <div class="w-full text-left text-xl">Patients avec bilans radiologiques</div>
+                <div class="w-full flex flex-col items-center gap-y-1">
+                    <div
+                        class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center justify-between">
+                        <div>Nom</div>
+                        <div>ID</div>
+                        <div>Medecin traitant</div>
+                        <div>Date</div>
+                        <div>Actions</div>
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <div *ngFor="let demande of Demandes" class="flex justify-between items-center py-2 px-4">
+                            <div class="text-black">{{demande.nom}}</div>
+                            <div class="font-semibold text-black">{{demande.id}}</div>
+                            <div class="text-black">{{demande.medecin}}
+                            </div>
+                            <div class="text-black">{{demande.date}}</div>
+                            <div class="flex flex-row gap-x-6 items-center justify-between">
+                                <button><img src="/eye.svg" alt="view icon"></button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
