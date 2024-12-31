@@ -4,7 +4,7 @@ import { NavigationService } from '../../../services/navigation.service';
 import { FormsModule } from '@angular/forms';
 import { ApiDataService } from '../../../services/api-data.service';
 import { Router, RouterModule,NavigationEnd, ActivatedRoute } from '@angular/router';
-import { DPI } from '../../../models/interfaces/consultation';
+import { DPI } from '../../../models/interfaces/interfaces';
 
 @Component({
   selector: 'app-medecin-creer-dpi',

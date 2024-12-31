@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
-import { Bilan } from '../../../models/interfaces/consultation';
+import { Bilan } from '../../../models/interfaces/interfaces';
 
 interface DemandeBilan {
   id: number,

@@ -5,7 +5,7 @@ import { Router, ActivatedRoute} from '@angular/router';
 import { ChangeDetectorRef } from '@angular/core';
 import { NavigationService } from '../../../services/navigation.service';
 import { FormBuilder, FormGroup, FormArray, FormControl , ReactiveFormsModule, FormsModule} from '@angular/forms';
-import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/consultation';
+import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/interfaces';
 import { ConsultationService } from '../../../services/consultation.service';
 
 

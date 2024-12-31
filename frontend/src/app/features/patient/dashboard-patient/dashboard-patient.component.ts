@@ -3,7 +3,7 @@ import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
 import { NavigationService } from '../../../services/navigation.service';
 import * as QRCode from 'qrcode';
-import { DPI, Consultation} from '../../../models/interfaces/consultation';
+import { DPI, Consultation} from '../../../models/interfaces/interfaces';
 import { from } from 'rxjs';
 
 @Component({

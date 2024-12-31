@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import { NavigationService } from '../../../services/navigation.service';
 import { FormBuilder, FormGroup, FormArray, FormControl , ReactiveFormsModule, FormsModule} from '@angular/forms';
-import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/consultation';
+import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/interfaces';
 
 
 
@@ -21,19 +21,11 @@ export class CreerConsultationComponent implements OnInit {
     {
       id: 'P12345',
       nom: 'Benziada',
-<<<<<<< HEAD
       prenom: 'Fares',
       NSS: '123456',
       dateNaissance: new Date("01-01-2004"),
       adresse: "Reghaia",
       telephone: "0666666666",
-=======
-      prenom : 'Fares',
-      NSS : '123456',
-      dateNaissance :new Date("01-01-2004"),
-      adresse : "Reghaia",
-      telephone : "0666666666",
->>>>>>> 4c9d319a2322b8e3308614a562da0c0cbd65824b
       mutuelle: "/",
       personneAContacter: "/",
       medecin: 'Grine',

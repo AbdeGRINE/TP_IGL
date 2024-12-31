@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule,NavigationEnd } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { NavigationService } from '../../../services/navigation.service';
-import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/consultation';
+import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/interfaces';
 import { DpiService } from '../../../services/dpi.service';
 import { ConsultationService } from '../../../services/consultation.service';
 import * as QRCode from 'qrcode';

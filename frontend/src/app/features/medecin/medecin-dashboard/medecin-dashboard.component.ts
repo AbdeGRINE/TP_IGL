@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router , RouterModule,NavigationEnd, ActivatedRoute } from '@angular/router';
 import { HeaderComponent } from '../../shared/header/header.component';
 import jsQR from 'jsqr';
-import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/consultation';
+import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/interfaces';
 import { DpiService } from '../../../services/dpi.service';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
 
@@ -21,19 +21,11 @@ export class MedecinDashboardComponent implements OnInit{
   DPIs: DPI[] = [{
     id: 'P12345',
     nom: 'Benziada',
-<<<<<<< HEAD
     prenom: 'Fares',
     NSS: '123456',
     dateNaissance: new Date("01-01-2004"),
     adresse: "Reghaia",
     telephone: "0666666666",
-=======
-    prenom : 'Fares',
-    NSS : "123456",
-    dateNaissance :new Date("01-01-2004"),
-    adresse : "Reghaia",
-    telephone : "0666666666",
->>>>>>> 4c9d319a2322b8e3308614a562da0c0cbd65824b
     mutuelle: "/",
     personneAContacter: "/",
     medecin: 'Grine',
@@ -69,19 +61,11 @@ export class MedecinDashboardComponent implements OnInit{
   {
     id: 'P12345',
     nom: 'Benziada',
-<<<<<<< HEAD
     prenom: 'Fares',
     NSS: '123456',
     dateNaissance: new Date("01-01-2004"),
     adresse: "Reghaia",
     telephone: "0666666666",
-=======
-    prenom : 'Fares',
-    NSS : "123456",
-    dateNaissance :new Date("01-01-2004"),
-    adresse : "Reghaia",
-    telephone : "0666666666",
->>>>>>> 4c9d319a2322b8e3308614a562da0c0cbd65824b
     mutuelle: "/",
     personneAContacter: "/",
     medecin: 'Grine',
@@ -117,19 +101,11 @@ export class MedecinDashboardComponent implements OnInit{
   {
     id: 'P12345',
     nom: 'Benziada',
-<<<<<<< HEAD
     prenom: 'Fares',
     NSS: '123456',
     dateNaissance: new Date("01-01-2004"),
     adresse: "Reghaia",
     telephone: "0666666666",
-=======
-    prenom : 'Fares',
-    NSS : '123456',
-    dateNaissance :new Date("01-01-2004"),
-    adresse : "Reghaia",
-    telephone : "0666666666",
->>>>>>> 4c9d319a2322b8e3308614a562da0c0cbd65824b
     mutuelle: "/",
     personneAContacter: "/",
     medecin: 'Grine',
@@ -165,19 +141,11 @@ export class MedecinDashboardComponent implements OnInit{
   {
     id: 'P12345',
     nom: 'Benziada',
-<<<<<<< HEAD
     prenom: 'Fares',
     NSS: '123456',
     dateNaissance: new Date("01-01-2004"),
     adresse: "Reghaia",
     telephone: "0666666666",
-=======
-    prenom : 'Fares',
-    NSS : '123456',
-    dateNaissance :new Date("01-01-2004"),
-    adresse : "Reghaia",
-    telephone : "0666666666",
->>>>>>> 4c9d319a2322b8e3308614a562da0c0cbd65824b
     mutuelle: "/",
     personneAContacter: "/",
     medecin: 'Grine',
@@ -213,19 +181,11 @@ export class MedecinDashboardComponent implements OnInit{
   {
     id: 'P12345',
     nom: 'Benziada',
-<<<<<<< HEAD
     prenom: 'Fares',
     NSS: '123456',
     dateNaissance: new Date("01-01-2004"),
     adresse: "Reghaia",
     telephone: "0666666666",
-=======
-    prenom : 'Fares',
-    NSS : '123456',
-    dateNaissance :new Date("01-01-2004"),
-    adresse : "Reghaia",
-    telephone : "0666666666",
->>>>>>> 4c9d319a2322b8e3308614a562da0c0cbd65824b
     mutuelle: "/",
     personneAContacter: "/",
     medecin: 'Grine',

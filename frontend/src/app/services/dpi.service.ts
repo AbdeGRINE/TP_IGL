@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DPI } from '../models/interfaces/consultation'
+import { DPI } from '../models/interfaces/interfaces'
 
 @Injectable({
   providedIn: 'root'
