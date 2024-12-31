@@ -23,7 +23,7 @@ interface Consultation {
 })
 export class DashboardPatientComponent {
   patient: Patient = {
-    nom: 'Ammar',
+    nom: 'Amal',
     QR_code_base64: 'SGVsbG8sIFdvcmxkIQ==',
   };
 
