@@ -7,7 +7,7 @@ from .serializers import BilanSerializer, TestSerializer, GraphiqueSerializer, C
 from users.serializers import UserSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from users.models import Bilan
+from users.models import Bilan, Test, CompteRendu, Image
 from datetime import date
 from base64 import b64decode
 
@@ -82,3 +82,27 @@ def saisir_resultat_bilan_radiologique(request: Request) -> Response:
         bilan.save()
         return Response({"compte_rendu_data":compterendu_serailizer.data,"image_data":image_serializer.data})
     return Response(compterendu_serailizer.errors,image_serializer.errors)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def consulter_bilan_biologique(request: Request) -> Response:
+    bilan_id = request.data['bilan']
+    bilan = Bilan.objects.get(id= bilan_id)
+    bilan_data = BilanSerializer(bilan).data
+    tests = Test.objects.filter(bilan= bilan)
+    tests_data = TestSerializer(tests, many=True).data
+    return Response({"bilan": bilan_data,"tests": tests_data})
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def consulter_bilan_radiologique(request: Request) -> Response:
+    bilan_id = request.data['bilan']
+    bilan = Bilan.objects.get(id= bilan_id)
+    bilan_data = BilanSerializer(bilan).data
+    compterendu = CompteRendu.objects.get(bilan= bilan)
+    compterendu_data = CompteRenduSerializer(compterendu).data
+    image = Image.objects.get(compte_rendu = compterendu)
+    image_data = ImageSerializer(image).data
+    return Response({"bilan": bilan_data,"compterendu": compterendu_data, "image": image_data})
