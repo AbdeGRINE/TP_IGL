@@ -21,6 +21,10 @@ interface Patient {
   templateUrl: './creer-dpi.component.html',
   styleUrl: './creer-dpi.component.css',
 })
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
 export class CreerDPIComponent {
   patient: Patient = {
     nom: '',
@@ -32,14 +36,22 @@ export class CreerDPIComponent {
     medecin: '',
     personne: '',
   };
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
   constructor(
     private navigationService: NavigationService,
     private apiDataService: ApiDataService
   ) {}
 
   navigateToAdminDashboard() {
+<<<<<<< HEAD
     this.navigationService.navigateTo('/login');
+=======
+    this.navigationService.navigateTo('/admin-dashboard');
+>>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
   }
 
   inputValidation(): boolean {
@@ -92,7 +104,10 @@ export class CreerDPIComponent {
   }
 
   handleSaveDPI() {
+<<<<<<< HEAD
     //subscibe methode handle the success or error.
+=======
+>>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
     if (this.inputValidation()) {
       this.apiDataService.post('DPIs', this.patient).subscribe({
         next: (response) => {
@@ -107,4 +122,8 @@ export class CreerDPIComponent {
       });
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
