@@ -4,6 +4,7 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
+<<<<<<< HEAD
     extend: {
       colors : {
         green : "#46BB91",
@@ -15,6 +16,9 @@ module.exports = {
         black : "#111111",
       }
     },
+=======
+    extend: {},
+>>>>>>> 0617c4e0aed6e23b15a9a639ebbdedc34293c981
   },
   plugins: [],
 }

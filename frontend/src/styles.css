@@ -3,5 +3,10 @@
 @tailwind utilities;
 
 * {
+<<<<<<< HEAD
   font-family: "Poppins", sans-serif;
+=======
+    font-family: 'Poppins', sans-serif;
+   
+>>>>>>> 0617c4e0aed6e23b15a9a639ebbdedc34293c981
 }

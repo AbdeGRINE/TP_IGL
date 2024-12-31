@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "Patients": [
     {
       "id": "p1",
@@ -138,6 +139,19 @@
           "observation": "Les symptômes de sinusite sont en régression."
         }
       ]
+=======
+  "DPIs": [
+    {
+      "id": "a9c3",
+      "nom": "Benziada",
+      "prenom": "Fares",
+      "nss": "123456789",
+      "adresse": "ESI, El maqbara",
+      "n_tlph": "0555555559",
+      "mutuelle": "/",
+      "medecin": "Grine Les Hommes",
+      "personne": "Carlos Zafon"
+>>>>>>> 0617c4e0aed6e23b15a9a639ebbdedc34293c981
     }
   ]
 }
