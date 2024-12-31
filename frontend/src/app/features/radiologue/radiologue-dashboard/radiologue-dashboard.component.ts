@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
+import { Bilan } from '../../../models/interfaces/consultation';
 
 interface DemandeBilan {
   id: number,
@@ -16,6 +17,8 @@ interface DemandeBilan {
   styleUrl: './radiologue-dashboard.component.css'
 })
 export class RadiologueDashboardComponent {
+  selectedBilan : Bilan | null  = null;
+  isViewBilanRadioOpen : Boolean;
   Demandes : DemandeBilan[] = [{
     id: 1,
     nom: 'test',
@@ -35,4 +38,17 @@ export class RadiologueDashboardComponent {
     date: 'test',
   },
 ]
+
+constructor(){
+  this.isViewBilanRadioOpen = false;
+}
+
+openViewBilanRadio(bilan: Bilan){
+  this.isViewBilanRadioOpen = true;
+  this.selectedBilan = bilan;
+}
+
+closeViewBilanRadio(){
+  this.isViewBilanRadioOpen = false;
+}
 }
