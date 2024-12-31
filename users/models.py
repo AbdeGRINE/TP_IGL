@@ -11,6 +11,9 @@ class StatusOrdonnance(models.TextChoices):
     VALIDE = 'Validé'
     NON_VALIDE = 'Non_validé'
 
+class StatusGraphique(models.TextChoices):
+    ATTACHE = 'Attaché'
+    NON_ATTACHE = 'Non_Attaché'
 
 class StatusSoin(models.TextChoices):
     PROGRAMME = 'Programmé'
@@ -147,6 +150,7 @@ class Bilan(models.Model):
     type = models.CharField(max_length=20, choices=TypeBilan.choices)
     redigant_laborantin = models.ForeignKey(Laborantin,null=True, blank=True, on_delete=models.SET_NULL)
     redigant_radiologue = models.ForeignKey(Radiologue, null=True, blank=True, on_delete=models.SET_NULL)
+    graphique  = models.CharField(max_length=20, choices=StatusGraphique.choices, default= StatusGraphique.NON_ATTACHE)
     consultation = models.ForeignKey(Consultation, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -213,10 +217,10 @@ class Test(models.Model):
 class CompteRendu(models.Model):
     nom = models.CharField(max_length=100)
     resultat = models.TextField()
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
+    bilan = models.ForeignKey(Bilan, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'Compte rendu for test {self.test.nom}'
+        return f'Compte rendu for bilan {self.bilan.nom}'
 
 class Image(models.Model):
     donnee = models.BinaryField()

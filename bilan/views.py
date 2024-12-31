@@ -2,13 +2,14 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from users.models import TypeBilan, StatusBilan
-from .serializers import BilanSerializer, TestSerializer
+from users.models import TypeBilan, StatusBilan, StatusGraphique
+from .serializers import BilanSerializer, TestSerializer, GraphiqueSerializer, CompteRenduSerializer, ImageSerializer
 from users.serializers import UserSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from users.models import Bilan
 from datetime import date
+from base64 import b64decode
 
 # Create your views here.
 
@@ -18,7 +19,8 @@ def demander_bilan(request: Request) -> Response:
     if serializer.is_valid():
         default_status = StatusBilan.EN_COURS
         default_date = date.today()
-        bilan = serializer.save(status= default_status, date_demande= default_date)
+        default_graphique = StatusGraphique.NON_ATTACHE
+        bilan = serializer.save(status= default_status, date_demande= default_date, graphique= default_graphique)
         bilan_data = BilanSerializer(instance = bilan).data
         return Response({
             "bilan":bilan_data
@@ -43,14 +45,40 @@ def consulter_bilans_radiologiques_en_cours(request: Request) -> Response:
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def saisir_resultat_bilan_biologique(request: Request) -> Response:
-    serializer = TestSerializer(data= request.data,many= True)
-    if serializer.is_valid():
+    graphique_data = {"graphique": request.data.get('graphique')}
+    graphique_serializer = GraphiqueSerializer(data=graphique_data)
+    tests_data = request.data.get('tests', [])
+    serializer = TestSerializer(data=tests_data, many=True)
+    if serializer.is_valid() and graphique_serializer.is_valid():
         serializer.save()
-        bilan_id = request.data[0]['bilan']
+        bilan_id = tests_data[0]['bilan']
         bilan = Bilan.objects.get(id= bilan_id)
+        bilan.graphique = graphique_serializer.data['graphique']
         bilan.date_recuperation= date.today()
         bilan.status= StatusBilan.TERMINE
         bilan.redigant_laborantin= request.user.laborantin
         bilan.save()
         return Response({"data": serializer.data})
-    return Response(serializer.errors)
+    return Response(serializer.errors,graphique_serializer.errors)
+
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def saisir_resultat_bilan_radiologique(request: Request) -> Response:
+    compterendu_data = request.data.get('compterendu')
+    compterendu_serailizer = CompteRenduSerializer(data= compterendu_data)
+    image_data = request.data.get('image')
+    image_serializer = ImageSerializer(data= image_data)
+    if compterendu_serailizer.is_valid() and image_serializer.is_valid():
+        compterendu = compterendu_serailizer.save()
+        image_serializer.save(compte_rendu = compterendu, donnee = b64decode(image_data['donnee']))
+        bilan_id = compterendu_data['bilan']
+        bilan = Bilan.objects.get(id = bilan_id)
+        bilan.graphique = StatusGraphique.ATTACHE
+        bilan.date_recuperation= date.today()
+        bilan.status= StatusBilan.TERMINE
+        bilan.redigant_radiologue= request.user.radiologue
+        bilan.save()
+        return Response({"compte_rendu_data":compterendu_serailizer.data,"image_data":image_serializer.data})
+    return Response(compterendu_serailizer.errors,image_serializer.errors)
