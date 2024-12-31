@@ -239,8 +239,9 @@ export class MedecinDashboardComponent implements OnInit{
   }
 
   navigateToCreerDPI(){
-    this.router.navigate(['./creer-dpi'], { relativeTo: this.route });
-
+    this.router.navigate(['/medecin-dashboard/creer-dpi-medecin']);
+  
+    //this.router.navigate(['./creer-dpi-medecin'], { relativeTo: this.route });
   }
 
   // ---------------------------------------------- SEARCH Logic:

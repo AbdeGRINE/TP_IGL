@@ -3,6 +3,7 @@ import { MedecinDashboardComponent } from './features/medecin/medecin-dashboard/
 import { LoginComponent } from './features/auth/login/login.component';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard.component';
 import { CreerDPIComponent } from './features/admin/creer-dpi/creer-dpi.component';
+import { MedecinCreerDpiComponent } from './features/medecin/medecin-creer-dpi/medecin-creer-dpi.component';
 import { InfirmierDashboardComponent } from './features/infirmier/infirmier-dashboard/infirmier-dashboard.component';
 import { AfficherDpiComponent } from './features/medecin/afficher-dpi/afficher-dpi.component';
 import { DashboardPatientComponent } from './features/patient/dashboard-patient/dashboard-patient.component';
@@ -35,9 +36,9 @@ export const routes: Routes = [
         ]
       },
       {
-        path: 'creer-dpi',
-        component: CreerDPIComponent,
-        title: 'Creer DPI',
+        path: 'medecin-creer-dpi',
+        component: MedecinCreerDpiComponent,
+        title: 'Creer DPI Medecin',
       },
     ]
   },

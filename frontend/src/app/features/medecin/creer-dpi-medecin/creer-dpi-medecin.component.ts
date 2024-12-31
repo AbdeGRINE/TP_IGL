@@ -9,11 +9,11 @@ import { DPI } from '../../../models/interfaces/consultation';
 @Component({
   selector: 'app-creer-dpi',
   imports: [HeaderComponent, FormsModule, RouterModule],
-  templateUrl: './creer-dpi.component.html',
-  styleUrl: './creer-dpi.component.css',
+  templateUrl: './creer-dpi-medecin.component.html',
+  styleUrl: './creer-dpi-medecin.component.css',
 })
 
-export class CreerDPIComponent implements OnInit{
+export class CreerDPIMedecinComponent implements OnInit{
   patient: DPI = {
     id: '',
     nom: '',

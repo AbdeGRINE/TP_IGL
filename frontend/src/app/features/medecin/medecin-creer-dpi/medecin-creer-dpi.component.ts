@@ -1,57 +1,59 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { NavigationService } from '../../../services/navigation.service';
 import { FormsModule } from '@angular/forms';
 import { ApiDataService } from '../../../services/api-data.service';
-
-interface Patient {
-  nom: string;
-  prenom: string;
-  nss: string;
-  adresse: string;
-  n_tlph: string;
-  mutuelle: string;
-  medecin: string;
-  personne: string;
-}
+import { Router, RouterModule,NavigationEnd, ActivatedRoute } from '@angular/router';
+import { DPI } from '../../../models/interfaces/consultation';
 
 @Component({
-  selector: 'app-creer-dpi',
-  imports: [HeaderComponent, FormsModule],
-  templateUrl: './creer-dpi.component.html',
-  styleUrl: './creer-dpi.component.css',
+  selector: 'app-medecin-creer-dpi',
+  imports: [HeaderComponent, FormsModule, RouterModule],
+  templateUrl: './medecin-creer-dpi.component.html',
+  styleUrl: './medecin-creer-dpi.component.css'
 })
-export class CreerDPIComponent {
-  patient: Patient = {
+export class MedecinCreerDpiComponent implements OnInit{
+  patient: DPI = {
+    id: '',
     nom: '',
     prenom: '',
-    nss: '',
+    NSS: '',
     adresse: '',
-    n_tlph: '',
+    telephone: '',
     mutuelle: '',
     medecin: '',
-    personne: '',
+    personneAContacter: '',
+    dateNaissance: new Date(),
+    dateDeCreation:  new Date(),
+    consultations: [],
+    soins: [],
+    decodeBase64 : '',
   };
-
+  
   constructor(
-    private navigationService: NavigationService,
-    private apiDataService: ApiDataService
+    private apiDataService: ApiDataService,
+    private route : Router,
+    private router: ActivatedRoute, 
+    
   ) {}
+  ngOnInit(): void {
 
-  navigateToAdminDashboard() {
-    this.navigationService.navigateTo('/login');
+  }
+
+  navigateToMedecinDashboard() {
+    this.route.navigate(['/medecin-dashboard']);
   }
 
   inputValidation(): boolean {
     if (
       !this.patient.nom ||
       !this.patient.prenom ||
-      !this.patient.nss ||
+      !this.patient.NSS ||
       !this.patient.adresse ||
-      !this.patient.n_tlph ||
+      !this.patient.telephone ||
       !this.patient.mutuelle ||
       !this.patient.medecin ||
-      !this.patient.personne
+      !this.patient.personneAContacter
     ) {
       alert('Veuillez remplir tous les champs obligatoires!');
       return false;
@@ -65,15 +67,15 @@ export class CreerDPIComponent {
       alert('Prenom ne doit pas contenir de chiffres.');
       return false;
     }
-    if (!/^\d+$/.test(this.patient.nss)) {
+    if (!/^\d+$/.test(this.patient.NSS)) {
       alert('NSS doit être un nombre.');
       return false;
     }
 
     if (
-      !/^\d+$/.test(this.patient.n_tlph) ||
-      !/^\d{10}$/.test(this.patient.n_tlph) ||
-      !this.patient.n_tlph.startsWith('0')
+      !/^\d+$/.test(this.patient.telephone) ||
+      !/^\d{10}$/.test(this.patient.telephone) ||
+      !this.patient.telephone.startsWith('0')
     ) {
       alert(
         'Numéro de téléphone doit être un nombre! Comporter 10 chiffres et commencer par 0.'
@@ -84,7 +86,7 @@ export class CreerDPIComponent {
       alert('Medecin traitant ne doit pas contenir de chiffres.');
       return false;
     }
-    if (!/^[a-zA-Z\s]+$/.test(this.patient.personne)) {
+    if (!/^[a-zA-Z\s]+$/.test(this.patient.personneAContacter)) {
       alert('Personne à contacter ne doit pas contenir de chiffres.');
       return false;
     }
@@ -92,13 +94,12 @@ export class CreerDPIComponent {
   }
 
   handleSaveDPI() {
-    //subscibe methode handle the success or error.
     if (this.inputValidation()) {
       this.apiDataService.post('DPIs', this.patient).subscribe({
         next: (response) => {
           alert('Patient saved successfully!');
           console.log(response);
-          this.navigationService.navigateTo('/admin-dashboard');
+          this.route.navigate(['/medecin-dashboard']);
         },
         error: (err) => {
           alert('Failed to save patient. Please try again.');
@@ -106,5 +107,7 @@ export class CreerDPIComponent {
         },
       });
     }
+    this.navigateToMedecinDashboard();
   }
+
 }
