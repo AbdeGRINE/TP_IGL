@@ -4,7 +4,7 @@ from users.models import DPI, Medcin, Etablissement, Patient
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = ["NSS", "nom", "prenom", "date_naissance", "adresse", "mutuelle"]
+        fields = ["NSS", "nom", "prenom", "date_naissance", "adresse", "mutuelle", "personne_a_contacter"]
 
 
 

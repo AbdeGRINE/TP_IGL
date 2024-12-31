@@ -39,6 +39,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('dpi/', include('dpi.urls')), # Inclure les URLs spécifiques à l'app dpi
+    path('Ordonnance/', include('Ordonnance.urls')),
+    path('Consultation/', include('Consultation.urls')),
+    path('Soin/', include('Soin.urls')),
 
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', 
         schema_view.without_ui(cache_timeout=0), 

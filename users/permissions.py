@@ -1,5 +1,5 @@
 from rest_framework.permissions import BasePermission
-from .models import Medcin, Patient, Infermier, Laborantin, Radiologue  # Importez tous vos modèles
+from .models import Medcin, Patient, Infermier, Laborantin, Radiologue  
 
 class IsDoctor(BasePermission):
     """

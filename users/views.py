@@ -2,14 +2,15 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import api_view
-from .serializers import ResumeSerializer,GetOrdonnanceSerializer, OrdonnanceSerializer, SoinSerializer,UserSerializer,ConsultationSerializer,ConsultationDetailWithResumeSerializer
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .models import Consultation, Infermier, Ordonnance,DPI,StatusOrdonnance,Soin, StatusSoin
-from .permissions import IsDoctor, IsPatient, IsAdmin, IsInfermier, IsLaborantin, IsRadiologue
+from .serializers import UserSerializer, PatientSerializer, LaborantinSerializer, MedcinSerializer, RadiologueSerializer, InfirmierSerializer
+from .models import Groupe
+import random
+
 # Create your views here. 
 
 
@@ -57,216 +58,137 @@ def obtenir_utilisateur_connecte(request: Request) -> Response:
     return Response({"detail": "user not found"})
 
 
-#------------------------------------------------Gestion des consultation---------------------------------------#
+
+@api_view(['POST'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def creer_patient(request: Request) -> Response:
+    serializer = PatientSerializer(data=request.data)
+    if serializer.is_valid():
+        nom = serializer.validated_data['nom']
+        prenom = serializer.validated_data['prenom']
+        username = f"{nom}_{prenom}"
+        password = username
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=''
+        )
+        token, _ = Token.objects.get_or_create(user=user)
+        patient = serializer.save(user=user)
+        patient_data = PatientSerializer(instance=patient).data
+        return Response({
+                "patient": patient_data,
+                "user": {"username": username, "token": token.key}
+            })
+    return Response(serializer.errors)
+
+@api_view(['POST'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def creer_medcin(request: Request) -> Response:
+    serializer = MedcinSerializer(data=request.data)
+    if serializer.is_valid():
+        nom = serializer.validated_data['nom']
+        prenom = serializer.validated_data['prenom']
+        username = f"{nom}_{prenom}"
+        password = username
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=''
+        )
+        token, _ = Token.objects.get_or_create(user=user)
+        medcin = serializer.save(user=user)
+        medcin_data = MedcinSerializer(instance=medcin).data
+        return Response({
+                "medcin": medcin_data,
+                "user": {"username": username, "token": token.key}
+            })
+    return Response(serializer.errors)
+
+# @api_view(['POST'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+# def creer_pharmacien(request: Request) -> Response:
+#     return Response({"detail":"creer creer_pharmacien"})
+
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated,IsDoctor])
-def creer_consultation(request):
-    """
-    Cree une consultation .
-    """
-    data = request.data
-    try:
-       
-        serializer = ConsultationSerializer(data=data)
-        if serializer.is_valid():
-            dpi_id = data.get('dpi')
-
-            # Vérifier si le DPI existe
-            try:
-                dpi = DPI.objects.get(id=dpi_id)
-            except DPI.DoesNotExist:
-                return Response({"error": "DPI non trouvé"}, status=404)
-
-            medecin_traitant = dpi.medecin_traitant  # Supposons que le champ "medecin_traitant" existe dans DPI
-
-            consultation = serializer.save(dpi=dpi, medecin_consulte=medecin_traitant)
-
-            # Traitement du résumé (si présent)
-            resume_data = data.get('resume')
-            if resume_data:
-                resume_serializer = ResumeSerializer(data=resume_data)
-                if resume_serializer.is_valid():
-                    resume_serializer.save(consultation=consultation)
-                else:
-                    return Response(resume_serializer.errors, status=400)
-
-            return Response({
-                "message": "Consultation et résumé créés avec succès",
-                "consultation": ConsultationSerializer(instance=consultation).data
-            }, status=201)
-
-        return Response(serializer.errors, status=400)
-    except KeyError:
-        return Response({"error": "Données manquantes"}, status=400)
-
-@api_view(['GET'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def liste_consultations_par_dpi(request,dpi_id):
-    """
-    Récupère toutes les consultations liées à un DPI spécifique.
-    """
-    try:
-        consultations = Consultation.objects.filter(dpi=dpi_id) # Filtrer les ordonnances par les consultations associées au DPI
-    except Exception as e:
-        return Response({"error": str(e)}, status=500)
-
-    if not consultations.exists():
-        return Response({"error": "Aucune ordonnance trouvée pour ce DPI."}, status=404)
-
-    # Sérialiser les ordonnances
-    serializer = ConsultationSerializer(consultations, many=True)
-    return Response(serializer.data, status=200)
-
-#------------------------------------------------Gestion des ordonnances---------------------------------------#
+def creer_laborantin(request: Request) -> Response:
+    serializer = LaborantinSerializer(data=request.data)
+    if serializer.is_valid():
+        nom = serializer.validated_data['nom']
+        prenom = serializer.validated_data['prenom']
+        username = f"{nom}_{prenom}"
+        password = username
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=''
+        )
+        token, _ = Token.objects.get_or_create(user=user)
+        laborantin = serializer.save(user=user)
+        laborantin_data = LaborantinSerializer(instance=laborantin).data
+        return Response({
+                "laborantin": laborantin_data,
+                "user": {"username": username, "token": token.key}
+            })
+    return Response(serializer.errors)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated,IsDoctor])
-def creer_ordonnance(request,dpi_id):
-    """
-    Creer une ordonnace (l'id du consultation doit etre fourni dans la req).
-    """
-    if request.method == 'POST':
-        serializer = OrdonnanceSerializer(data=request.data)
-        if serializer.is_valid():
-            # Sauvegarder l'ordonnance et les traitements associés
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def creer_radiologue(request: Request) -> Response:
+    serializer = RadiologueSerializer(data=request.data)
+    if serializer.is_valid():
+        nom = serializer.validated_data['nom']
+        prenom = serializer.validated_data['prenom']
+        username = f"{nom}_{prenom}"
+        password = username
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=''
+        )
+        token, _ = Token.objects.get_or_create(user=user)
+        radiologue = serializer.save(user=user)
+        radiologue_data = RadiologueSerializer(instance=radiologue).data
+        return Response({
+                "radiologue": radiologue_data,
+                "user": {"username": username, "token": token.key}
+            })
+    return Response(serializer.errors)
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def ordonnances_par_consultation(request, consultation_id):
-    """
-    Récupère toutes les ordonnances liées à une consultation spécifique.
-    """
-    try:
-        ordonnances = Ordonnance.objects.filter(consultation=consultation_id)
-    except Exception as e:
-        return Response({"error": str(e)}, status=500)
-
-    if not ordonnances.exists():
-        return Response({"error": "Aucune ordonnance trouvée pour cette consultation."}, status=404)
-
-    serializer = OrdonnanceSerializer(ordonnances, many=True)
-    return Response(serializer.data, status=200)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def ordonnances_par_dpi(request, dpi_id):
-    """
-    Récupère toutes les ordonnances liées à un DPI spécifique.
-    """
-    try:
-        # Filtrer les ordonnances par les consultations associées au DPI
-        ordonnances = Ordonnance.objects.filter(consultation__dpi_id=dpi_id)
-    except Exception as e:
-        return Response({"error": str(e)}, status=500)
-
-    if not ordonnances.exists():
-        return Response({"error": "Aucune ordonnance trouvée pour ce DPI."}, status=404)
-
-    # Sérialiser les ordonnances
-    serializer = OrdonnanceSerializer(ordonnances, many=True)
-    return Response(serializer.data, status=200)
-
-@api_view(['PATCH'])
-#@permission_classes()  # a modifier ici
-def valider_ordonnance(request, ordonnance_id):
-
-    """
-    Valide une ordonnance en changeant son status à 'Validé'.
-    """
-    try:
-        ordonnance = Ordonnance.objects.get(id=ordonnance_id)
-    except Ordonnance.DoesNotExist:
-        return Response({"error": "Ordonnance non trouvée."})
-
-    # Mettre à jour le status de l'ordonnance
-    ordonnance.status = StatusOrdonnance.VALIDE
-    ordonnance.save()
-
-    # Sérialiser et retourner l'ordonnance mise à jour
-    serializer = OrdonnanceSerializer(ordonnance)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def ordonnance_details(request, ordonnance_id):
-    """
-    Récupère une ordonnance avec ses traitements et les médicaments associés.
-    """
-    try:
-        ordonnance = Ordonnance.objects.prefetch_related('traitement_set__medicament').get(id=ordonnance_id)
-    except Ordonnance.DoesNotExist:
-        return Response({"error": "Ordonnance non trouvée."}, status=404)
-
-    serializer = GetOrdonnanceSerializer(ordonnance)
-    return Response(serializer.data, status=200)
-
-#------------------------------------------------Gestion des soins---------------------------------------#
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated,IsInfermier])
-def creer_soin(request):
-    """
-    Créer un soin pour un patient par un infermier.
-    """
-    if request.method == 'POST':
-        # Sérialiser les données du soin
-        serializer = SoinSerializer(data=request.data)
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def creer_infirmier(request: Request) -> Response:
+    serializer = InfirmierSerializer(data=request.data)
+    if serializer.is_valid():
+        nom = serializer.validated_data['nom']
+        prenom = serializer.validated_data['prenom']
+        username = f"{nom}_{prenom}"
+        password = username
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=''
+        )
+        token, _ = Token.objects.get_or_create(user=user)
+        random_group = random.choice([Groupe.MATIN, Groupe.MIDI, Groupe.NUIT])
+        infirmier = serializer.save(user=user,groupe=random_group)
+        infirmier_data = InfirmierSerializer(instance=infirmier).data
+        return Response({
+                "infirmier": infirmier_data,
+                "user": {"username": username, "token": token.key}
+            })
+    return Response(serializer.errors)
 
-        if serializer.is_valid():
-            try:
-                dpi = DPI.objects.get(id=request.data.get('dpi'))
-                infermier = Infermier.objects.get(id=request.data.get('infermier'))
-            except DPI.DoesNotExist:
-                return Response({'error': 'DPI not found'}, status=404)
-            except Infermier.DoesNotExist:
-                return Response({'error': 'Infermier not found'}, status=404)
-
-            # Enregistrer le soin si tous les éléments sont valides
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
-    
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def Soins_par_dpi(request, dpi_id):
-    """
-    Récupère toutes les soins liées à un DPI spécifique.
-    """
-    try:
-        soins = Soin.objects.filter(dpi=dpi_id)
-    except Exception as e:
-        return Response({"error": str(e)}, status=500)
-
-    if not soins.exists():
-        return Response({"error": "Aucun soin trouvée pour ce DPI."}, status=404)
-
-    serializer = SoinSerializer(soins, many=True)
-    return Response(serializer.data, status=200)
-
-@api_view(['PATCH'])
-@permission_classes([IsAuthenticated,IsInfermier])
-def modifier_status_soin(request, pk):
-    """
-    Modifier le statut d'un soin existant.
-    """
-    try:
-        soin = Soin.objects.get(pk=pk)
-    except Soin.DoesNotExist:
-        return Response({'error': 'Soin not found'}, status=404)
-
-    # Mettre à jour le statut du soin
-    status_new = request.data.get('status')
-    if status_new not in dict(StatusSoin.choices):
-        return Response({'error': 'Status invalide'}, status=400)
-
-    soin.status = status_new
-    soin.save()
-
-    serializer = SoinSerializer(soin)
-    return Response(serializer.data, status=200)
-
+# @api_view(['POST'])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+# def creer_administratif(request: Request) -> Response:
+#     return Response({"detail":"creer creer_administratif"})
