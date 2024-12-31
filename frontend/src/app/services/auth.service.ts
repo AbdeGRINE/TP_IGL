@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-
+  
+//These intefaces should be in model, public for all the components (we need them in the header)
 export interface User {
   id: number;
   username: string;
@@ -20,7 +21,7 @@ export interface UserResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8000/users';
@@ -35,20 +36,29 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/authentifier_utilisateur/`, 
-      { username, password }
-    ).pipe(
-      tap(response => {
-        localStorage.setItem('token', response.token);
-        this.userSubject.next(response.user);
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/authentifier_utilisateur/`, {
+        username,
+        password,
       })
-    );
+      .pipe(
+        tap((response) => {
+          localStorage.setItem('token', response.token);
+          this.userSubject.next(response.user);
+        })
+      );
   }
 
-  register(userData: { username: string; password: string; email: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/inscrire_utilisateur/`, userData)
+  // no need to it:
+  register(userData: {
+    username: string;
+    password: string;
+    email: string;
+  }): Observable<AuthResponse> {
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/inscrire_utilisateur/`, userData)
       .pipe(
-        tap(response => {
+        tap((response) => {
           localStorage.setItem('token', response.token);
           this.userSubject.next(response.user);
         })
@@ -56,20 +66,20 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/deconnecter_utilisateur/`, {})
-      .pipe(
-        tap(() => {
-          localStorage.removeItem('token');
-          this.userSubject.next(null);
-        })
-      );
+    return this.http.post(`${this.apiUrl}/deconnecter_utilisateur/`, {}).pipe(
+      tap(() => {
+        localStorage.removeItem('token');
+        this.userSubject.next(null);
+      })
+    );
   }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<UserResponse>(`${this.apiUrl}/obtenir_utilisateur_connecte/`)
+    return this.http
+      .get<UserResponse>(`${this.apiUrl}/obtenir_utilisateur_connecte/`)
       .pipe(
-        map(response => response.user),
-        tap(user => {
+        map((response) => response.user),
+        tap((user) => {
           this.userSubject.next(user);
         })
       );

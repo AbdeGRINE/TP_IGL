@@ -25,6 +25,8 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
+        //The user will be navigated using his type.
+        // admin -> dashboard-admin.
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
