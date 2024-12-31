@@ -22,7 +22,7 @@ export class CreerConsultationComponent implements OnInit {
       id: 'P12345',
       nom: 'Benziada',
       prenom : 'Fares',
-      NSS : 123456,
+      NSS : '123456',
       dateNaissance :new Date("01-01-2004"),
       adresse : "Reghaia",
       telephone : "0666666666",

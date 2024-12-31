@@ -7,11 +7,8 @@ import { AfficherDpiComponent } from './features/medecin/afficher-dpi/afficher-d
 import { DashboardPatientComponent } from './features/patient/dashboard-patient/dashboard-patient.component';
 import { CreerConsultationComponent } from './features/medecin/creer-consultation/creer-consultation.component';
 import { AfficherConsultationComponent } from './features/medecin/afficher-consultation/afficher-consultation.component';
-<<<<<<< HEAD
 import { RadiologueDashboardComponent } from './features/radiologue/radiologue-dashboard/radiologue-dashboard.component';
-=======
 import { InfirmierDashboardComponent } from './infirmier/infirmier-dashboard/infirmier-dashboard.component';
->>>>>>> f31468cfa8075337605da8df492b626650ee1f2b
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
