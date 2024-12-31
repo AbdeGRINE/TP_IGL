@@ -12,11 +12,7 @@
     </h2>
     <table class="min-w-full bg-white shadow-md rounded-2xl">
       <thead>
-<<<<<<< HEAD
         <tr class="bg-gray">
-=======
-        <tr class="bg-gray-100">
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
           <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
             Nom
           </th>
@@ -48,18 +44,10 @@
           <td class="flex justify-around py-6">
             <!-- edit icon -->
             <button (click)="openSoinsModal(patient)">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="26"
-                height="25"
-                fill="none"
-                viewBox="0 0 26 25"
-              >
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="25" fill="none" viewBox="0 0 26 25">
                 <g clip-path="url(#a)">
-                  <path
-                    fill="#878787"
-                    d="m17.829.942-2.363 2.364 6.347 6.347 2.364-2.363a3.124 3.124 0 0 0 0-4.419L22.253.942a3.124 3.124 0 0 0-4.42 0h-.004ZM14.362 4.41 2.98 15.796a4.33 4.33 0 0 0-1.084 1.826L.168 23.496a1.172 1.172 0 0 0 1.45 1.46l5.874-1.729a4.33 4.33 0 0 0 1.826-1.083L20.71 10.757l-6.348-6.348Z"
-                  />
+                  <path fill="#878787"
+                    d="m17.829.942-2.363 2.364 6.347 6.347 2.364-2.363a3.124 3.124 0 0 0 0-4.419L22.253.942a3.124 3.124 0 0 0-4.42 0h-.004ZM14.362 4.41 2.98 15.796a4.33 4.33 0 0 0-1.084 1.826L.168 23.496a1.172 1.172 0 0 0 1.45 1.46l5.874-1.729a4.33 4.33 0 0 0 1.826-1.083L20.71 10.757l-6.348-6.348Z" />
                 </g>
                 <defs>
                   <clipPath id="a">
@@ -74,67 +62,36 @@
     </table>
     <!-- Soins Modal Section
      NB: It could be itself a component (after refactoring!) -->
-    <div
-      class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
-      *ngIf="soinsModalVisible"
-    >
-      <div
-        *ngIf="selectedPatient"
-        class="bg-white rounded-lg shadow-xl p-6 h-[700px] w-[500px] flex flex-col gap-4"
-      >
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center" *ngIf="soinsModalVisible">
+      <div *ngIf="selectedPatient" class="bg-white rounded-lg shadow-xl p-6 h-[700px] w-[500px] flex flex-col gap-4">
         <h1 class="text-2xl">
           Soins de <span class="font-bold">{{ selectedPatient.nom }}</span>
         </h1>
         <h1>Dernieres ordonnances:</h1>
         <!-- Ordonnance table -->
-        <div
-<<<<<<< HEAD
-          class="w-full max-w-[450px] h-52 overflow-auto rounded-lg"
-        >
+        <div class="w-full max-w-[450px] h-52 overflow-auto rounded-lg">
           <table class="min-w-full">
             <thead>
-              <tr class = "bg-gray rounded-xl">
-=======
-          class="w-full max-w-[450px] h-52 overflow-auto bg-white rounded-lg"
-        >
-          <table class="min-w-full bg-white">
-            <thead>
-              <tr class="bg-gray-100 rounded-xl">
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
-                <th
-                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
-                >
+              <tr class="bg-gray rounded-xl">
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
                   Ordonnances
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
-                >
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="let ordonnance of selectedPatient.ordonnances"
-                class="hover:bg-gray-50"
-              >
+              <tr *ngFor="let ordonnance of selectedPatient.ordonnances" class="hover:bg-gray-50">
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">
                   {{ ordonnance.titre }}
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-600">
                   <button (click)="openOrdonnanceModal(ordonnance)">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="26"
-                      height="23"
-                      fill="none"
-                      viewBox="0 0 26 23"
-                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" fill="none" viewBox="0 0 26 23">
                       <g clip-path="url(#a)">
-                        <path
-                          fill="#878787"
-                          d="M12.738 1.778c-3.507 0-6.315 1.597-8.36 3.498-2.03 1.884-3.39 4.14-4.032 5.69a1.38 1.38 0 0 0 0 1.068c.643 1.55 2.001 3.806 4.033 5.69 2.044 1.901 4.852 3.498 8.359 3.498 3.507 0 6.315-1.597 8.36-3.498 2.03-1.888 3.39-4.14 4.036-5.69a1.38 1.38 0 0 0 0-1.068c-.647-1.55-2.005-3.806-4.037-5.69-2.044-1.901-4.852-3.498-8.36-3.498ZM6.488 11.5a6.25 6.25 0 1 1 12.5 0 6.25 6.25 0 0 1-12.5 0Zm6.25-2.778a2.78 2.78 0 0 1-3.659 2.635c-.239-.078-.516.07-.508.321a4.17 4.17 0 0 0 5.243 3.845 4.17 4.17 0 0 0-.898-8.19c-.252-.008-.4.265-.321.508.09.278.143.573.143.881Z"
-                        />
+                        <path fill="#878787"
+                          d="M12.738 1.778c-3.507 0-6.315 1.597-8.36 3.498-2.03 1.884-3.39 4.14-4.032 5.69a1.38 1.38 0 0 0 0 1.068c.643 1.55 2.001 3.806 4.033 5.69 2.044 1.901 4.852 3.498 8.359 3.498 3.507 0 6.315-1.597 8.36-3.498 2.03-1.888 3.39-4.14 4.036-5.69a1.38 1.38 0 0 0 0-1.068c-.647-1.55-2.005-3.806-4.037-5.69-2.044-1.901-4.852-3.498-8.36-3.498ZM6.488 11.5a6.25 6.25 0 1 1 12.5 0 6.25 6.25 0 0 1-12.5 0Zm6.25-2.778a2.78 2.78 0 0 1-3.659 2.635c-.239-.078-.516.07-.508.321a4.17 4.17 0 0 0 5.243 3.845 4.17 4.17 0 0 0-.898-8.19c-.252-.008-.4.265-.321.508.09.278.143.573.143.881Z" />
                       </g>
                       <defs>
                         <clipPath id="a">
@@ -151,65 +108,29 @@
         <hr />
         <h1>Ajouter des soins:</h1>
         <div class="flex flex-row gap-3">
-          <input
-            type="text"
-            name="soin"
-            id="soin"
-<<<<<<< HEAD
-            class="bg-gray rounded-md w-[80px] text-gray-900 p-2"
-=======
-            class="bg-gray-100 rounded-md w-[80px] text-gray-900 p-2"
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
-            placeholder="Soin"
-            [(ngModel)]="newSoin.titre"
-          />
-          <input
-            type="text"
-            name="observation"
-            id="oservation"
-<<<<<<< HEAD
-            class="bg-gray rounded-md w-[270px] text-gray-900 p-2"
-=======
-            class="bg-gray-100 rounded-md w-[270px] text-gray-900 p-2"
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
-            placeholder="Observation"
-            [(ngModel)]="newSoin.observation"
-          />
-          <button
-            class="bg-[#46BB91] rounded-md w-[80px] text-white p-2"
-            (click)="addNewSoin()"
-          >
+          <input type="text" name="soin" id="soin" class="bg-gray rounded-md w-[80px] text-gray-900 p-2"
+            placeholder="Soin" [(ngModel)]="newSoin.titre" />
+          <input type="text" name="observation" id="oservation" class="bg-gray rounded-md w-[270px] text-gray-900 p-2"
+            placeholder="Observation" [(ngModel)]="newSoin.observation" />
+          <button class="bg-[#46BB91] rounded-md w-[80px] text-white p-2" (click)="addNewSoin()">
             Ajouter
           </button>
         </div>
         <!-- Soins Table: -->
-        <div
-          class="w-full max-w-[450px] h-64 overflow-auto bg-white rounded-lg"
-        >
+        <div class="w-full max-w-[450px] h-64 overflow-auto bg-white rounded-lg">
           <table class="min-w-full bg-white">
             <thead>
-<<<<<<< HEAD
               <tr class="bg-gray rounded-xl">
-=======
-              <tr class="bg-gray-100 rounded-xl">
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
-                <th
-                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
-                >
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
                   Soins
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
-                >
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
                   Observations
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="let soin of selectedPatient.soins"
-                class="hover:bg-gray-50"
-              >
+              <tr *ngFor="let soin of selectedPatient.soins" class="hover:bg-gray-50">
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">
                   {{ soin.titre }}
                 </td>
@@ -221,63 +142,37 @@
           </table>
         </div>
         <div class="flex flex-row self-end justify-self-end">
-          <button
-            class="text-[#46BB91] rounded-xl p-2 w-32"
-            (click)="cancelSoinsModal()"
-          >
+          <button class="text-[#46BB91] rounded-xl p-2 w-32" (click)="cancelSoinsModal()">
             Annuler
           </button>
-          <button
-            class="bg-[#46BB91] rounded-xl p-2 text-white w-32"
-            (click)="handleSaveSoins()"
-          >
+          <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32" (click)="handleSaveSoins()">
             Enregistrer
           </button>
         </div>
       </div>
     </div>
     <!-- Ordonnace Modal Section: -->
-    <div
-      class="fixed inset-0 flex flex-col justify-center items-center"
-      *ngIf="ordonnanceModalVisible"
-    >
-      <div
-        class="flex flex-col gap-4 bg-white rounded-lg shadow-xl p-6 h-[600px] w-[600px]"
-      >
+    <div class="fixed inset-0 flex flex-col justify-center items-center" *ngIf="ordonnanceModalVisible">
+      <div class="flex flex-col gap-4 bg-white rounded-lg shadow-xl p-6 h-[600px] w-[600px]">
         <h1 class="text-2xl mb-4">Affichage d'Ordonnance:</h1>
         <!-- Ordonnace table: -->
-        <div
-          class="w-full max-w-[600px] h-[500px] overflow-auto bg-white rounded-lg"
-        >
+        <div class="w-full max-w-[600px] h-[500px] overflow-auto bg-white rounded-lg">
           <table class="min-w-full bg-white mb-6">
             <thead>
-<<<<<<< HEAD
               <tr class="bg-gray">
-=======
-              <tr class="bg-gray-100">
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
-                <th
-                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
-                >
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
                   Medicaments
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
-                >
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
                   Doses
                 </th>
-                <th
-                  class="px-6 py-3 text-left text-sm font-medium text-gray-700"
-                >
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
                   Durées
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr
-                *ngFor="let traitement of selectedOrdonnance?.traitements"
-                class="hover:bg-gray-50"
-              >
+              <tr *ngFor="let traitement of selectedOrdonnance?.traitements" class="hover:bg-gray-50">
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">
                   {{ traitement.medicament }}
                 </td>
@@ -291,10 +186,7 @@
             </tbody>
           </table>
         </div>
-        <button
-          class="bg-[#46BB91] rounded-xl p-2 text-white w-32 self-end"
-          (click)="closeOrdonnanceModal()"
-        >
+        <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32 self-end" (click)="closeOrdonnanceModal()">
           Fermer
         </button>
       </div>

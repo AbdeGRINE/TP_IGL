@@ -1,181 +1,128 @@
 <!-- Header  -->
-<<<<<<< HEAD
-<app-header *ngIf="showParentUI"></app-header>
-<!-- Body -->
-<!-- min-h-screen to take all the free space! -->
-<div class="bg-[#EEEFF1] min-h-screen" *ngIf="showParentUI">
-  <!-- Search Section -->
-  <div class="flex justify-between items-center p-10">
-    <div class="flex gap-5">
-      <input type="text" placeholder="Rechercher un DPI par NSS..." class="rounded-xl p-2" [(ngModel)]="searchedNSS" />
-      <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32 " (click)="matchDPIbyNSS()">
-        Rechercher
-      </button>
-      <!-- QRcode icon -->
-      <label for="QRbutton">
-        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="none" viewBox="0 0 45 45">
-          <rect width="45" height="45" fill="#fff" rx="12" />
-          <path fill="#878787"
-            d="M10 12.679A2.68 2.68 0 0 1 12.679 10h5.357a2.68 2.68 0 0 1 2.678 2.679v5.357a2.68 2.68 0 0 1-2.678 2.678h-5.357A2.68 2.68 0 0 1 10 18.036v-5.357Zm3.571.892v3.572h3.572V13.57H13.57ZM10 26.964a2.68 2.68 0 0 1 2.679-2.678h5.357a2.68 2.68 0 0 1 2.678 2.678v5.357A2.68 2.68 0 0 1 18.036 35h-5.357A2.68 2.68 0 0 1 10 32.321v-5.357Zm3.571.893v3.572h3.572v-3.572H13.57ZM26.964 10h5.357A2.68 2.68 0 0 1 35 12.679v5.357a2.68 2.68 0 0 1-2.679 2.678h-5.357a2.68 2.68 0 0 1-2.678-2.678v-5.357A2.68 2.68 0 0 1 26.964 10Zm4.465 3.571h-3.572v3.572h3.572V13.57ZM24.286 25.18c0-.491.401-.893.893-.893h3.571c.491 0 .893.401.893.893 0 .49.402.892.893.892h1.785a.895.895 0 0 0 .893-.892c0-.491.402-.893.893-.893s.893.401.893.893v5.357a.896.896 0 0 1-.893.893h-3.571a.895.895 0 0 1-.893-.893.895.895 0 0 0-.893-.893.895.895 0 0 0-.893.893v3.571a.895.895 0 0 1-.893.893H25.18a.896.896 0 0 1-.893-.893V25.18Zm6.25 9.82a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Zm3.571 0a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Z" />
-        </svg>
-      </label>
-      <input hidden="" type="file" name="QRbutton" id="QRbutton" accept="image/*" (change)="onFileChange($event)" />
-      <!-- fin QR code icon -->
-    </div>
-    <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32" (click)="navigateToCreerDPI()">
-=======
-<app-header></app-header>
-<!-- Body -->
-<div class="bg-[#EEEFF1]">
-  <!-- Search Section -->
-  <div class="flex justify-between items-center p-10">
-    <div class="flex gap-5">
-      <input
-        type="text"
-        placeholder="Rechercher un DPI par NSS..."
-        class="rounded-xl p-2"
-      />
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="45"
-        height="45"
-        fill="none"
-        viewBox="0 0 45 45"
-      >
+<<<<<<< HEAD <app-header *ngIf="showParentUI"></app-header>
+  <!-- Body -->
+  <!-- min-h-screen to take all the free space! -->
+  <div class="bg-[#EEEFF1] min-h-screen" *ngIf="showParentUI">
+    <!-- Search Section -->
+    <div class="flex justify-between items-center p-10">
+      <div class="flex gap-5">
+        <input type="text" placeholder="Rechercher un DPI par NSS..." class="rounded-xl p-2"
+          [(ngModel)]="searchedNSS" />
+        <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32 " (click)="matchDPIbyNSS()">
+          Rechercher
+        </button>
         <!-- QRcode icon -->
-        <rect width="45" height="45" fill="#fff" rx="12" />
-        <path
-          fill="#878787"
-          d="M10 12.679A2.68 2.68 0 0 1 12.679 10h5.357a2.68 2.68 0 0 1 2.678 2.679v5.357a2.68 2.68 0 0 1-2.678 2.678h-5.357A2.68 2.68 0 0 1 10 18.036v-5.357Zm3.571.892v3.572h3.572V13.57H13.57ZM10 26.964a2.68 2.68 0 0 1 2.679-2.678h5.357a2.68 2.68 0 0 1 2.678 2.678v5.357A2.68 2.68 0 0 1 18.036 35h-5.357A2.68 2.68 0 0 1 10 32.321v-5.357Zm3.571.893v3.572h3.572v-3.572H13.57ZM26.964 10h5.357A2.68 2.68 0 0 1 35 12.679v5.357a2.68 2.68 0 0 1-2.679 2.678h-5.357a2.68 2.68 0 0 1-2.678-2.678v-5.357A2.68 2.68 0 0 1 26.964 10Zm4.465 3.571h-3.572v3.572h3.572V13.57ZM24.286 25.18c0-.491.401-.893.893-.893h3.571c.491 0 .893.401.893.893 0 .49.402.892.893.892h1.785a.895.895 0 0 0 .893-.892c0-.491.402-.893.893-.893s.893.401.893.893v5.357a.896.896 0 0 1-.893.893h-3.571a.895.895 0 0 1-.893-.893.895.895 0 0 0-.893-.893.895.895 0 0 0-.893.893v3.571a.895.895 0 0 1-.893.893H25.18a.896.896 0 0 1-.893-.893V25.18Zm6.25 9.82a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Zm3.571 0a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Z"
-        />
-      </svg>
-    </div>
-    <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32">
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
-      Creer DPI
-    </button>
-  </div>
+        <label for="QRbutton">
+          <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="none" viewBox="0 0 45 45">
+            <rect width="45" height="45" fill="#fff" rx="12" />
+            <path fill="#878787"
+              d="M10 12.679A2.68 2.68 0 0 1 12.679 10h5.357a2.68 2.68 0 0 1 2.678 2.679v5.357a2.68 2.68 0 0 1-2.678 2.678h-5.357A2.68 2.68 0 0 1 10 18.036v-5.357Zm3.571.892v3.572h3.572V13.57H13.57ZM10 26.964a2.68 2.68 0 0 1 2.679-2.678h5.357a2.68 2.68 0 0 1 2.678 2.678v5.357A2.68 2.68 0 0 1 18.036 35h-5.357A2.68 2.68 0 0 1 10 32.321v-5.357Zm3.571.893v3.572h3.572v-3.572H13.57ZM26.964 10h5.357A2.68 2.68 0 0 1 35 12.679v5.357a2.68 2.68 0 0 1-2.679 2.678h-5.357a2.68 2.68 0 0 1-2.678-2.678v-5.357A2.68 2.68 0 0 1 26.964 10Zm4.465 3.571h-3.572v3.572h3.572V13.57ZM24.286 25.18c0-.491.401-.893.893-.893h3.571c.491 0 .893.401.893.893 0 .49.402.892.893.892h1.785a.895.895 0 0 0 .893-.892c0-.491.402-.893.893-.893s.893.401.893.893v5.357a.896.896 0 0 1-.893.893h-3.571a.895.895 0 0 1-.893-.893.895.895 0 0 0-.893-.893.895.895 0 0 0-.893.893v3.571a.895.895 0 0 1-.893.893H25.18a.896.896 0 0 1-.893-.893V25.18Zm6.25 9.82a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Zm3.571 0a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Z" />
+          </svg>
+        </label>
+        <input hidden="" type="file" name="QRbutton" id="QRbutton" accept="image/*" (change)="onFileChange($event)" />
+        <!-- fin QR code icon -->
+      </div>
+      <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32" (click)="navigateToCreerDPI()">
+        =======
+        <app-header></app-header>
+        <!-- Body -->
+        <div class="bg-[#EEEFF1]">
+          <!-- Search Section -->
+          <div class="flex justify-between items-center p-10">
+            <div class="flex gap-5">
+              <input type="text" placeholder="Rechercher un DPI par NSS..." class="rounded-xl p-2" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="none" viewBox="0 0 45 45">
+                <!-- QRcode icon -->
+                <rect width="45" height="45" fill="#fff" rx="12" />
+                <path fill="#878787"
+                  d="M10 12.679A2.68 2.68 0 0 1 12.679 10h5.357a2.68 2.68 0 0 1 2.678 2.679v5.357a2.68 2.68 0 0 1-2.678 2.678h-5.357A2.68 2.68 0 0 1 10 18.036v-5.357Zm3.571.892v3.572h3.572V13.57H13.57ZM10 26.964a2.68 2.68 0 0 1 2.679-2.678h5.357a2.68 2.68 0 0 1 2.678 2.678v5.357A2.68 2.68 0 0 1 18.036 35h-5.357A2.68 2.68 0 0 1 10 32.321v-5.357Zm3.571.893v3.572h3.572v-3.572H13.57ZM26.964 10h5.357A2.68 2.68 0 0 1 35 12.679v5.357a2.68 2.68 0 0 1-2.679 2.678h-5.357a2.68 2.68 0 0 1-2.678-2.678v-5.357A2.68 2.68 0 0 1 26.964 10Zm4.465 3.571h-3.572v3.572h3.572V13.57ZM24.286 25.18c0-.491.401-.893.893-.893h3.571c.491 0 .893.401.893.893 0 .49.402.892.893.892h1.785a.895.895 0 0 0 .893-.892c0-.491.402-.893.893-.893s.893.401.893.893v5.357a.896.896 0 0 1-.893.893h-3.571a.895.895 0 0 1-.893-.893.895.895 0 0 0-.893-.893.895.895 0 0 0-.893.893v3.571a.895.895 0 0 1-.893.893H25.18a.896.896 0 0 1-.893-.893V25.18Zm6.25 9.82a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Zm3.571 0a.893.893 0 1 1 0-1.786.893.893 0 0 1 0 1.786Z" />
+              </svg>
+            </div>
+            <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32">
+              >>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
+              Creer DPI
+            </button>
+          </div>
 
-  <!-- Table Section-->
-  <div class="p-10">
-    <h2 class="text-2xl font-semibold mb-4">Liste des DPIs</h2>
-    <table class="min-w-full bg-white shadow-md rounded-2xl">
-      <thead>
-        <tr class="bg-gray-100">
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-            Nom
-          </th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-<<<<<<< HEAD
-            Prenom
-          </th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-            ID
-=======
-            ID
-          </th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-            Email
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
-          </th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-            Tel.
-          </th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-            Date de Creation
-          </th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-            Actions
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-<<<<<<< HEAD
-        <tr *ngFor="let DPI of DPIsList" class="hover:bg-gray-50">
-          <td class="px-6 py-4 text-sm font-medium text-gray-900">
-            {{ DPI.nom }}
-          </td>
-          <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.prenom }}</td>
-          <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.id }}</td>
-=======
-        <tr *ngFor="let DPI of DPIs" class="hover:bg-gray-50">
-          <td class="px-6 py-4 text-sm font-medium text-gray-900">
-            {{ DPI.nom }}
-          </td>
-          <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.id }}</td>
-          <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.email }}</td>
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
-          <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.telephone }}</td>
-          <td class="px-6 py-4 text-sm text-gray-600">
-            {{ DPI.dateDeCreation | date : "d-MMMM-yyyy" }}
-          </td>
-          <td class="flex gap-5 py-6">
-            <!-- view icon -->
-<<<<<<< HEAD
-            <button><img src="/eye.svg" alt="view icon" (click)="navigateToViewDPI(DPI)"></button>
-            <button><img src="/edit.svg" alt="edit icon"></button>
-            <button><img src="/trash.svg" alt="delete icon"></button>
-=======
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="26"
-              height="23"
-              fill="none"
-              viewBox="0 0 26 23"
-            >
-              <g clip-path="url(#a)">
-                <path
-                  fill="#878787"
-                  d="M12.738 1.778c-3.507 0-6.315 1.597-8.36 3.498-2.03 1.884-3.39 4.14-4.032 5.69a1.38 1.38 0 0 0 0 1.068c.643 1.55 2.001 3.806 4.033 5.69 2.044 1.901 4.852 3.498 8.359 3.498 3.507 0 6.315-1.597 8.36-3.498 2.03-1.888 3.39-4.14 4.036-5.69a1.38 1.38 0 0 0 0-1.068c-.647-1.55-2.005-3.806-4.037-5.69-2.044-1.901-4.852-3.498-8.36-3.498ZM6.488 11.5a6.25 6.25 0 1 1 12.5 0 6.25 6.25 0 0 1-12.5 0Zm6.25-2.778a2.78 2.78 0 0 1-3.659 2.635c-.239-.078-.516.07-.508.321a4.17 4.17 0 0 0 5.243 3.845 4.17 4.17 0 0 0-.898-8.19c-.252-.008-.4.265-.321.508.09.278.143.573.143.881Z"
-                />
-              </g>
-              <defs>
-                <clipPath id="a">
-                  <path fill="#fff" d="M.238.389h25v22.222h-25z" />
-                </clipPath>
-              </defs>
-            </svg>
-            <!-- edit icon -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="26"
-              height="25"
-              fill="none"
-              viewBox="0 0 26 25"
-            >
-              <g clip-path="url(#a)">
-                <path
-                  fill="#878787"
-                  d="m17.829.942-2.363 2.364 6.347 6.347 2.364-2.363a3.124 3.124 0 0 0 0-4.419L22.253.942a3.124 3.124 0 0 0-4.42 0h-.004ZM14.362 4.41 2.98 15.796a4.33 4.33 0 0 0-1.084 1.826L.168 23.496a1.172 1.172 0 0 0 1.45 1.46l5.874-1.729a4.33 4.33 0 0 0 1.826-1.083L20.71 10.757l-6.348-6.348Z"
-                />
-              </g>
-              <defs>
-                <clipPath id="a">
-                  <path fill="#fff" d="M.12 0h25v25h-25z" />
-                </clipPath>
-              </defs>
-            </svg>
-            <!-- delete icon  -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="23"
-              fill="none"
-              viewBox="0 0 20 23"
-            >
-              <path
-                fill="#F85D5B"
-                d="m6.036.862-.322.638H1.43a1.428 1.428 0 1 0-.001 2.857H18.57a1.427 1.427 0 1 0 0-2.857h-4.285l-.322-.638a1.423 1.423 0 0 0-1.277-.79H7.314c-.54 0-1.036.303-1.277.79ZM18.57 5.786H1.43l.946 15.134a2.144 2.144 0 0 0 2.138 2.009h10.974c1.13 0 2.067-.88 2.138-2.01l.946-15.133Z"
-              />
-            </svg>
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
-          </td>
-        </tr>
+          <!-- Table Section-->
+          <div class="p-10">
+            <h2 class="text-2xl font-semibold mb-4">Liste des DPIs</h2>
+            <table class="min-w-full bg-white shadow-md rounded-2xl">
+              <thead>
+                <tr class="bg-gray-100">
+                  <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Nom
+                  </th>
+                  <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Prenom
+                  </th>
+                  <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    ID
+                  </th>
+                  <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Tel.
+                  </th>
+                  <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Date de Creation
+                  </th>
+                  <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let DPI of DPIsList" class="hover:bg-gray-50">
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                    {{ DPI.nom }}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.prenom }}</td>
+                  <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.id }}</td>
+                  <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.telephone }}</td>
+                  <td class="px-6 py-4 text-sm text-gray-600">
+                    {{ DPI.dateDeCreation | date : "d-MMMM-yyyy" }}
+                  </td>
+                  <td class="flex gap-5 py-6">
+                    <!-- view icon -->
+                    <<<<<<< HEAD <button><img src="/eye.svg" alt="view icon" (click)="navigateToViewDPI(DPI)">
+      </button>
+      <button><img src="/edit.svg" alt="edit icon"></button>
+      <button><img src="/trash.svg" alt="delete icon"></button>
+      =======
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="23" fill="none" viewBox="0 0 26 23">
+        <g clip-path="url(#a)">
+          <path fill="#878787"
+            d="M12.738 1.778c-3.507 0-6.315 1.597-8.36 3.498-2.03 1.884-3.39 4.14-4.032 5.69a1.38 1.38 0 0 0 0 1.068c.643 1.55 2.001 3.806 4.033 5.69 2.044 1.901 4.852 3.498 8.359 3.498 3.507 0 6.315-1.597 8.36-3.498 2.03-1.888 3.39-4.14 4.036-5.69a1.38 1.38 0 0 0 0-1.068c-.647-1.55-2.005-3.806-4.037-5.69-2.044-1.901-4.852-3.498-8.36-3.498ZM6.488 11.5a6.25 6.25 0 1 1 12.5 0 6.25 6.25 0 0 1-12.5 0Zm6.25-2.778a2.78 2.78 0 0 1-3.659 2.635c-.239-.078-.516.07-.508.321a4.17 4.17 0 0 0 5.243 3.845 4.17 4.17 0 0 0-.898-8.19c-.252-.008-.4.265-.321.508.09.278.143.573.143.881Z" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M.238.389h25v22.222h-25z" />
+          </clipPath>
+        </defs>
+      </svg>
+      <!-- edit icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="26" height="25" fill="none" viewBox="0 0 26 25">
+        <g clip-path="url(#a)">
+          <path fill="#878787"
+            d="m17.829.942-2.363 2.364 6.347 6.347 2.364-2.363a3.124 3.124 0 0 0 0-4.419L22.253.942a3.124 3.124 0 0 0-4.42 0h-.004ZM14.362 4.41 2.98 15.796a4.33 4.33 0 0 0-1.084 1.826L.168 23.496a1.172 1.172 0 0 0 1.45 1.46l5.874-1.729a4.33 4.33 0 0 0 1.826-1.083L20.71 10.757l-6.348-6.348Z" />
+        </g>
+        <defs>
+          <clipPath id="a">
+            <path fill="#fff" d="M.12 0h25v25h-25z" />
+          </clipPath>
+        </defs>
+      </svg>
+      <!-- delete icon  -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="none" viewBox="0 0 20 23">
+        <path fill="#F85D5B"
+          d="m6.036.862-.322.638H1.43a1.428 1.428 0 1 0-.001 2.857H18.57a1.427 1.427 0 1 0 0-2.857h-4.285l-.322-.638a1.423 1.423 0 0 0-1.277-.79H7.314c-.54 0-1.036.303-1.277.79ZM18.57 5.786H1.43l.946 15.134a2.144 2.144 0 0 0 2.138 2.009h10.974c1.13 0 2.067-.88 2.138-2.01l.946-15.133Z" />
+      </svg>
+      >>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
+      </td>
+      </tr>
       </tbody>
-    </table>
+      </table>
+    </div>
   </div>
-</div>
-<<<<<<< HEAD
-<router-outlet></router-outlet>
-=======
->>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
+  <<<<<<< HEAD <router-outlet></router-outlet>
+    =======
+    >>>>>>> 3ed76e4b46a5a8fc5f773acece4b2d1ddf8792e9
