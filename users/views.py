@@ -7,18 +7,9 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-<<<<<<< HEAD
-<<<<<<< HEAD
-from .serializers import UserSerializer, PatientSerializer, LaborantinSerializer, MedcinSerializer, RadiologueSerializer, InfirmierSerializer
-from .models import Groupe
-import random
-
-=======
-from .serializers import UserSerializer
->>>>>>> origin/Grine/Ajout_fonctionnalités
-=======
 from .serializers import UserSerializer, PatientSerializer, LaborantinSerializer, MedcinSerializer, RadiologueSerializer, InfirmierSerializer, AdministratifSerializer
 from .models import Groupe, Patient, Medcin, Laborantin, Radiologue, Infermier, Admin
+from rest_framework import status 
 import random
 
 >>>>>>> origin/Grine/Ajout_fonctionnalités
@@ -123,92 +114,6 @@ def creer_medcin(request: Request) -> Response:
     return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-@api_view(['POST'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-def creer_patient(request: Request) -> Response:
-    serializer = PatientSerializer(data=request.data)
-    if serializer.is_valid():
-        nom = serializer.validated_data['nom']
-        prenom = serializer.validated_data['prenom']
-        username = f"{nom}_{prenom}"
-        password = username
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-            email=''
-        )
-        token, _ = Token.objects.get_or_create(user=user)
-        patient = serializer.save(user=user)
-        patient_data = PatientSerializer(instance=patient).data
-        return Response({
-                "patient": patient_data,
-                "user": {"username": username, "token": token.key}
-            })
-    return Response(serializer.errors)
-
-@api_view(['POST'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-def creer_medcin(request: Request) -> Response:
-    serializer = MedcinSerializer(data=request.data)
-    if serializer.is_valid():
-        nom = serializer.validated_data['nom']
-        prenom = serializer.validated_data['prenom']
-        username = f"{nom}_{prenom}"
-        password = username
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-            email=''
-        )
-        token, _ = Token.objects.get_or_create(user=user)
-        medcin = serializer.save(user=user)
-        medcin_data = MedcinSerializer(instance=medcin).data
-        return Response({
-                "medcin": medcin_data,
-                "user": {"username": username, "token": token.key}
-            })
-    return Response(serializer.errors)
-
-# @api_view(['POST'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-# def creer_pharmacien(request: Request) -> Response:
-#     return Response({"detail":"creer creer_pharmacien"})
-
-@api_view(['POST'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def creer_laborantin(request: Request) -> Response:
-    serializer = LaborantinSerializer(data=request.data)
-    if serializer.is_valid():
-        nom = serializer.validated_data['nom']
-        prenom = serializer.validated_data['prenom']
-        username = f"{nom}_{prenom}"
-        password = username
-        user = User.objects.create_user(
-            username=username,
-            password=password,
-            email=''
-        )
-        token, _ = Token.objects.get_or_create(user=user)
-        laborantin = serializer.save(user=user)
-        laborantin_data = LaborantinSerializer(instance=laborantin).data
-        return Response({
-                "laborantin": laborantin_data,
-                "user": {"username": username, "token": token.key}
-            })
-    return Response(serializer.errors)
-
-@api_view(['POST'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-def creer_radiologue(request: Request) -> Response:
-=======
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -239,7 +144,6 @@ def creer_laborantin(request: Request) -> Response:
 @permission_classes([IsAuthenticated])
 def creer_radiologue(request: Request) -> Response:
     # superuser
->>>>>>> origin/Grine/Ajout_fonctionnalités
     serializer = RadiologueSerializer(data=request.data)
     if serializer.is_valid():
         nom = serializer.validated_data['nom']
@@ -257,16 +161,7 @@ def creer_radiologue(request: Request) -> Response:
         return Response({
                 "radiologue": radiologue_data,
                 "user": {"username": username, "token": token.key}
-<<<<<<< HEAD
-            })
-    return Response(serializer.errors)
 
-
-@api_view(['POST'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-def creer_infirmier(request: Request) -> Response:
-=======
             },status= status.HTTP_200_OK)
     return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
 
@@ -276,7 +171,7 @@ def creer_infirmier(request: Request) -> Response:
 @permission_classes([IsAuthenticated])
 def creer_infirmier(request: Request) -> Response:
     # superuser
->>>>>>> origin/Grine/Ajout_fonctionnalités
+
     serializer = InfirmierSerializer(data=request.data)
     if serializer.is_valid():
         nom = serializer.validated_data['nom']
@@ -295,18 +190,14 @@ def creer_infirmier(request: Request) -> Response:
         return Response({
                 "infirmier": infirmier_data,
                 "user": {"username": username, "token": token.key}
-<<<<<<< HEAD
-            })
-    return Response(serializer.errors)
-=======
->>>>>>> origin/Grine/Ajout_fonctionnalités
+
 
 # @api_view(['POST'])
 # @authentication_classes([TokenAuthentication])
 # @permission_classes([IsAuthenticated])
 # def creer_administratif(request: Request) -> Response:
 #     return Response({"detail":"creer creer_administratif"})
-=======
+
             },status= status.HTTP_200_OK)
     return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
 
@@ -397,4 +288,3 @@ def consulter_profil_administratif(request: Request) -> Response:
     administratif = Admin.objects.get(id= administratif_id)
     serializer = AdministratifSerializer(administratif)
     return Response(serializer.data, status= status.HTTP_200_OK)
->>>>>>> origin/Grine/Ajout_fonctionnalités

@@ -24,11 +24,6 @@ class MedcinSerializer(serializers.ModelSerializer):
 
 
 
-# class PharmacienSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Medcin
-#         fields = ['id', 'nom', 'prenom']
-
 
 class LaborantinSerializer(serializers.ModelSerializer):
     etablissement = serializers.PrimaryKeyRelatedField(queryset=Etablissement.objects.all())
@@ -53,12 +48,6 @@ class EtablissementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Etablissement
         fields = ['id', 'nom', 'adresse']
-
-
-# class AdministratifSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Medcin
-#         fields = ['id', 'nom', 'prenom']
 
 
 class AdministratifSerializer(serializers.ModelSerializer):
