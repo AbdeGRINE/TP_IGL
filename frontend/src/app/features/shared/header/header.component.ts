@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+//this user will be deleted, and be imported from the public model.
 interface User {
   nom: string;
   type: string;

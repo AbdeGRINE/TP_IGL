@@ -3,13 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
-
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-}
-
+import { User } from '../models/interfaces/interfaces';
+  
+//these interfaces will be public (in interfaces front):
 export interface AuthResponse {
   token: string;
   user: User;
@@ -20,10 +16,10 @@ export interface UserResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8000/users';
+  private apiUrl = 'http://127.0.0.1:8000/';
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
   private isBrowser: boolean;
@@ -40,22 +36,13 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/authentifier_utilisateur/`,
-      { username, password }
-    ).pipe(
-      tap(response => {
-        if (this.isBrowser) {
-          localStorage.setItem('token', response.token);
-        }
-        this.userSubject.next(response.user);
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/users/authentifier_utilisateur/`, {
+        username,
+        password,
       })
-    );
-  }
-
-  register(userData: { username: string; password: string; email: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/inscrire_utilisateur/`, userData)
       .pipe(
-        tap(response => {
+        tap((response) => {
           if (this.isBrowser) {
             localStorage.setItem('token', response.token);
           }
@@ -65,22 +52,22 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/deconnecter_utilisateur/`, {})
-      .pipe(
-        tap(() => {
-          if (this.isBrowser) {
-            localStorage.removeItem('token');
-          }
-          this.userSubject.next(null);
-        })
-      );
+    return this.http.post(`${this.apiUrl}/deconnecter_utilisateur/`, {}).pipe(
+      tap(() => {
+        if (this.isBrowser) {
+          localStorage.removeItem('token');
+        }
+        this.userSubject.next(null);
+      })
+    );
   }
 
   getCurrentUser(): Observable<User> {
-    return this.http.get<UserResponse>(`${this.apiUrl}/obtenir_utilisateur_connecte/`)
+    return this.http
+      .get<UserResponse>(`${this.apiUrl}/obtenir_utilisateur_connecte/`)
       .pipe(
-        map(response => response.user),
-        tap(user => {
+        map((response) => response.user),
+        tap((user) => {
           this.userSubject.next(user);
         })
       );
@@ -96,4 +83,22 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+
+  //no need!
+  // register(userData: {
+  //   username: string;
+  //   password: string;
+  //   email: string;
+  // }): Observable<AuthResponse> {
+  //   return this.http
+  //     .post<AuthResponse>(`${this.apiUrl}/inscrire_utilisateur/`, userData)
+  //     .pipe(
+  //       tap((response) => {
+  //         if (this.isBrowser) {
+  //           localStorage.setItem('token', response.token);
+  //         }
+  //         this.userSubject.next(response.user);
+  //       })
+  //     );
+  // }
 }

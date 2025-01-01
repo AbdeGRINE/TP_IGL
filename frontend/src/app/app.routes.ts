@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { MedecinDashboardComponent } from './features/medecin/medecin-dashboard/medecin-dashboard.component';
 //import { LoginComponent } from './features/auth/login/login.component';
-import { LoginComponent } from './features/login/login.component';
+import { LoginComponent } from './features/auth/login/login.component';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard.component';
 import { CreerDPIComponent } from './features/admin/creer-dpi/creer-dpi.component';
 import { MedecinCreerDpiComponent } from './features/medecin/medecin-creer-dpi/medecin-creer-dpi.component';
