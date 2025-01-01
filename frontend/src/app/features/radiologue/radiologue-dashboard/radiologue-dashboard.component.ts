@@ -17,7 +17,7 @@ interface DemandeBilan {
   styleUrl: './radiologue-dashboard.component.css'
 })
 export class RadiologueDashboardComponent {
-  selectedBilan : Bilan | null  = null;
+  selectedBilan : DemandeBilan | null  = null;
   isViewBilanRadioOpen : Boolean;
   Demandes : DemandeBilan[] = [{
     id: 1,
@@ -43,9 +43,9 @@ constructor(){
   this.isViewBilanRadioOpen = false;
 }
 
-openViewBilanRadio(bilan: Bilan){
+openViewBilanRadio(demande: DemandeBilan){
   this.isViewBilanRadioOpen = true;
-  this.selectedBilan = bilan;
+  this.selectedBilan = demande;
 }
 
 closeViewBilanRadio(){
