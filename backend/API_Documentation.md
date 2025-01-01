@@ -48,7 +48,6 @@ Cette documentation décrit les endpoints disponibles pour gérer les DPI (Dossi
         "mutuelle": "<nom de la mutuelle>"
       },
       "medecin_traitant": <id_medecin>,
-      "etablissement_courant": <id_etablissement>,
       "personne_a_contacter": {
         "nom": "<nom_contact>",
         "prenom": "<prenom_contact>"
