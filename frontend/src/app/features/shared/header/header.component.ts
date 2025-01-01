@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-//this user will be deleted, and be imported from the public model.
-interface User {
-  nom: string;
-  type: string;
-}
+import { AuthService } from '../../../services/auth.service';
+import { AuthResponse } from '../../../models/interfaces/interfaces';
 @Component({
   selector: 'app-header',
   imports: [],
@@ -11,8 +8,8 @@ interface User {
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  user: User = {
-    nom: 'Grine Abderrahmane',
-    type: 'Type', //this is a static declaration for test.
-  };
+  authResponse: AuthResponse;
+  constructor(private authService: AuthService) {
+    this.authResponse = this.authService.getAuthResponse();
+  }
 }

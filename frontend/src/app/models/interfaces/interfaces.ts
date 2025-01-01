@@ -1,4 +1,22 @@
 //this is a the general logic of our front-end app:
+
+export interface AuthResponse {
+  id_role: string; //the id of patient, not user_patient!
+  token: string;
+  user: User;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  password: string;
+  email: string;
+  type: string;
+}
+export interface UserResponse {
+  user: User;
+}
+
 export interface DPI {
   id: string;
   nom: string;

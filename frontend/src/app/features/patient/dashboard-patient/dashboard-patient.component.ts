@@ -51,18 +51,6 @@ export class DashboardPatientComponent {
   }
 
   // -------------------Trying to fetch Data:
-  //trying to fetch data
-  // authResponse: AuthResponse = {
-  //   id_role: '',
-  //   token: '',
-  //   user: {
-  //     id: '',
-  //     username: '',
-  //     password: '',
-  //     email: '',
-  //     type: '',
-  //   },
-  // };
   ngOnInit() {
     //trying to fetch data
     this.apiDataService

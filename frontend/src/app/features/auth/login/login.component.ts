@@ -29,6 +29,8 @@ export class LoginComponent {
   onSubmit(): void {
     this.authService.login(this.username, this.password).subscribe({
       next: (response) => {
+        //set the info of user:
+        this.authService.setAuthResponse(response);
         if (this.isBrowser) {
           localStorage.setItem('token', response.token);
           if (response.user.type === 'admin') {

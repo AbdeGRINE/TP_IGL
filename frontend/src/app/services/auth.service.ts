@@ -3,24 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
-
-//these interfaces will be public (in interfaces front):
-export interface AuthResponse {
-  id_role: string; //the id of patient, not user_patient!
-  token: string;
-  user: User;
-}
-
-export interface User {
-  id: string;
-  username: string;
-  password: string;
-  email: string;
-  type: string;
-}
-export interface UserResponse {
-  user: User;
-}
+import { AuthResponse, User } from '../models/interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -30,17 +13,26 @@ export class AuthService {
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
   private isBrowser: boolean;
-  authResponse : AuthResponse;
 
-  setAuthResponse(response: AuthResponse){
-    if(this.authResponse){
-      this.authResponse.user = response.user;
-      this.authResponse.id_role = response.id_role;
-      this.authResponse.token  = response.token;
-    }
+  authResponse: AuthResponse = {
+    id_role: '',
+    token: '',
+    user: {
+      id: '',
+      username: '',
+      password: '',
+      email: '',
+      type: '',
+    },
+  };
+
+  setAuthResponse(response: AuthResponse) {
+    this.authResponse.user = response.user;
+    this.authResponse.id_role = response.id_role;
+    this.authResponse.token = response.token;
   }
 
-  getAuthResponse(){
+  getAuthResponse() {
     return this.authResponse;
   }
 
@@ -49,10 +41,10 @@ export class AuthService {
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
-    const token = this.getToken();
-    if (token) {
-      this.getCurrentUser().subscribe();
-    }
+    // const token = this.getToken();
+    // if (token) {
+    //   this.getCurrentUser().subscribe();
+    // }
   }
 
   login(username: string, password: string): Observable<AuthResponse> {
@@ -87,27 +79,27 @@ export class AuthService {
     );
   }
 
-  getCurrentUser(): Observable<User> {
-    return this.http
-      .get<UserResponse>(`${this.apiUrl}/obtenir_utilisateur_connecte/`)
-      .pipe(
-        map((response) => response.user),
-        tap((user) => {
-          this.userSubject.next(user);
-        })
-      );
-  }
+  // getCurrentUser(): Observable<User> {
+  //   return this.http
+  //     .get<UserResponse>(`${this.apiUrl}/obtenir_utilisateur_connecte/`)
+  //     .pipe(
+  //       map((response) => response.user),
+  //       tap((user) => {
+  //         this.userSubject.next(user);
+  //       })
+  //     );
+  // }
 
-  getToken(): string | null {
-    if (this.isBrowser) {
-      return localStorage.getItem('token');
-    }
-    return null;
-  }
+  // getToken(): string | null {
+  //   if (this.isBrowser) {
+  //     return localStorage.getItem('token');
+  //   }
+  //   return null;
+  // }
 
-  isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
+  // isLoggedIn(): boolean {
+  //   return !!this.getToken();
+  // }
 
   //no need!
   // register(userData: {
