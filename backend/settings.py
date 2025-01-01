@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'Consultation',
     'Soin',
 
+
 ]
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
