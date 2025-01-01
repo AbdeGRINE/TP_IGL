@@ -1,5 +1,5 @@
 .full-page {
-    background-color: lightgray;
+    background-color: #F7F7F7;
     min-height: 100vh; 
     display: flex;
     flex-direction: column;
@@ -7,9 +7,10 @@
     /* align-items: center; */
     /* position: relative; */
   }
+  
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: lightgray;
+    background-color: #F7F7F7;
     margin: 0;
     padding: 0;
     height: 100%;

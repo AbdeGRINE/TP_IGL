@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { MedecinDashboardComponent } from './features/medecin/medecin-dashboard/medecin-dashboard.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './features/login/login.component';
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard.component';
 import { CreerDPIComponent } from './features/admin/creer-dpi/creer-dpi.component';
 import { InfirmierDashboardComponent } from './infirmier/infirmier-dashboard/infirmier-dashboard.component';
@@ -30,4 +30,5 @@ export const routes: Routes = [
     component: InfirmierDashboardComponent,
     title: 'Infirmier Dashboard',
   },
+ 
 ];
