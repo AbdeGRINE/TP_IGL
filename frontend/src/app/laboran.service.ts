@@ -23,7 +23,7 @@ export interface Test {
 @Injectable({
   providedIn: 'root'
 })
-export class PatientBilanService {
+export class LaboranService {
   private apiUrl = 'http://localhost:8000/api';
   private patientsSubject = new BehaviorSubject<Patient[]>([]);
   patients$ = this.patientsSubject.asObservable();
