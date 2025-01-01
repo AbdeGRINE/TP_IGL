@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+// src/app/services/laboratin.service.ts
 
-export interface Patient {
+import { Injectable } from '@angular/core';
+
+
+interface Patient {
   id: string;
   nom: string;
   medecin: string;
@@ -10,12 +11,12 @@ export interface Patient {
   bilans: Bilan[];
 }
 
-export interface Bilan {
+interface Bilan {
   nom: string;
   tests: Test[];
 }
 
-export interface Test {
+interface Test {
   nom: string;
   resultat: string;
 }
@@ -23,26 +24,47 @@ export interface Test {
 @Injectable({
   providedIn: 'root'
 })
-export class LaboranService {
-  private apiUrl = 'http://localhost:8000/api';
-  private patientsSubject = new BehaviorSubject<Patient[]>([]);
-  patients$ = this.patientsSubject.asObservable();
+export class LaboranService{
+  
+  private patients: Patient[] = [
+    {
+      id: 'P12345',
+      nom: 'Benziada',
+      medecin: 'Grine',
+      dateDeCreation: new Date('2023-01-01'),
+      bilans: [
+        {
+          nom: 'Bilan Sanguin',
+          tests: [
+            { nom: 'Test1', resultat: '7,90' },
+            { nom: 'Test2', resultat: '0,5' },
+            { nom: 'Test3', resultat: '20,5' }
+          ]
+        }
+      ]
+    }
+  ];
 
-  constructor(private http: HttpClient) {}
-
-  getPatients(): Observable<Patient[]> {
-    return this.http.get<Patient[]>(`${this.apiUrl}/patients`);
+  // Get all patients
+  getPatients(): Patient[] {
+    return this.patients;
   }
 
-  updateTestResults(patientId: string, bilanId: string, tests: Test[]): Observable<any> {
-    return this.http.put(`${this.apiUrl}/patients/${patientId}/bilans/${bilanId}/tests`, { tests });
-  }
-
-  getBilansByPatient(patientId: string): Observable<Bilan[]> {
-    return this.http.get<Bilan[]>(`${this.apiUrl}/patients/${patientId}/bilans`);
-  }
-
-  saveBilanResults(patientId: string, bilanId: string, results: { [key: string]: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/patients/${patientId}/bilans/${bilanId}/results`, { results });
+  // Update test results(modification)
+  updateTestResults(patientId: string, bilanNom: string, newResults: { [key: string]: string }): boolean { //hadoo g3 ml ancient data
+    const patient = this.patients.find(p => p.id === patientId);
+    if (patient) {//patient trouve 
+      const bilan = patient.bilans.find(b => b.nom === bilanNom);
+      if (bilan) { //bilan trouvé
+        bilan.tests.forEach(test => {
+          if (newResults[test.nom]) {
+            //hna tsra la mise a jour des test 
+            test.resultat = newResults[test.nom];
+          }
+        });
+        return true;
+      }
+    }
+    return false;
   }
 }
