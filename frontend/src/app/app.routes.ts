@@ -12,6 +12,8 @@ import { CreerConsultationComponent } from './features/medecin/creer-consultatio
 import { AfficherConsultationComponent } from './features/medecin/afficher-consultation/afficher-consultation.component';
 import { LaboratinDashboardComponent } from './features/laboratin/laboratin-dashboard/laboratin-dashboard.component';
 import { RadiologueDashboardComponent } from './features/radiologue/radiologue-dashboard/radiologue-dashboard.component';
+import { PatientAfficherConsultationComponent } from './features/patient/patient-afficher-consultation/patient-afficher-consultation.component';
+import { title } from 'process';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
@@ -56,9 +58,16 @@ export const routes: Routes = [
     title: 'Admin Dashboard',
   },
   {
-    path: 'dashboard-patient',
+    path: 'patient-dashboard',
     component: DashboardPatientComponent,
     title: 'Patient Dashboard',
+    children : [
+      {
+        path : 'patient-afficher-consultation/:id',
+        component: PatientAfficherConsultationComponent,
+        title : 'Patient Afficher Consultation'
+      }
+    ]
   },
   {
     path: 'infirmier-dashboard',
