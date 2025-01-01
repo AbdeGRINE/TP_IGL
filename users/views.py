@@ -21,9 +21,15 @@ def authentifier_utilisateur(request: Request) -> Response:
     try:
         user= User.objects.get(username = request.data['username'])
         if user.check_password(request.data['password']):
+            if hasattr(user, 'patient'):
+                patient = user.patient  # Instance Patient associée
+                patient_data = {
+                    "id_patient": patient.id,
+                    # Ajoutez d'autres champs nécessaires ici
+                }
             serializer = UserSerializer(instance= user)
             token,created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key,"user": serializer.data},status= status.HTTP_200_OK)
+            return Response({"token": token.key,"user": serializer.data,"related_data": patient_data},status= status.HTTP_200_OK)
         return Response({"details": "incorrect password"},status= status.HTTP_400_BAD_REQUEST)
     except User.DoesNotExist:
         return Response({"details": "user not found"},status= status.HTTP_400_BAD_REQUEST)

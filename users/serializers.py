@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from .models import Patient, Medcin, Laborantin, Radiologue, Infermier, Etablissement, Admin
 
 class UserSerializer (serializers.ModelSerializer):
+    type = serializers.SerializerMethodField()
     class Meta(object):
         model = User
         fields =['id','username','password','email','type']
@@ -19,8 +20,8 @@ class UserSerializer (serializers.ModelSerializer):
             return 'radiologue'
         elif hasattr(obj, 'infirmier'):
             return 'infirmier'
-        elif hasattr(obj, 'administratif'):
-            return 'administratif'
+        elif hasattr(obj, 'admin'):
+            return 'admin'
         return None
 
 
