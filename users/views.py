@@ -23,7 +23,20 @@ def authentifier_utilisateur(request: Request) -> Response:
         if user.check_password(request.data['password']):
             serializer = UserSerializer(instance= user)
             token,created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key,"user": serializer.data},status= status.HTTP_200_OK)
+            user_type = None
+            if hasattr(user, 'patient'):
+                user_type = 'patient'
+            elif hasattr(user, 'medcin'):
+                user_type = 'medcin'
+            elif hasattr(user, 'laborantin'):
+                user_type = 'laborantin'
+            elif hasattr(user, 'radiologue'):
+                user_type = 'radiologue'
+            elif hasattr(user, 'infirmier'):
+                user_type = 'infirmier'
+            elif hasattr(user, 'administratif'):
+                user_type = 'administratif'
+            return Response({"token": token.key,"user": serializer.data,"type":user_type},status= status.HTTP_200_OK)
         return Response({"details": "incorrect password"},status= status.HTTP_400_BAD_REQUEST)
     except User.DoesNotExist:
         return Response({"details": "user not found"},status= status.HTTP_400_BAD_REQUEST)
