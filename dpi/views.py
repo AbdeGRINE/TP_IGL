@@ -94,7 +94,7 @@ class creer_dpi(APIView):
 
 
 class consulter_dpi(APIView):
-    permission_classes = [IsAuthenticated, IsDoctor | IsPatient] 
+    #permission_classes = [IsAuthenticated, IsDoctor | IsPatient] 
     def get(self, request, dpi_id, *args, **kwargs):
         # Récupérer le DPI
         dpi = get_object_or_404(DPI, id=dpi_id)

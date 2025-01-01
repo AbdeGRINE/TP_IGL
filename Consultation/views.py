@@ -13,9 +13,21 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from users.models import Consultation, Infermier, Ordonnance,DPI,StatusOrdonnance,Soin, StatusSoin
 from users.permissions import IsDoctor, IsPatient, IsAdmin, IsInfermier, IsLaborantin, IsRadiologue
+from drf_yasg.utils import swagger_auto_schema
 # Create your views here. 
 
 #------------------------------------------------Gestion des consultation---------------------------------------#
+@swagger_auto_schema(
+    operation_description="Crée une consultation.",
+    responses={
+        201: "Consultation et résumé créés avec succès",
+        400: "Données manquantes ou erreur de validation",
+        404: "DPI non trouvé",
+        500: "Erreur interne du serveur"
+    },
+    methods=['post']
+)
+
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated,IsDoctor])
@@ -58,6 +70,15 @@ def creer_consultation(request):
     except KeyError:
         return Response({"error": "Données manquantes"}, status=400)
 
+@swagger_auto_schema(
+    operation_description="Récupère toutes les consultations liées à un DPI spécifique.",
+    responses={
+        200: "Liste des consultations",
+        404: "Aucune consultation trouvée pour ce DPI",
+        500: "Erreur interne du serveur"
+    },
+    methods=['get']
+)
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])

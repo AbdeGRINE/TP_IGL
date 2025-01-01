@@ -1,31 +1,44 @@
-from django.shortcuts import render
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework.request import Request
-from rest_framework.decorators import api_view
+from drf_yasg.utils import swagger_auto_schema
 from .serializers import GetOrdonnanceSerializer, MedicamentSerializer, OrdonnanceSerializer
-from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
-from users.models import Medicament, Ordonnance,StatusOrdonnance
-from users.permissions import IsDoctor, IsPatient, IsAdmin, IsInfermier, IsLaborantin, IsRadiologue
- 
-
-# Create your views here.
+from users.models import Medicament, Ordonnance, StatusOrdonnance
+from users.permissions import IsDoctor
 #------------------------------------------------Gestion des ordonnances---------------------------------------#
 
+
+@swagger_auto_schema(
+    operation_description="Créer une ordonnance. (L'ID de la consultation doit être fourni dans la requête.)",
+    responses={
+        201: "Ordonnance créée avec succès.",
+        400: "Erreur de validation des données.",
+    },
+    methods=['post']
+)
 @api_view(['POST'])
-@permission_classes([IsAuthenticated,IsDoctor])
-def creer_ordonnance(request,dpi_id):
+@permission_classes([IsAuthenticated, IsDoctor])
+def creer_ordonnance(request, dpi_id):
     """
-    Creer une ordonnace (l'id du consultation doit etre fourni dans la req).
+    Créer une ordonnance.
     """
     if request.method == 'POST':
         serializer = OrdonnanceSerializer(data=request.data)
         if serializer.is_valid():
             # Sauvegarder l'ordonnance et les traitements associés
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
+@swagger_auto_schema(
+    operation_description="Récupère toutes les ordonnances liées à une consultation spécifique.",
+    responses={
+        200: "Liste des ordonnances récupérée avec succès.",
+        404: "Aucune ordonnance trouvée pour cette consultation.",
+        500: "Erreur interne du serveur.",
+    },
+    methods=['get']
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def ordonnances_par_consultation(request, consultation_id):
@@ -43,6 +56,15 @@ def ordonnances_par_consultation(request, consultation_id):
     serializer = OrdonnanceSerializer(ordonnances, many=True)
     return Response(serializer.data, status=200)
 
+@swagger_auto_schema(
+    operation_description="Récupère toutes les ordonnances liées à un DPI spécifique.",
+    responses={
+        200: "Liste des ordonnances récupérée avec succès.",
+        404: "Aucune ordonnance trouvée pour ce DPI.",
+        500: "Erreur interne du serveur.",
+    },
+    methods=['get']
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def ordonnances_par_dpi(request, dpi_id):
@@ -62,45 +84,70 @@ def ordonnances_par_dpi(request, dpi_id):
     serializer = OrdonnanceSerializer(ordonnances, many=True)
     return Response(serializer.data, status=200)
 
+@swagger_auto_schema(
+    operation_description="Récupère tous les médicaments disponibles.",
+    responses={
+        200: "Liste des médicaments récupérée avec succès.",
+        404: "Aucun médicament trouvé.",
+        500: "Erreur interne du serveur.",
+    },
+    methods=['get']
+)
 @api_view(['GET'])
-#@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])  # Uncomment this if authentication is needed
 def liste_medicaments(request):
     """
-    Récupère tout les medicaments.
+    Récupère tous les médicaments.
     """
     try:
-
         medicaments = Medicament.objects.all()
     except Exception as e:
         return Response({"error": str(e)}, status=500)
 
     if not medicaments.exists():
-        return Response({"error": "Aucune medicaments trouvée."}, status=404)
+        return Response({"error": "Aucun médicament trouvé."}, status=404)
 
-    # Sérialiser les ordonnances
+    # Sérialiser les médicaments
     serializer = MedicamentSerializer(medicaments, many=True)
     return Response(serializer.data, status=200)
 
+@swagger_auto_schema(
+    operation_description="Valide une ordonnance en changeant son statut à 'Validé'.",
+    responses={
+        200: "Ordonnance validée avec succès.",
+        404: "Ordonnance non trouvée.",
+        500: "Erreur interne du serveur.",
+    },
+    methods=['patch']
+)
 @api_view(['PATCH'])
-#@permission_classes()  # a modifier ici
+#@permission_classes()  # Uncomment and modify permissions if needed
 def valider_ordonnance(request, ordonnance_id):
-
     """
-    Valide une ordonnance en changeant son status à 'Validé'.
+    Valide une ordonnance en changeant son statut à 'Validé'.
     """
     try:
         ordonnance = Ordonnance.objects.get(id=ordonnance_id)
     except Ordonnance.DoesNotExist:
-        return Response({"error": "Ordonnance non trouvée."})
+        return Response({"error": "Ordonnance non trouvée."}, status=404)
 
-    # Mettre à jour le status de l'ordonnance
+    # Mettre à jour le statut de l'ordonnance
     ordonnance.status = StatusOrdonnance.VALIDE
     ordonnance.save()
 
     # Sérialiser et retourner l'ordonnance mise à jour
     serializer = OrdonnanceSerializer(ordonnance)
-    return Response(serializer.data)
+    return Response(serializer.data, status=200)
 
+@swagger_auto_schema(
+    operation_description="Récupère une ordonnance avec ses traitements et les médicaments associés.",
+    responses={
+        200: "Détails de l'ordonnance récupérés avec succès.",
+        404: "Ordonnance non trouvée.",
+        500: "Erreur interne du serveur.",
+    },
+    methods=['get']
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def ordonnance_details(request, ordonnance_id):

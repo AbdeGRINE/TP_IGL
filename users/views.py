@@ -64,7 +64,7 @@ def obtenir_utilisateur_connecte(request: Request) -> Response:
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def creer_patient(request: Request) -> Response:
     # superuser
     serializer = PatientSerializer(data=request.data)
