@@ -102,17 +102,14 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'tp_igl',
-    #     'USER': 'root',
-    #     'PASSWORD': 'abdegrine',
-    #     'HOST': 'localhost',  # Ou l'adresse IP du serveur MySQL
-    #     'PORT': '3307',       
-    # }
-    'default': dj_database_url.parse(
-        'postgresql://until_u_heal_user:at5JEPSCPKFKkwlaAP5qeJLT7zYVCHUQ@dpg-ctqml8lsvqrc73cq9eeg-a/until_u_heal'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'tp_igl',
+        'USER': 'root',
+        'PASSWORD': 'abdegrine',
+        'HOST': 'localhost',  # Ou l'adresse IP du serveur MySQL
+        'PORT': '3307',       
+    }
 }
 
 DATABASES['default']['TEST'] = {
