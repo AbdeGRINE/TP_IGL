@@ -7,19 +7,29 @@
         <div class="w-full flex flex-col items-center gap-y-8 ">
             <div class="w-full flex flex-col gap-y-4">
                 <div class="w-full text-left">Compte Rendu</div>
-                <div
-                    class="text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md w-full h-60">
-                    resume
-                </div>
+                <textarea type="text" [(ngModel)]="newResponse.compteRendu"
+                    class="text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md w-full h-60 resize-none"></textarea>
+
+
             </div>
 
             <div class="h-full w-full flex flex-col gap-y-4">
                 <div class="w-full text-left">Radio</div>
-                <img src="/IRM.png" class="" />
+                <input id="image" type="file" (change)="onFileSelected($event)" class="hidden" accept="image/*" required
+                    #fileInput />
+                <button (click)="fileInput.click()"
+                    class="px-4 py-2 bg-green text-white rounded-2xl border border-green">
+                    Importer Radio (image)</button>
+                <div *ngIf="selectedBilan?.radioBase64" class="w-full flex">
+                    <img [src]="selectedBilan?.radioBase64">
+                </div>
             </div>
         </div>
         <div class="flex justify-end w-full gap-x-5 self-end">
-            <button class="text-lg px-6 py-2 rounded-xl flex " (click)="closeViewBilanRadio()">Retour</button>
+            <button class="text-lg px-6 text-green border border-green bg-white py-2 rounded-xl flex "
+                (click)="closeViewBilanRadio()">Retour</button>
+            <button class="text-lg px-6 text-white bg-green py-2 rounded-xl flex "
+                (click)="EnregistrerReponse()">Enregistrer</button>
         </div>
     </div>
     <div class="flex w-full">
