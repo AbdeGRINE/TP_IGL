@@ -13,7 +13,9 @@ import { AfficherConsultationComponent } from './features/medecin/afficher-consu
 import { LaboratinDashboardComponent } from './features/laboratin/laboratin-dashboard/laboratin-dashboard.component';
 import { RadiologueDashboardComponent } from './features/radiologue/radiologue-dashboard/radiologue-dashboard.component';
 import { PatientAfficherConsultationComponent } from './features/patient/patient-afficher-consultation/patient-afficher-consultation.component';
-import { title } from 'process';
+import { afficherDpiGuard } from './guards/medecin/afficher-dpi.guard';
+import { afficherConsultationGuard } from './guards/medecin/afficher-consultation.guard';
+import { creerConsultationGuard } from './guards/medecin/creer-consultation.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
@@ -32,16 +34,19 @@ export const routes: Routes = [
         path: 'afficher-dpi/:id',
         component: AfficherDpiComponent,
         title: 'Afficher DPI',
+        canActivate: [afficherDpiGuard],
         children: [
           {
             path: 'afficher-consultation/:id',
             component: AfficherConsultationComponent,
             title: 'Afficher Consultation',
+            canActivate: [afficherConsultationGuard]
           },
           {
             path: 'creer-consultation',
             component: CreerConsultationComponent,
             title: 'Creer Consultation',
+            canActivate: [creerConsultationGuard],
           },
         ],
       },
@@ -84,4 +89,5 @@ export const routes: Routes = [
     component: RadiologueDashboardComponent,
     title: 'Radiologue Dashboard',
   },
+  { path: '**', redirectTo: 'medecin-dashboard' },
 ];

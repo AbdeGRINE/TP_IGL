@@ -9,6 +9,8 @@ import { DpiService } from '../../../services/dpi.service';
 import { ConsultationService } from '../../../services/consultation.service';
 import * as QRCode from 'qrcode';
 import { from } from 'rxjs';
+import { setAccessedFromAfficherDPI } from '../../../guards/medecin/afficher-consultation.guard';
+import { setAccessedFromAfficherDpi } from '../../../guards/medecin/creer-consultation.guard';
 
 
 @Component({
@@ -79,9 +81,9 @@ export class AfficherDpiComponent implements OnInit{
   }
   
 
-
   navigateToViewConsultation(consultation : Consultation){
     this.consultationService.setConsultation(consultation);
+    setAccessedFromAfficherDPI(true);
     this.route.navigate(['afficher-consultation', consultation.id], { relativeTo: this.router });
 }
 
@@ -90,6 +92,7 @@ export class AfficherDpiComponent implements OnInit{
   }
   NavigateToCreerConsultation(){
     console.log(this.dpiService.getDPI());
+    setAccessedFromAfficherDpi(true);
     this.route.navigate(['creer-consultation'], { relativeTo: this.router });
   }
 

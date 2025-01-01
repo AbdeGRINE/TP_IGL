@@ -6,6 +6,7 @@ import jsQR from 'jsqr';
 import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/interfaces';
 import { DpiService } from '../../../services/dpi.service';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { setAccessedFromMedecin } from '../../../guards/medecin/afficher-dpi.guard';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class MedecinDashboardComponent implements OnInit{
 
   navigateToViewDPI(DPI: DPI) {
     this.dpiService.setDPI(DPI);
+    setAccessedFromMedecin(true);
     this.router.navigate(['/medecin-dashboard/afficher-dpi', DPI.id]);
   }
 
