@@ -74,11 +74,11 @@
         class="absolute top-16 left-1/2 transform -translate-x-1/2  bg-white flex flex-col border border-darkgray rounded-lg gap-y-6 w-1/2 px-4 py-4 h-40">
         <div class="w-full flex flex-col h-full min-h-full  justify-center items-center">
             <div class="py-6 text-black text-xl text-center">Etes vous sure de vouloir supprimer l'ordonnance
-                {{Ordonnances[0].titre}}?</div>
+                ?</div>
             <div class="flex justify-center w-full gap-x-5">
-                <button class="text-lg px-6 py-2 rounded-xl flex " (click)="closeWantsToDelete()">Annuler</button>
+                <button class="text-lg px-6 py-2 rounded-xl flex " (click)="closeDeletionPopup()">Annuler</button>
                 <button class="bg-red text-white text-lg px-6 py-2 rounded-xl flex "
-                    (click)="deleteOrdonnace()">Supprimer</button>
+                    (click)="deleteOrdonnance()">Supprimer</button>
             </div>
         </div>
     </div>
@@ -118,7 +118,7 @@
 
                             <div class="w-full flex flex-col ">
 
-                                <div *ngFor="let ord of newConsultation.ordonnances"
+                                <div *ngFor="let ord of newConsultation.ordonnances; let i=index"
                                     class="flex items-center py-2 px-4 w-full text-black">
                                     <div class="w-1/3 flex-grow">{{ord.titre}}</div>
                                     <div class="w-1/3 flex-grow text-black">{{ord.state}}</div>
@@ -126,7 +126,7 @@
                                         <button><img src="/eye.svg" alt="view icon"
                                                 (click)="openViewOrdonnance(ord)"></button>
                                         <button><img src="/trash.svg" alt="delete icon"
-                                                (click)="openWantsToDelete(ord)"></button>
+                                                (click)="OpenDeletionPopup(i)"></button>
                                     </div>
 
                                 </div>

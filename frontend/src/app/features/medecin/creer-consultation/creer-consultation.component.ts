@@ -16,26 +16,11 @@ import { Router, RouterModule,ActivatedRoute } from '@angular/router';
 })
 export class CreerConsultationComponent implements OnInit {
 
-  //   {
-  //     id: 'P12345',
-  //     nom: 'Benziada',
-  //     prenom: 'Fares',
-  //     NSS: '123456',
-  //     dateNaissance: new Date("01-01-2004"),
-  //     adresse: "Reghaia",
-  //     telephone: "0666666666",
-  //     mutuelle: "/",
-  //     personneAContacter: "/",
-  //     medecin: 'Grine',
-  //     dateDeCreation: new Date('2023-01-01'),
-  //     consultations: [],
-  //     soins: [],
-  //     decodeBase64: '',
-  //   };
-
-  // Soin and Ordonnace modals logic:
-  //Initialization:
   selectedPatient: DPI;
+
+  indexOfOrdonnanceToDelete : number = -1;
+
+  OrdonnanceToDelete : Ordonnance | null = null;
 
   newTraitement: Traitement = {
     medicament: '',
@@ -73,25 +58,6 @@ export class CreerConsultationComponent implements OnInit {
     console.log(this.selectedPatient);
   }
 
-
-  Ordonnances : Ordonnance[] = [
-    {
-      titre: 'Ordonnance 1',
-      state: 'En attente',
-      traitements : [{
-        medicament : 'doliprane',
-        dose : '2000mg',
-        duree: '2 jours',
-      }]
-    },
-]
-
-  trait : Traitement = {
-    medicament : 'doliprane',
-    dose : '2000mg',
-    duree: '2 jours',
-  }
-
   isAddOrdonnanceOpen = false;
   isViewOrdonnanceOpen = false;
   wantsToDelete = false;
@@ -125,15 +91,11 @@ export class CreerConsultationComponent implements OnInit {
         traitements: [],}
     } else {
       console.log(this.selectedOrdonnance);
-      alert("Veuillez remplir tous les champs avant d'ajouter un soin.");
+      alert("Veuillez remplir tous les champs avant d'ajouter une ordonnance.");
     }
     this.isAddOrdonnanceOpen = false;
     this.isPopupOpen = false;
     console.log(this.isPopupOpen);
-  }
-
-  AjouterOrdonnance(){
-
   }
 
   openViewOrdonnance(ordonnance: Ordonnance) {
@@ -146,21 +108,6 @@ export class CreerConsultationComponent implements OnInit {
   closeViewOrdonnance() {
     this.isViewOrdonnanceOpen = false;
     this.isPopupOpen = false;
-  }
-
-
-  openWantsToDelete(ordonnance : Ordonnance) {
-    this.wantsToDelete = true;
-    this.isPopupOpen = true;
-  }
-
-  closeWantsToDelete() {
-    this.wantsToDelete = false;
-    this.isPopupOpen = false;
-  }
- 
-  deleteOrdonnace() {
-    // logic to delete
   }
 
 
@@ -234,7 +181,7 @@ addNewTrait() {
 
 onSubmit(){
   if (
-    this.newConsultation
+    this.newConsultation && this.newConsultation.resume
   ) {
     this.newConsultation.bilansBiologique = this.selectedBilanBiologique;
     this.newConsultation.bilanRadiologique = this.selectedBilanRadiologique;
@@ -248,10 +195,10 @@ onSubmit(){
       resume : "",
     }
     alert("La nouvelle Consultation a etait creer avec succes!");
-
+    this.goBack();
 
   } else {
-    alert("Veuillez remplir tous les champs avant d'ajouter une consultation.");
+    alert("Veuillez remplir le resume d'ajouter une consultation.");
   }
   console.log(this.selectedPatient);
   this.dpiService.setDPI(this.selectedPatient);
@@ -260,5 +207,28 @@ onSubmit(){
 
 goBack(){
   this.router.navigate(['../',], { relativeTo: this.route });
+}
+
+deleteOrdonnance(){
+  console.log(this.newConsultation);
+  this.newConsultation.ordonnances = this.newConsultation?.ordonnances.filter(c => c.titre !== this.OrdonnanceToDelete?.titre);
+  this.indexOfOrdonnanceToDelete = -1;
+  this.wantsToDelete = false;
+  this.isPopupOpen = false;
+}
+
+OpenDeletionPopup(index : number){
+  this.wantsToDelete = true;
+  this.isPopupOpen = true;
+  console.log(index);
+  this.indexOfOrdonnanceToDelete = index;
+  this.OrdonnanceToDelete = this.newConsultation.ordonnances[this.indexOfOrdonnanceToDelete];
+  console.log(this.OrdonnanceToDelete);
+}
+closeDeletionPopup(){
+  console.log(this.newConsultation)
+  this.indexOfOrdonnanceToDelete = -1;
+  this.isPopupOpen = false;
+  this.wantsToDelete = false;
 }
 }
