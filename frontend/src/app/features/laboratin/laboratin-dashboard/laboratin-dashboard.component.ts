@@ -1,10 +1,10 @@
-// laboratin-dashboard.component.ts
-
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Chart } from 'chart.js/auto';
+//import { Chart } from 'chart.js/auto';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 interface Patient {
   id: string;
@@ -32,10 +32,10 @@ interface Test {
   styleUrl: './laboratin-dashboard.component.css',
 })
 export class LaboratinDashboardComponent implements OnInit {
-  @ViewChild('testChart') chartCanvas?: ElementRef;
-  private chart: Chart | null = null;
+  @ViewChild('testChart', { static: false }) chartCanvas!: ElementRef;
+  public chart: Chart | null = null;
 
-  // Mock data
+  
   patients: Patient[] = [
     {
       id: 'P12345',
@@ -56,6 +56,80 @@ export class LaboratinDashboardComponent implements OnInit {
           ],
         },
         {
+          nom: 'Bilan Sanguin',
+          tests: [
+            { nom: 'Test1', resultat: '7,90' },
+            { nom: 'Test2', resultat: '0,5' },
+            { nom: 'Test3', resultat: '20,5' },
+            { nom: 'Test4', resultat: '7,90' },
+            { nom: 'Test5', resultat: '8,98' },
+            { nom: 'Test6', resultat: '10,09' },
+            { nom: 'Test7', resultat: '19,09' },
+          ],
+        },
+        {
+          nom: 'Bilan Sanguin',
+          tests: [
+            { nom: 'Test1', resultat: '7,90' },
+            { nom: 'Test2', resultat: '0,5' },
+            { nom: 'Test3', resultat: '20,5' },
+            { nom: 'Test4', resultat: '7,90' },
+            { nom: 'Test5', resultat: '8,98' },
+            { nom: 'Test6', resultat: '10,09' },
+            { nom: 'Test7', resultat: '19,09' },
+          ],
+        },
+        {
+          nom: 'Bilan Sanguin',
+          tests: [
+            { nom: 'Test1', resultat: '7,90' },
+            { nom: 'Test2', resultat: '0,5' },
+            { nom: 'Test3', resultat: '20,5' },
+            { nom: 'Test4', resultat: '7,90' },
+            { nom: 'Test5', resultat: '8,98' },
+            { nom: 'Test6', resultat: '10,09' },
+            { nom: 'Test7', resultat: '19,09' },
+          ],
+        },
+        {
+          nom: 'Bilan Sanguin',
+          tests: [
+            { nom: 'Test1', resultat: '7,90' },
+            { nom: 'Test2', resultat: '0,5' },
+            { nom: 'Test3', resultat: '20,5' },
+            { nom: 'Test4', resultat: '7,90' },
+            { nom: 'Test5', resultat: '8,98' },
+            { nom: 'Test6', resultat: '10,09' },
+            { nom: 'Test7', resultat: '19,09' },
+            { nom: 'Test1', resultat: '7,90' },
+            { nom: 'Test2', resultat: '0,5' },
+            { nom: 'Test3', resultat: '20,5' },
+            { nom: 'Test4', resultat: '7,90' },
+            { nom: 'Test5', resultat: '8,98' },
+            { nom: 'Test6', resultat: '10,09' },
+            { nom: 'Test7', resultat: '19,09' },
+            { nom: 'Test1', resultat: '7,90' },
+            { nom: 'Test2', resultat: '0,5' },
+            { nom: 'Test3', resultat: '20,5' },
+            { nom: 'Test4', resultat: '7,90' },
+            { nom: 'Test5', resultat: '8,98' },
+            { nom: 'Test6', resultat: '10,09' },
+            { nom: 'Test7', resultat: '19,09' },
+          ],
+        },
+        {
+          nom: 'Bilan Sanguin',
+          tests: [
+            { nom: 'Test1', resultat: '7,90' },
+            { nom: 'Test2', resultat: '0,5' },
+            { nom: 'Test3', resultat: '20,5' },
+            { nom: 'Test4', resultat: '7,90' },
+            { nom: 'Test5', resultat: '8,98' },
+            { nom: 'Test6', resultat: '10,09' },
+            { nom: 'Test7', resultat: '19,09' },
+          ],
+        },
+        {
           nom: 'Les analyses d\'urines',
           tests: [
             { nom: 'Ibuprofen', resultat: '200' },
@@ -63,7 +137,7 @@ export class LaboratinDashboardComponent implements OnInit {
         },
       ],
     },
-    // Add more mock patients if needed
+    
   ];
 
   selectedPatient: Patient | null = null;
@@ -73,9 +147,10 @@ export class LaboratinDashboardComponent implements OnInit {
   originalBilans: Bilan[] = [];
   editedResults: { [key: string]: string } = {};
 
-  ngOnInit() {}
+  ngOnInit() {
+    Chart.register(...registerables);
+  }
 
-  // Patient -> Bilans Modal methods
   openBilansModal(patient: Patient) {
     this.selectedPatient = patient;
     this.originalBilans = JSON.parse(JSON.stringify(patient.bilans));
@@ -87,7 +162,6 @@ export class LaboratinDashboardComponent implements OnInit {
     this.selectedPatient = null;
   }
 
-  // Bilan -> Tests Modal methods
   openTestModal(bilan: Bilan) {
     this.selectedBilan = bilan;
     this.testModalVisible = true;
@@ -95,11 +169,6 @@ export class LaboratinDashboardComponent implements OnInit {
     bilan.tests.forEach(test => {
       this.editedResults[test.nom] = test.resultat || '';
     });
-
-    // Wait for DOM to update before creating chart
-    setTimeout(() => {
-      this.createChart();
-    }, 0);
   }
 
   closeTestModal() {
@@ -119,32 +188,43 @@ export class LaboratinDashboardComponent implements OnInit {
     this.editedResults = {};
   }
 
-  // Chart methods
-  private createChart() {
-    if (!this.selectedBilan || !this.chartCanvas) return;
-
+ 
+  generateChart() {
+    console.log('Generating chart...');
+    if (!this.selectedBilan) {
+      console.log('No bilan selected');
+      return;
+    }
+    if (!this.chartCanvas) {
+      console.log('No canvas element found');
+      return;
+    }
+  
     if (this.chart) {
+      console.log('Destroying old chart');
       this.chart.destroy();
     }
-
+  
     const cleanData = this.selectedBilan.tests
       .map(test => ({
         name: test.nom,
         value: parseFloat(test.resultat.replace(',', '.').replace('%', ''))
-      }))
-      .filter(item => !isNaN(item.value));
-
-    this.chart = new Chart(this.chartCanvas.nativeElement, {
-      type: 'line',
+      }));
+    
+    console.log('Clean data:', cleanData);
+  
+    const ctx = this.chartCanvas.nativeElement.getContext('2d');
+    
+    this.chart = new Chart(ctx, {
+      type: 'bar',
       data: {
         labels: cleanData.map(item => item.name),
         datasets: [{
           label: 'Résultats des tests',
           data: cleanData.map(item => item.value),
-          backgroundColor: 'rgba(70, 187, 145, 0.2)',
+          backgroundColor: 'rgba(70, 187, 145, 0.6)',
           borderColor: 'rgba(70, 187, 145, 1)',
-          borderWidth: 2,
-          tension: 0.4
+          borderWidth: 1
         }]
       },
       options: {
@@ -156,7 +236,7 @@ export class LaboratinDashboardComponent implements OnInit {
           },
           title: {
             display: true,
-            text: 'Évolution des résultats'
+            text: 'Résultats des tests'
           }
         },
         scales: {
@@ -167,14 +247,10 @@ export class LaboratinDashboardComponent implements OnInit {
       }
     });
   }
+    
 
-  // Test results methods
   updateTestResult(testName: string, newValue: string) {
     this.editedResults[testName] = newValue;
-    // Update chart when values change
-    setTimeout(() => {
-      this.createChart();
-    }, 0);
   }
 
   hasUnsavedChanges(): boolean {
