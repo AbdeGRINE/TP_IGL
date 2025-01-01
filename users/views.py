@@ -12,7 +12,6 @@ from .models import Groupe, Patient, Medcin, Laborantin, Radiologue, Infermier, 
 from rest_framework import status 
 import random
 
->>>>>>> origin/Grine/Ajout_fonctionnalités
 # Create your views here. 
 
 
@@ -161,7 +160,6 @@ def creer_radiologue(request: Request) -> Response:
         return Response({
                 "radiologue": radiologue_data,
                 "user": {"username": username, "token": token.key}
-
             },status= status.HTTP_200_OK)
     return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
 
@@ -171,7 +169,6 @@ def creer_radiologue(request: Request) -> Response:
 @permission_classes([IsAuthenticated])
 def creer_infirmier(request: Request) -> Response:
     # superuser
-
     serializer = InfirmierSerializer(data=request.data)
     if serializer.is_valid():
         nom = serializer.validated_data['nom']
@@ -190,14 +187,6 @@ def creer_infirmier(request: Request) -> Response:
         return Response({
                 "infirmier": infirmier_data,
                 "user": {"username": username, "token": token.key}
-
-
-# @api_view(['POST'])
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-# def creer_administratif(request: Request) -> Response:
-#     return Response({"detail":"creer creer_administratif"})
-
             },status= status.HTTP_200_OK)
     return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
 
