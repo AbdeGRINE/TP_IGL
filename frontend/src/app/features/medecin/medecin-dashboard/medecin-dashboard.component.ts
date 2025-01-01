@@ -18,212 +18,21 @@ export class MedecinDashboardComponent implements OnInit{
 
   showParentUI: boolean = true;
 
-  DPIs: DPI[] = [{
-    id: 'P12345',
-    nom: 'Benziada',
-    prenom: 'Fares',
-    NSS: '123456',
-    dateNaissance: new Date("01-01-2004"),
-    adresse: "Reghaia",
-    telephone: "0666666666",
-    mutuelle: "/",
-    personneAContacter: "/",
-    medecin: 'Grine',
-    dateDeCreation: new Date('2023-01-01'),
-    consultations: [{
-      id: 1,
-      dateDeCreation: new Date('2024-12-30'),
-      resume: 'doit etre hospitalise',
-      bilanRadiologique: [{
-        id: "2",
-        nom: "Bilan 2",
-      }],
-      bilansBiologique: [{
-        id: "1",
-        nom: "Bilan 1",
-      }],
-      ordonnances: [
-        {
-          titre: 'Ordonnance 1',
-          state: 'En attente',
-          traitements: [{
-            medicament: 'doliprane',
-            dose: '2000mg',
-            duree: '2 jours',
-          }]
-        },
-      ]
-    }
-    ],
-    soins: [],
-    decodeBase64: 'SGVsbG8sIFdvcmxkIQ=='
-  },
-  {
-    id: 'P12345',
-    nom: 'Benziada',
-    prenom: 'Fares',
-    NSS: '123456',
-    dateNaissance: new Date("01-01-2004"),
-    adresse: "Reghaia",
-    telephone: "0666666666",
-    mutuelle: "/",
-    personneAContacter: "/",
-    medecin: 'Grine',
-    dateDeCreation: new Date('2023-01-01'),
-    consultations: [{
-      id: 1,
-      dateDeCreation: new Date('2023-01-01'),
-      resume: 'doit etre hospitalise',
-      bilanRadiologique: [{
-        id: "1",
-        nom: "Bilan 1",
-      }],
-      bilansBiologique: [{
-        id: "1",
-        nom: "Bilan 1",
-      }],
-      ordonnances: [
-        {
-          titre: 'Ordonnance 1',
-          state: 'En attente',
-          traitements: [{
-            medicament: 'doliprane',
-            dose: '2000mg',
-            duree: '2 jours',
-          }]
-        },
-      ]
-    }
-    ],
-    soins: [],
-    decodeBase64: ''
-  },
-  {
-    id: 'P12345',
-    nom: 'Benziada',
-    prenom: 'Fares',
-    NSS: '123456',
-    dateNaissance: new Date("01-01-2004"),
-    adresse: "Reghaia",
-    telephone: "0666666666",
-    mutuelle: "/",
-    personneAContacter: "/",
-    medecin: 'Grine',
-    dateDeCreation: new Date('2023-01-01'),
-    consultations: [{
-      id: 1,
-      dateDeCreation: new Date('2023-01-01'),
-      resume: 'doit etre hospitalise',
-      bilanRadiologique: [{
-        id: "1",
-        nom: "Bilan 1",
-      }],
-      bilansBiologique: [{
-        id: "1",
-        nom: "Bilan 1",
-      }],
-      ordonnances: [
-        {
-          titre: 'Ordonnance 1',
-          state: 'En attente',
-          traitements: [{
-            medicament: 'doliprane',
-            dose: '2000mg',
-            duree: '2 jours',
-          }]
-        },
-      ]
-    }
-    ],
-    soins: [],
-    decodeBase64: ''
-  },
-  {
-    id: 'P12345',
-    nom: 'Benziada',
-    prenom: 'Fares',
-    NSS: '123456',
-    dateNaissance: new Date("01-01-2004"),
-    adresse: "Reghaia",
-    telephone: "0666666666",
-    mutuelle: "/",
-    personneAContacter: "/",
-    medecin: 'Grine',
-    dateDeCreation: new Date('2023-01-01'),
-    consultations: [{
-      id: 1,
-      dateDeCreation: new Date('2023-01-01'),
-      resume: 'doit etre hospitalise',
-      bilanRadiologique: [{
-        id: "1",
-        nom: "Bilan 1",
-      }],
-      bilansBiologique: [{
-        id: "1",
-        nom: "Bilan 1",
-      }],
-      ordonnances: [
-        {
-          titre: 'Ordonnance 1',
-          state: 'En attente',
-          traitements: [{
-            medicament: 'doliprane',
-            dose: '2000mg',
-            duree: '2 jours',
-          }]
-        },
-      ]
-    }
-    ],
-    soins: [],
-    decodeBase64: ''
-  },
-  {
-    id: 'P12345',
-    nom: 'Benziada',
-    prenom: 'Fares',
-    NSS: '123456',
-    dateNaissance: new Date("01-01-2004"),
-    adresse: "Reghaia",
-    telephone: "0666666666",
-    mutuelle: "/",
-    personneAContacter: "/",
-    medecin: 'Grine',
-    dateDeCreation: new Date('2023-01-01'),
-    consultations: [{
-      id: 1,
-      dateDeCreation: new Date('2024-12-30'),
-      resume: 'doit etre hospitalise',
-      bilanRadiologique: [{
-        id: "2",
-        nom: "Bilan 2",
-      }],
-      bilansBiologique: [{
-        id: "1",
-        nom: "Bilan 1",
-      }],
-      ordonnances: [
-        {
-          titre: 'Ordonnance 1',
-          state: 'En attente',
-          traitements: [{
-            medicament: 'doliprane',
-            dose: '2000mg',
-            duree: '2 jours',
-          }]
-        },
-      ]
-    }
-    ],
-    soins: [],
-    decodeBase64: ''
-  }
-  ];
+  isPopupOpen : boolean;
 
-  constructor(private router: Router,private route: ActivatedRoute , private dpiService: DpiService){}
+  indexOfDPIToDelete : number = -1;
+
+  DPIToDelete : DPI | null = null;
+
+  DPIs: DPI[] | null = null;
+
+  constructor(private router: Router,private route: ActivatedRoute , private dpiService: DpiService){
+    this.isPopupOpen = false;
+  }
 
   
   ngOnInit(): void {
+    this.DPIs = this.dpiService.getDPIs();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         // Check the current URL to determine if the child route is active
@@ -246,7 +55,7 @@ export class MedecinDashboardComponent implements OnInit{
 
   // ---------------------------------------------- SEARCH Logic:
   // In any reload of the page: DPIsList will be DPIs.
-  DPIsList: DPI[] = [...this.DPIs]; //copy the DPIs array to DPIsList:
+  DPIsList: DPI[] | null = this.DPIs; //copy the DPIs array to DPIsList:
   matchedDPI: null | DPI = {
     id: '',
     nom: '',
@@ -269,7 +78,7 @@ export class MedecinDashboardComponent implements OnInit{
   // Search by QR code logic:
   matchDPIbyQRcode(): void {
     this.matchedDPI =
-      this.DPIs.find((DPI) => DPI.decodeBase64 === this.decodedBase64) || null;
+      this.DPIs?.find((DPI) => DPI.decodeBase64 === this.decodedBase64) || null;
     if (this.matchedDPI) {
       this.DPIsList = [this.matchedDPI];
     } else {
@@ -317,7 +126,7 @@ export class MedecinDashboardComponent implements OnInit{
   matchDPIbyNSS(): void {
     if (this.searchedNSS) {
       this.matchedDPI =
-        this.DPIs.find((DPI) => DPI.NSS === this.searchedNSS) || null;
+        this.DPIs?.find((DPI) => DPI.NSS === this.searchedNSS) || null;
       if (this.matchedDPI) {
         this.DPIsList = [this.matchedDPI];
         this.searchedNSS = null;
@@ -328,5 +137,30 @@ export class MedecinDashboardComponent implements OnInit{
     } else {
       alert('Ecrire le NSS avant la recherche!');
     }
+  }
+
+
+  deleteConsultation(){
+    this.DPIs = this.DPIs?.filter(c => c.id !== this.DPIToDelete?.id) || null;
+    console.log(this.DPIs);
+    this.dpiService.setDPIs(this.DPIs || null);
+    this.closeDeletionPopup();
+  }
+
+  OpenDeletionPopup(index : number){
+    this.isPopupOpen = true;
+    console.log(index);
+    this.indexOfDPIToDelete = index;
+    if(this.DPIs){
+      this.DPIToDelete = this.DPIs[this.indexOfDPIToDelete];
+    }
+    else{
+      this.DPIToDelete = null;
+    }
+    console.log(this.DPIToDelete);
+  }
+  closeDeletionPopup(){
+    this.indexOfDPIToDelete = -1;
+    this.isPopupOpen = false;
   }
 }
