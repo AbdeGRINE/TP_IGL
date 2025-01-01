@@ -1,7 +1,11 @@
 import { Routes } from '@angular/router';
 import { MedecinDashboardComponent } from './features/medecin/medecin-dashboard/medecin-dashboard.component';
+<<<<<<< HEAD
 import { LoginComponent } from './features/auth/login/login.component';
 // import { LoginComponent } from './features/auth/login/login.component';
+=======
+import { LoginComponent } from './features/login/login.component';
+>>>>>>> d84b03e495db39b4438c513639d8a8c53c00ff05
 import { AdminDashboardComponent } from './features/admin/admin-dashboard/admin-dashboard.component';
 import { CreerDPIComponent } from './features/admin/creer-dpi/creer-dpi.component';
 import { MedecinCreerDpiComponent } from './features/medecin/medecin-creer-dpi/medecin-creer-dpi.component';
@@ -82,6 +86,7 @@ export const routes: Routes = [
     component: InfirmierDashboardComponent,
     title: 'Infirmier Dashboard',
   },
+<<<<<<< HEAD
   {
     path: 'laboratin-dashboard',
     component: LaboratinDashboardComponent,
@@ -93,4 +98,7 @@ export const routes: Routes = [
     title: 'Radiologue Dashboard',
   },
   { path: '**', redirectTo: 'medecin-dashboard' },
+=======
+ 
+>>>>>>> d84b03e495db39b4438c513639d8a8c53c00ff05
 ];
