@@ -92,5 +92,5 @@ export const routes: Routes = [
     component: RadiologueDashboardComponent,
     title: 'Radiologue Dashboard',
   },
-  { path: '**', redirectTo: 'medecin-dashboard' },
+  { path: '**', redirectTo: 'login' },
 ];

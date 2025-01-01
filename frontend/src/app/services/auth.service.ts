@@ -1,16 +1,23 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
-import { User } from '../models/interfaces/interfaces';
-  
+
 //these interfaces will be public (in interfaces front):
 export interface AuthResponse {
+  id_role: string; //the id of patient, not user_patient!
   token: string;
   user: User;
 }
 
+export interface User {
+  id: string;
+  username: string;
+  password: string;
+  email: string;
+  type: string;
+}
 export interface UserResponse {
   user: User;
 }
@@ -19,7 +26,7 @@ export interface UserResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000/';
+  private apiUrl = 'https://6da3-105-105-165-116.ngrok-free.app';
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
   private isBrowser: boolean;
@@ -36,11 +43,16 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<AuthResponse> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http
-      .post<AuthResponse>(`${this.apiUrl}/users/authentifier_utilisateur/`, {
-        username,
-        password,
-      })
+      .post<AuthResponse>(
+        `${this.apiUrl}/users/authentifier_utilisateur/`,
+        {
+          username,
+          password,
+        },
+        { headers }
+      )
       .pipe(
         tap((response) => {
           if (this.isBrowser) {

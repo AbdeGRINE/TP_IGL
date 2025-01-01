@@ -1,12 +1,4 @@
 //this is a the general logic of our front-end app:
-export interface User {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  //to be defined after:
-  // type: string;
-}
 export interface DPI {
   id: string;
   nom: string;
