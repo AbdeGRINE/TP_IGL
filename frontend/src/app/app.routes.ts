@@ -16,6 +16,8 @@ import { PatientAfficherConsultationComponent } from './features/patient/patient
 import { afficherDpiGuard } from './guards/medecin/afficher-dpi.guard';
 import { afficherConsultationGuard } from './guards/medecin/afficher-consultation.guard';
 import { creerConsultationGuard } from './guards/medecin/creer-consultation.guard';
+import { afficherConsultationPatientGuard } from './guards/patient/afficher-consultation.guard';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
@@ -70,7 +72,8 @@ export const routes: Routes = [
       {
         path : 'patient-afficher-consultation/:id',
         component: PatientAfficherConsultationComponent,
-        title : 'Patient Afficher Consultation'
+        title : 'Patient Afficher Consultation',
+        canActivate: [afficherConsultationPatientGuard],
       }
     ]
   },

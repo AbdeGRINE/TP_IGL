@@ -9,6 +9,7 @@ import { DpiService } from '../../../services/dpi.service';
 import { ConsultationService } from '../../../services/consultation.service';
 import * as QRCode from 'qrcode';
 import { from } from 'rxjs';
+import { setAccessedFromADashboardPatient } from '../../../guards/patient/afficher-consultation.guard';
 
 @Component({
   selector: 'app-dashboard-patient',
@@ -75,6 +76,7 @@ export class DashboardPatientComponent {
   
     navigateToViewConsultation(consultation : Consultation){
       this.consultationService.setConsultation(consultation);
+      setAccessedFromADashboardPatient(true);
       this.route.navigate(['patient-afficher-consultation', consultation.id], { relativeTo: this.router });
   }
   
