@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from users.models import DPI, Medcin, Etablissement, Patient
-from .serializers import DPISerializer
+from .serializers import DPISerializer, SimpleDPISerializer
 import qrcode
 from io import BytesIO
 from rest_framework.generics import RetrieveAPIView
@@ -28,13 +28,12 @@ class creer_dpi(APIView):
     def post(self, request, *args, **kwargs):
         # Valider les données
         patient_data = request.data.get("patient")
-        medecin_id = request.data.get("medecin_traitant")
-        etablissement_id = request.data.get("etablissement_courant")
+        medecin_nom_prenom = request.data.get("medecin_traitant")  # Nom et prénom du médecin
         personne_contact_data = request.data.get("personne_a_contacter")  # Nouveau champ ajouté
 
-        if not patient_data or not medecin_id or not etablissement_id:
+        if not patient_data or not medecin_nom_prenom:
             return Response({"error": "Données incomplètes."}, status=status.HTTP_400_BAD_REQUEST)
-
+        
         # Combiner nom et prénom de la personne à contacter en une seule chaîne
         personne_a_contacter = None
         if personne_contact_data:
@@ -58,26 +57,47 @@ class creer_dpi(APIView):
             patient.personne_a_contacter = personne_a_contacter
             patient.save()
 
-        # Récupérer les objets médecin et établissement
-        medecin = get_object_or_404(Medcin, id=medecin_id)
-        etablissement = get_object_or_404(Etablissement, id=etablissement_id)
+       
+
+   
+  
+
+
+        # Séparer le nom et le prénom du médecin
+        try:
+            medecin_nom, medecin_prenom = medecin_nom_prenom.split(" ", 1)
+        except ValueError:
+            return Response({"error": "Le nom et le prénom du médecin doivent être fournis séparés par un espace."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Récupérer le médecin par son nom et prénom
+        try:
+            medecin = Medcin.objects.get(nom=medecin_nom, prenom=medecin_prenom)
+        except Medcin.DoesNotExist:
+            return Response({"error": f"Le médecin {medecin_nom} {medecin_prenom} n'existe pas."}, status=status.HTTP_404_NOT_FOUND)
+        
+
+        # Créer un nouvel établissement avec une chaîne vide ou "xxxx"
+        etablissement = Etablissement.objects.create(nom="xxxx")  # Créer un établissement avec "xxxx"
+
+
 
         # Générer le QR Code
-        qr_data = f"NSS: {patient.NSS}, Patient: {patient.nom} {patient.prenom}, Médecin: {medecin.nom}, Établissement: {etablissement.nom}"
+        qr_data = f"NSS: {patient.NSS}, Patient: {patient.nom} {patient.prenom}, Médecin: {medecin.nom}"
         qr = qrcode.make(qr_data)
         qr_binary = BytesIO()
         qr.save(qr_binary, format="PNG")
         qr_binary.seek(0)
 
-        # Convertir l'image en base64
+        # Convertir l'image en base64 et sauvegarder directement en base64
         qr_base64 = base64.b64encode(qr_binary.read()).decode('utf-8')
+      
 
-        # Créer le DPI
+        # Créer le DPI avec le QR code en base64 et l'établissement créé
         dpi = DPI.objects.create(
             medecin_traitant=medecin,
-            etablissement_courant=etablissement,
+            etablissement_courant=etablissement,  # Lier l'établissement avec chaîne vide
             patient=patient,
-            qr_code=qr_binary.read(),
+            qr_code=qr_base64,
         )
 
         return Response({
@@ -104,6 +124,21 @@ class consulter_dpi(APIView):
   
 
 
+
+
+
+
+    
+class ListerDPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        dpi_list = DPI.objects.all()
+
+        # Utiliser le sérialiseur SimpleDPISerializer
+        serializer = SimpleDPISerializer(dpi_list, many=True)
+
+        return Response(serializer.data, status=200)
 
 
 
