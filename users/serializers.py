@@ -5,7 +5,23 @@ from .models import Patient, Medcin, Laborantin, Radiologue, Infermier, Etabliss
 class UserSerializer (serializers.ModelSerializer):
     class Meta(object):
         model = User
-        fields =['id','username','password','email']
+        fields =['id','username','password','email','type']
+
+    
+    def get_type(self, obj):
+        if hasattr(obj, 'patient'):
+            return 'patient'
+        elif hasattr(obj, 'medcin'):
+            return 'medcin'
+        elif hasattr(obj, 'laborantin'):
+            return 'laborantin'
+        elif hasattr(obj, 'radiologue'):
+            return 'radiologue'
+        elif hasattr(obj, 'infirmier'):
+            return 'infirmier'
+        elif hasattr(obj, 'administratif'):
+            return 'administratif'
+        return None
 
 
 class PatientSerializer(serializers.ModelSerializer):
