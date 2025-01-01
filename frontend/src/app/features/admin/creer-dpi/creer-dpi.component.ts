@@ -38,7 +38,7 @@ export class CreerDPIComponent {
   ) {}
 
   navigateToAdminDashboard() {
-    this.navigationService.navigateTo('/login');
+    this.navigationService.navigateTo('/admin-dashboard');
   }
 
   inputValidation(): boolean {

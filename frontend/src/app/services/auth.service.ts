@@ -2,13 +2,8 @@ import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-<<<<<<< HEAD
-  
-//These intefaces should be in model, public for all the components (we need them in the header)
-=======
 import { isPlatformBrowser } from '@angular/common';
 
->>>>>>> d84b03e495db39b4438c513639d8a8c53c00ff05
 export interface User {
   id: number;
   username: string;
@@ -25,7 +20,7 @@ export interface UserResponse {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8000/users';
@@ -45,12 +40,6 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<AuthResponse> {
-<<<<<<< HEAD
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/authentifier_utilisateur/`, {
-        username,
-        password,
-=======
     return this.http.post<AuthResponse>(`${this.apiUrl}/authentifier_utilisateur/`,
       { username, password }
     ).pipe(
@@ -59,48 +48,23 @@ export class AuthService {
           localStorage.setItem('token', response.token);
         }
         this.userSubject.next(response.user);
->>>>>>> d84b03e495db39b4438c513639d8a8c53c00ff05
       })
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('token', response.token);
-          this.userSubject.next(response.user);
-        })
-      );
+    );
   }
 
-  // no need to it:
-  register(userData: {
-    username: string;
-    password: string;
-    email: string;
-  }): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/inscrire_utilisateur/`, userData)
+  register(userData: { username: string; password: string; email: string }): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/inscrire_utilisateur/`, userData)
       .pipe(
-<<<<<<< HEAD
-        tap((response) => {
-          localStorage.setItem('token', response.token);
-=======
         tap(response => {
           if (this.isBrowser) {
             localStorage.setItem('token', response.token);
           }
->>>>>>> d84b03e495db39b4438c513639d8a8c53c00ff05
           this.userSubject.next(response.user);
         })
       );
   }
 
   logout(): Observable<any> {
-<<<<<<< HEAD
-    return this.http.post(`${this.apiUrl}/deconnecter_utilisateur/`, {}).pipe(
-      tap(() => {
-        localStorage.removeItem('token');
-        this.userSubject.next(null);
-      })
-    );
-=======
     return this.http.post(`${this.apiUrl}/deconnecter_utilisateur/`, {})
       .pipe(
         tap(() => {
@@ -110,15 +74,13 @@ export class AuthService {
           this.userSubject.next(null);
         })
       );
->>>>>>> d84b03e495db39b4438c513639d8a8c53c00ff05
   }
 
   getCurrentUser(): Observable<User> {
-    return this.http
-      .get<UserResponse>(`${this.apiUrl}/obtenir_utilisateur_connecte/`)
+    return this.http.get<UserResponse>(`${this.apiUrl}/obtenir_utilisateur_connecte/`)
       .pipe(
-        map((response) => response.user),
-        tap((user) => {
+        map(response => response.user),
+        tap(user => {
           this.userSubject.next(user);
         })
       );
