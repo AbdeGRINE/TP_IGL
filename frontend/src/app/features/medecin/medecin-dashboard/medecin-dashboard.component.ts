@@ -228,7 +228,7 @@ export class MedecinDashboardComponent implements OnInit{
       if (event instanceof NavigationEnd) {
         // Check the current URL to determine if the child route is active
         const currentRoute = this.router.url;
-        this.showParentUI = !(currentRoute.includes('afficher-dpi') || currentRoute.includes('creer-dpi'));
+        this.showParentUI = !(currentRoute.includes('afficher-dpi') || currentRoute.includes('creer-dpi') || currentRoute.includes('medecin-creer-dpi'));
       }
     });
   }
@@ -239,7 +239,7 @@ export class MedecinDashboardComponent implements OnInit{
   }
 
   navigateToCreerDPI(){
-    this.router.navigate(['/medecin-dashboard/creer-dpi-medecin']);
+    this.router.navigate(['/medecin-dashboard/medecin-creer-dpi']);
   
     //this.router.navigate(['./creer-dpi-medecin'], { relativeTo: this.route });
   }
