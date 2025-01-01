@@ -19,13 +19,21 @@ import { from } from 'rxjs';
 })
 export class AfficherDpiComponent implements OnInit{
 
-    patient: DPI | null = null;
+    patient: DPI ;
 
     showParentUI: boolean = true;
 
     qrCodeDataUrl: string | null = null; //our image URL.
 
-    constructor(private route : Router,private router: ActivatedRoute, private dpiService: DpiService, private consultationService : ConsultationService){}
+    isPopupOpen : boolean = false;
+
+    indexOfConsultationToDelete : number = -1;
+
+    consultationToDelete : Consultation | null = null;
+
+    constructor(private route : Router,private router: ActivatedRoute, private dpiService: DpiService, private consultationService : ConsultationService){
+      this.patient = this.dpiService.getDPI();
+    }
 
     downloadImage() {
       const image = document.getElementById('qrCodeImage') as HTMLImageElement;
@@ -36,7 +44,6 @@ export class AfficherDpiComponent implements OnInit{
     }
 
     ngOnInit() {
-      this.patient = this.dpiService.getDPI();
       if (this.patient) {
         // You can now use the DPI object in your template
         console.log('DPI object:', this.patient);
@@ -49,7 +56,7 @@ export class AfficherDpiComponent implements OnInit{
           if (event instanceof NavigationEnd) {
             // Check the current URL to determine if the child route is active
             const currentRoute = this.route.url;
-            this.showParentUI = !currentRoute.includes('afficher-consultation');
+            this.showParentUI = !(currentRoute.includes('afficher-consultation') || currentRoute.includes("creer-consultation"));
           }
         });
   }
@@ -80,5 +87,28 @@ export class AfficherDpiComponent implements OnInit{
 
   goBack(){
     this.route.navigate(['../..',], { relativeTo: this.router });
+  }
+  NavigateToCreerConsultation(){
+    console.log(this.dpiService.getDPI());
+    this.route.navigate(['creer-consultation'], { relativeTo: this.router });
+  }
+
+  deleteConsultation(){
+    this.patient.consultations = this.patient.consultations.filter(c => c.id !== this.consultationToDelete?.id);
+    console.log(this.patient);
+    this.dpiService.setDPI(this.patient);
+    this.closeDeletionPopup();
+  }
+
+  OpenDeletionPopup(index : number){
+    this.isPopupOpen = true;
+    console.log(index);
+    this.indexOfConsultationToDelete = index;
+    this.consultationToDelete = this.patient.consultations[this.indexOfConsultationToDelete];
+    console.log(this.consultationToDelete);
+  }
+  closeDeletionPopup(){
+    this.indexOfConsultationToDelete = -1;
+    this.isPopupOpen = false;
   }
 }

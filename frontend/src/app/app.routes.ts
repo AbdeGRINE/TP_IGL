@@ -36,6 +36,11 @@ export const routes: Routes = [
             component: AfficherConsultationComponent,
             title: 'Afficher Consultation',
           },
+          {
+            path: 'creer-consultation',
+            component: CreerConsultationComponent,
+            title: 'Creer Consultation',
+          },
         ],
       },
       {
@@ -55,12 +60,6 @@ export const routes: Routes = [
     component: DashboardPatientComponent,
     title: 'Patient Dashboard',
   },
-  {
-    path: 'creer-consultation',
-    component: CreerConsultationComponent,
-    title: 'Creer Consultation',
-  },
-
   {
     path: 'infirmier-dashboard',
     component: InfirmierDashboardComponent,

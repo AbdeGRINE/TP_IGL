@@ -1,9 +1,9 @@
 <app-header></app-header>
 <div class="relative bg-lightgray px-[10%] w-full flex h-full min-h-fit pb-10">
-    <!-- <div class="absolute inset-0 " [ngClass]="{
+    <div class="absolute inset-0 " [ngClass]="{
     'bg-gray opacity-50': isPopupOpen,
     'bg-transparent hidden': !isPopupOpen
-  }"></div> -->
+  }"></div>
     <div *ngIf="isAddOrdonnanceOpen"
         class="absolute top-16 left-1/2 transform -translate-x-1/2  bg-white flex flex-col justify-center items-center border border-darkgray rounded-lg gap-y-6 w-2/3 px-4 py-4 h-96">
         <div class="w-full justify-self-start text-xl">Ajouter Ordonnance</div>
@@ -92,7 +92,7 @@
                         <div class="flex justify-between items-center mx-4 my-2">
                             <div class="text-xl">Date</div>
                             <div class="bg-lightgray text-darkgray px-6 py-2 rounded-sm">
-                                {{selectedPatient.dateDeCreation | date : "dd/MM/YYYY"}}</div>
+                                {{newConsultation.dateDeCreation| date : "dd/MM/yyyy"}}</div>
                         </div>
                     </div>
 
@@ -151,13 +151,6 @@
 
 
                             </div>
-                            <div class="flex flex-col">
-                                <div class="flex items-center gap-x-4">
-                                    <input type="checkbox" class="border border-darkgray rounded-md h-full" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-
-                            </div>
                         </div>
                     </div>
 
@@ -180,14 +173,6 @@
                                 </div>
 
                             </div>
-                            <div class="flex flex-col">
-                                <div class="flex items-center gap-x-4">
-                                    <input type="checkbox" class="border border-darkgray rounded-md h-full" />
-                                    <div class="text-xl">Bilan</div>
-                                </div>
-
-
-                            </div>
                         </div>
 
                     </div>
@@ -207,7 +192,9 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-end w-full">
+        <div class="flex justify-between w-full">
+            <button class="bg-white text-green text-lg px-6 py-2 rounded-xl flex border border-green"
+                (click)="goBack()">Retour</button>
             <button class="bg-green text-white text-lg px-6 py-2 rounded-xl flex "
                 (click)="onSubmit()">Enregistrer</button>
         </div>

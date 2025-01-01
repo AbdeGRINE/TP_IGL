@@ -1,6 +1,22 @@
 <app-header *ngIf="showParentUI"></app-header>
 <router-outlet></router-outlet>
-<div class="bg-lightgray px-[5%] py-14 flex flex-col gap-y-20" *ngIf="showParentUI">
+<div class="bg-lightgray px-[5%] py-14 flex flex-col gap-y-20 relative" *ngIf="showParentUI">
+    <div class="absolute inset-0 " [ngClass]="{
+        'bg-gray opacity-50': isPopupOpen,
+        'bg-transparent hidden': !isPopupOpen
+      }"></div>
+    <div *ngIf="isPopupOpen"
+        class="absolute top-[600px] left-1/2 transform -translate-x-1/2  bg-white flex flex-col border border-darkgray rounded-lg gap-y-6 w-1/2 px-4 py-4 h-40">
+        <div class="w-full flex flex-col h-full min-h-full  justify-center items-center">
+            <div class="py-6 text-black text-xl text-center">Etes vous sure de vouloir supprimer l'ordonnance
+                {{consultationToDelete?.id}}?</div>
+            <div class="flex justify-center w-full gap-x-5">
+                <button class="text-lg px-6 py-2 rounded-xl flex " (click)="closeDeletionPopup()">Annuler</button>
+                <button class="bg-red text-white text-lg px-6 py-2 rounded-xl flex "
+                    (click)="deleteConsultation()">Supprimer</button>
+            </div>
+        </div>
+    </div>
     <div>
         <button (click)="goBack()"
             class="bg-white text-green text-lg px-6 py-2 rounded-xl border border-g w-auto">Retour</button>
@@ -69,7 +85,10 @@
     <div class="flex w-full h-full">
         <div class="flex flex-row justify-between items-center gap-x-20 min-h-fit w-full">
             <div class="bg-white border rounded-xl border-darkgray w-3/5 h-full flex flex-col items-center p-8 gap-y-4">
-                <div class="w-full text-left text-xl">Liste des consultations:</div>
+                <div class="w-full text-left text-xl flex justify-between items-center">
+                    <div>Liste des consultations</div>
+                    <button (click)="NavigateToCreerConsultation()"><img src="/add.svg" alt="add icon" /></button>
+                </div>
                 <div class="w-full flex flex-col items-center gap-y-1">
                     <div
                         class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center justify-between">
@@ -78,7 +97,7 @@
                         <div>Actions</div>
                     </div>
                     <div class="w-full flex flex-col">
-                        <div *ngFor="let Consultation of patient?.consultations"
+                        <div *ngFor="let Consultation of patient?.consultations; let i = index"
                             class="flex justify-between items-center py-2 px-4">
                             <div>{{Consultation.id}}</div>
                             <div>
@@ -91,7 +110,7 @@
                             <div class="flex flex-row gap-x-6 items-center justify-between">
                                 <button><img src="/eye.svg" alt="view icon"
                                         (click)="navigateToViewConsultation(Consultation)"></button>
-                                <button><img src="/trash.svg" alt="delete icon"></button>
+                                <button><img src="/trash.svg" alt="delete icon" (click)="OpenDeletionPopup(i)"></button>
                             </div>
 
                         </div>

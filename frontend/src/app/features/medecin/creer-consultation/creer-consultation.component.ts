@@ -1,39 +1,37 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
-import { NavigationService } from '../../../services/navigation.service';
-import { FormBuilder, FormGroup, FormArray, FormControl , ReactiveFormsModule, FormsModule} from '@angular/forms';
+import { ReactiveFormsModule, FormsModule} from '@angular/forms';
 import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/interfaces';
-
+import { DpiService } from '../../../services/dpi.service';
+import { Router, RouterModule,ActivatedRoute } from '@angular/router';
 
 
 
 @Component({
   selector: 'app-creer-consultation',
-  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule,RouterModule],
   templateUrl: './creer-consultation.component.html',
   styleUrl: './creer-consultation.component.css'
 })
 export class CreerConsultationComponent implements OnInit {
 
-  patient: DPI = 
-    {
-      id: 'P12345',
-      nom: 'Benziada',
-      prenom: 'Fares',
-      NSS: '123456',
-      dateNaissance: new Date("01-01-2004"),
-      adresse: "Reghaia",
-      telephone: "0666666666",
-      mutuelle: "/",
-      personneAContacter: "/",
-      medecin: 'Grine',
-      dateDeCreation: new Date('2023-01-01'),
-      consultations: [],
-      soins: [],
-      decodeBase64: '',
-    };
+  //   {
+  //     id: 'P12345',
+  //     nom: 'Benziada',
+  //     prenom: 'Fares',
+  //     NSS: '123456',
+  //     dateNaissance: new Date("01-01-2004"),
+  //     adresse: "Reghaia",
+  //     telephone: "0666666666",
+  //     mutuelle: "/",
+  //     personneAContacter: "/",
+  //     medecin: 'Grine',
+  //     dateDeCreation: new Date('2023-01-01'),
+  //     consultations: [],
+  //     soins: [],
+  //     decodeBase64: '',
+  //   };
 
   // Soin and Ordonnace modals logic:
   //Initialization:
@@ -61,45 +59,18 @@ export class CreerConsultationComponent implements OnInit {
   }
 
   selectedOrdonnance: Ordonnance | null = null;
-  //private formBuilder = inject(FormBuilder);
-  //Consultation ;
-  
-
   selectedBilanBiologique: Bilan[] = [];
   selectedBilanRadiologique: Bilan[] = [];
 
-  constructor(private fb:FormBuilder){
-    this.selectedPatient = this.patient;
+  constructor(private dpiService : DpiService, private router : Router, private route : ActivatedRoute){
+    this.selectedPatient = this.dpiService.getDPI();
     this.selectedOrdonnance = null;
     this.newConsultation.id =  this.selectedPatient.consultations.length + 1,
     console.log(this.selectedPatient);
-    // this.Consultation = this.fb.group({
-    //   date: new Date().toISOString().split('T')[0],
-    //   resume: '',
-    //   bilansBiologique: this.fb.array([]),
-    //   bilansRadiologique: this.fb.array([])
-    // });
-    // this.Consultation = new FormGroup('');
-    // this.Consultation = this.formBuilder.group({
-    //   date: [new Date().toISOString().split('T')[0]],
-    //   bilanBiologique : this.formBuilder.group({
-    //     bilan1 : '',
-    //     bilan2 : '',
-    //     bilan3 : '',
-    //   }),
-    //   bilanRadiologique : this.formBuilder.group({
-    //     bilan1 : '',
-    //     bilan2 : '',
-    //     bilan3 : '',
-    //   }),
-    //   resume : ''
-    // })
   }
   ngOnInit(): void {
-    this.selectedPatient = this.patient;
     this.selectedOrdonnance = null;
     console.log(this.selectedPatient);
-    //this.bilansBiologique.forEach(() => this.control.push(new FormControl()))
   }
 
 
@@ -147,10 +118,7 @@ export class CreerConsultationComponent implements OnInit {
     if (
       this.newOrdonnace?.traitements
     ) {
-      //this.selectedPatient.consultations.
       this.newConsultation.ordonnances.push({ ...this.newOrdonnace });
-      this.newConsultation.bilansBiologique = [...this.selectedBilanBiologique];
-      this.newConsultation.bilanRadiologique = [...this.selectedBilanRadiologique];
       console.log(this.selectedPatient);
       this.newOrdonnace = {titre: `Ordonnance ${this.newConsultation.ordonnances.length + 1}`,
         state : 'en attente',
@@ -279,12 +247,18 @@ onSubmit(){
       ordonnances : [],
       resume : "",
     }
+    alert("La nouvelle Consultation a etait creer avec succes!");
+
 
   } else {
     alert("Veuillez remplir tous les champs avant d'ajouter une consultation.");
   }
   console.log(this.selectedPatient);
-
+  this.dpiService.setDPI(this.selectedPatient);
 }
 
+
+goBack(){
+  this.router.navigate(['../',], { relativeTo: this.route });
+}
 }
