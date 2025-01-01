@@ -9,6 +9,7 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework.permissions import IsAuthenticated
 from .serializers import UserSerializer, PatientSerializer, LaborantinSerializer, MedcinSerializer, RadiologueSerializer, InfirmierSerializer, AdministratifSerializer
 from .models import Groupe, Patient, Medcin, Laborantin, Radiologue, Infermier, Admin
+from rest_framework import status 
 import random
 
 # Create your views here. 

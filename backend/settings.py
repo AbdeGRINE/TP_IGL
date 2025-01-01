@@ -52,6 +52,9 @@ INSTALLED_APPS = [
     'Ordonnance',
     'Consultation',
     'Soin',
+    'Ordonnance',
+    'Consultation',
+    'Soin',
 
 ]
 REST_FRAMEWORK = {

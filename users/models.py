@@ -70,9 +70,20 @@ class Patient(models.Model):
     adresse = models.CharField(max_length=100)
     mutuelle = models.CharField(max_length=50)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient', null=True, blank=True)
+    personne_a_contacter = models.CharField(max_length=255, blank=True, null=True)
 
+
+    
     def __str__(self):
         return f'{self.nom} {self.prenom}'
+    
+
+
+
+
+
+
+
 
 class Medcin(models.Model):
     nom = models.CharField(max_length=50)
@@ -237,6 +248,11 @@ class Admin(models.Model):
     def __str__(self):
         return f'{self.nom} {self.prenom}'
 
+
+
+
+
+"""
 class PersonneAContacter(models.Model):
     prenom = models.CharField(max_length=50)
     nom = models.CharField(max_length=50)
@@ -246,3 +262,4 @@ class PersonneAContacter(models.Model):
 
     def __str__(self):
         return f'{self.prenom} {self.nom} (Contact for {self.patient})'
+"""

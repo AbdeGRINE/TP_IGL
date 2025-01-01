@@ -1,7 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 from django.urls import reverse
-from users.models import DPI, Medcin, Etablissement, Patient, PersonneAContacter
+from users.models import DPI, Medcin, Etablissement, Patient
 from django.contrib.auth.models import User
 from users.permissions import IsDoctor, IsAdmin, IsPatient
 from django.utils import timezone
@@ -14,14 +14,22 @@ def test_creer_dpi_non_authentifie():
     # Créer les objets nécessaires
     etablissement = Etablissement.objects.create(nom="Clinique Test", adresse="Adresse Test")
     medecin = Medcin.objects.create(nom="Benziada", prenom="Dr.", etablissement=etablissement)
+  
+
+
     patient_data = {
-        "nss": "123456789012345",
-        "nom": "MESSAOUD",
-        "prenom": "Amel",
-        "date_naissance": "1990-01-01",
-        "adresse": "Adresse Test",
-        "mutuelle": "Test",
+      "nss": "123456789012345",
+      "nom": "MESSAOUD",
+      "prenom": "Amel",
+      "date_naissance": "1990-01-01",
+      "adresse": "Adresse Test",
+      "mutuelle": "Test",
+      "personne_a_contacter": "Nom Contact Personne"
     }
+
+
+
+ 
     payload = {
         "patient": patient_data,
         "medecin_traitant": medecin.id,
@@ -47,12 +55,13 @@ def test_creer_dpi_utilisateur_non_autorise():
     etablissement = Etablissement.objects.create(nom="Clinique Test", adresse="Adresse Test")
     medecin = Medcin.objects.create(nom="Benziada", prenom="Dr.", etablissement=etablissement)
     patient_data = {
-        "nss": "123456789012345",
-        "nom": "MESSAOUD",
-        "prenom": "Amel",
-        "date_naissance": "1990-01-01",
-        "adresse": "Adresse Test",
-        "mutuelle": "Test",
+      "nss": "123456789012345",
+      "nom": "MESSAOUD",
+      "prenom": "Amel",
+      "date_naissance": "1990-01-01",
+      "adresse": "Adresse Test",
+      "mutuelle": "Test",
+      "personne_a_contacter": "Nom Contact Personne"
     }
     payload = {
         "patient": patient_data,
@@ -96,12 +105,13 @@ def test_creer_dpi_utilisateur_autorise():
 
     # Données du patient
     patient_data = {
-        "nss": "123456789012345",
-        "nom": "MESSAOUD",
-        "prenom": "Amel",
-        "date_naissance": "1990-01-01",
-        "adresse": "Adresse Test",
-        "mutuelle": "Test",
+      "nss": "123456789012345",
+      "nom": "MESSAOUD",
+      "prenom": "Amel",
+      "date_naissance": "1990-01-01",
+      "adresse": "Adresse Test",
+      "mutuelle": "Test",
+      "personne_a_contacter": "Nom Contact Personne"
     }
 
     # Payload pour la création du DPI
@@ -109,12 +119,7 @@ def test_creer_dpi_utilisateur_autorise():
         "patient": patient_data,
         "medecin_traitant": medecin.id,
         "etablissement_courant": etablissement.id,
-        "personne_a_contacter": {
-           "prenom": "Karim",
-           "nom": "Benziada",
-           "n_tlph": "0123456789",
-           "relation": "Frère"
-        }
+        
     }
 
     # Authentifier l'utilisateur
@@ -145,11 +150,3 @@ def test_creer_dpi_utilisateur_autorise():
 
   
 
-
-    # Vérifier la personne à contacter
-    personne_contact = PersonneAContacter.objects.first()
-    assert personne_contact is not None
-    assert personne_contact.prenom == "Karim"
-    assert personne_contact.nom == "Benziada"
-    assert personne_contact.n_tlph == "0123456789"
-    assert personne_contact.relation == "Frère"
