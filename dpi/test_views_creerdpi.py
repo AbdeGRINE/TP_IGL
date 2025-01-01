@@ -12,7 +12,7 @@ import base64
 @pytest.mark.django_db
 def test_creer_dpi_non_authentifie():
     # Créer les objets nécessaires
-    etablissement = Etablissement.objects.create(nom="Clinique Test", adresse="Adresse Test")
+    etablissement = Etablissement.objects.create(nom="xxxx") 
     medecin = Medcin.objects.create(nom="Benziada", prenom="Dr.", etablissement=etablissement)
   
 
@@ -32,9 +32,9 @@ def test_creer_dpi_non_authentifie():
  
     payload = {
         "patient": patient_data,
-        "medecin_traitant": medecin.id,
-        "etablissement_courant": etablissement.id,
+        "medecin_traitant": f"{medecin.nom} {medecin.prenom}",  # Nom et prénom combinés
     }
+
 
     client = APIClient()
     url = reverse('creer_dpi')  # Assurez-vous que le chemin est correctement défini
@@ -42,31 +42,27 @@ def test_creer_dpi_non_authentifie():
 
     # Vérifier qu'un utilisateur non authentifié reçoit un code 401
     assert response.status_code in [401, 403]
-     # Vérifier l'URL du QR code (si applicable)
-    if response.status_code == 201:
-        assert 'qr_code' in response.data 
-
+    
 
 
 @pytest.mark.django_db
 def test_creer_dpi_utilisateur_non_autorise():
     # Créer un utilisateur sans rôle approprié (par exemple un patient)
     user = User.objects.create_user(username="testuser", password="password")
-    etablissement = Etablissement.objects.create(nom="Clinique Test", adresse="Adresse Test")
-    medecin = Medcin.objects.create(nom="Benziada", prenom="Dr.", etablissement=etablissement)
+    etablissement = Etablissement.objects.create(nom="xxxx") 
+    medecin = Medcin.objects.create(nom="Benziada", prenom="Dr.", specialite="Cardiologie", etablissement=etablissement)
     patient_data = {
-      "nss": "123456789012345",
-      "nom": "MESSAOUD",
-      "prenom": "Amel",
-      "date_naissance": "1990-01-01",
-      "adresse": "Adresse Test",
-      "mutuelle": "Test",
-      "personne_a_contacter": "Nom Contact Personne"
+        "nss": "123456789012345",
+        "nom": "MESSAOUD",
+        "prenom": "Amel",
+        "date_naissance": "1990-01-01",
+        "adresse": "Adresse Test",
+        "mutuelle": "Test",
+        "personne_a_contacter": {"nom": "Doe", "prenom": "John"}
     }
     payload = {
         "patient": patient_data,
-        "medecin_traitant": medecin.id,
-        "etablissement_courant": etablissement.id,
+        "medecin_traitant": f"{medecin.nom} {medecin.prenom}",
     }
 
     client = APIClient()
@@ -76,19 +72,15 @@ def test_creer_dpi_utilisateur_non_autorise():
 
     # Vérifier qu'un utilisateur sans les bonnes permissions reçoit un code 403
     assert response.status_code == 403
-    if response.status_code == 201:
-        assert 'qr_code' in response.data 
-
+    
 
 
 
 
 @pytest.mark.django_db
 def test_creer_dpi_utilisateur_autorise():
-    # Créer un établissement
-    etablissement = Etablissement.objects.create(nom="Clinique Test", adresse="Adresse Test")
-
     # Créer un médecin dans la table Medcin
+    etablissement = Etablissement.objects.create(nom="xxxx")  # Créer un établissement avec "xxxx"
     medecin = Medcin.objects.create(nom="Benziada", prenom="Dr.", specialite="Cardiologie", etablissement=etablissement)
 
     # Créer un utilisateur ayant les mêmes nom et prénom que le médecin
@@ -105,22 +97,21 @@ def test_creer_dpi_utilisateur_autorise():
 
     # Données du patient
     patient_data = {
-      "nss": "123456789012345",
-      "nom": "MESSAOUD",
-      "prenom": "Amel",
-      "date_naissance": "1990-01-01",
-      "adresse": "Adresse Test",
-      "mutuelle": "Test",
-      "personne_a_contacter": "Nom Contact Personne"
+        "nss": "123456789012345",
+        "nom": "MESSAOUD",
+        "prenom": "Amel",
+        "date_naissance": "1990-01-01",
+        "adresse": "Adresse Test",
+        "mutuelle": "Test",
+        "personne_a_contacter": {"nom": "Doe", "prenom": "John"}
     }
 
     # Payload pour la création du DPI
     payload = {
         "patient": patient_data,
-        "medecin_traitant": medecin.id,
-        "etablissement_courant": etablissement.id,
-        
+        "medecin_traitant": f"{medecin.nom} {medecin.prenom}",
     }
+
 
     # Authentifier l'utilisateur
     client = APIClient()
@@ -129,11 +120,6 @@ def test_creer_dpi_utilisateur_autorise():
     # URL de la vue pour créer un DPI
     url = reverse('creer_dpi')  # Remplace par le nom réel de ta vue
     response = client.post(url, payload, format='json')
-
-
-
-
-
 
     # Vérifications
     assert response.status_code == 201  # L'utilisateur est autorisé et peut créer un DPI
@@ -147,6 +133,13 @@ def test_creer_dpi_utilisateur_autorise():
 
     assert 'qr_code' in response.data  # Check for the base64 encoded QR code
 
-
-  
-
+    assert dpi.patient.nom == "MESSAOUD"
+    assert dpi.medecin_traitant.nom == "Benziada"
+    assert dpi.etablissement_courant.nom == "xxxx"  # Vérifier que l'établissement contient "xxxx"
+    
+    # Vérifier que le QR code est bien en base64
+    assert isinstance(dpi.qr_code, str)
+    try:
+        base64.b64decode(dpi.qr_code)
+    except Exception:
+        pytest.fail("Le QR code n'est pas un format base64 valide")

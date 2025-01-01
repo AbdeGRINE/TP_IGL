@@ -98,9 +98,9 @@ class Medcin(models.Model):
 
 class DPI(models.Model):
     date_creation = models.DateField(auto_now_add=True)
-    qr_code = models.BinaryField()
+    qr_code = models.TextField()
     medecin_traitant = models.ForeignKey(Medcin, on_delete=models.CASCADE)
-    etablissement_courant = models.ForeignKey(Etablissement, on_delete=models.CASCADE)
+    etablissement_courant = models.ForeignKey(Etablissement, on_delete=models.CASCADE, null=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
 
     def __str__(self):

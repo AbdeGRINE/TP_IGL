@@ -1,42 +1,33 @@
-# API Documentation
+API Documentation
 
 Cette documentation décrit les endpoints disponibles pour gérer les DPI (Dossier Patient Informatisé) dans l'application backend.
+Base URL
 
----
+    Environnement de développement :
+    http://127.0.0.1:8000/
 
-## Base URL
-
-- **Environnement de développement** :  
-  `http://127.0.0.1:8000/`
-
----
-
-## Headers par défaut
+Headers par défaut
 
 À inclure dans toutes les requêtes sauf mention contraire :
 
-- `Content-Type: application/json`
-- `Authorization: Token <token>`
+    Content-Type: application/json
+    Authorization: Token <token>
 
-`<token>` est obtenu après la connexion et permet d’authentifier les utilisateurs.
+<token> est obtenu après la connexion et permet d’authentifier les utilisateurs.
+Endpoints
+1. Créer un DPI
 
----
+    Endpoint : POST /dpi/creer/
+    Description : Permet de créer un Dossier Patient Informatisé (DPI) pour un patient avec génération d'un QR code.
 
-## Endpoints
+Requête
 
-### 1. Créer un DPI
+    Headers :
 
-- **Endpoint** : `POST /dpi/creer/`
-- **Description** : Permet de créer un Dossier Patient Informatisé (DPI) pour un patient avec génération d'un QR code.
+Content-Type: application/json  
+Authorization: Token <token> (nécessite un rôle Doctor ou Admin)
 
-#### Requête
-
-- **Headers** :
-  ```plaintext
-  Content-Type: application/json  
-  Authorization: Token <token> (nécessite un rôle Doctor ou Admin)
-
-    Body :
+Body :
 
     {
       "patient": {
@@ -47,8 +38,11 @@ Cette documentation décrit les endpoints disponibles pour gérer les DPI (Dossi
         "adresse": "<adresse>",
         "mutuelle": "<nom de la mutuelle>"
       },
+<<<<<<< HEAD
       "medecin_traitant": <id_medecin>,
-      "etablissement_courant": <id_etablissement>,
+=======
+      "medecin_traitant": "<nom_prénom_du_médecin>",
+>>>>>>> 783bb6bf ( modifier foncrion creer dpi)
       "personne_a_contacter": {
         "nom": "<nom_contact>",
         "prenom": "<prenom_contact>"
@@ -88,8 +82,8 @@ Réponse
 
 {
   "id": <dpi_id>,
-  "medecin_traitant": <nom_medecin>,
-  "etablissement_courant": <nom_etablissement>,
+  "medecin_traitant": "<nom_medecin>",
+  "etablissement_courant": "<nom_etablissement>",
   "patient": {
     "nss": "<nss>",
     "nom": "<nom>",
@@ -133,8 +127,8 @@ Réponse
 
 {
   "id": <dpi_id>,
-  "medecin_traitant": <nom_medecin>,
-  "etablissement_courant": <nom_etablissement>,
+  "medecin_traitant": "<nom_medecin>",
+  "etablissement_courant": "<nom_etablissement>",
   "patient": {
     "nss": "<nss>",
     "nom": "<nom>",
