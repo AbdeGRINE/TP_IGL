@@ -30,6 +30,19 @@ export class AuthService {
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
   private isBrowser: boolean;
+  authResponse : AuthResponse;
+
+  setAuthResponse(response: AuthResponse){
+    if(this.authResponse){
+      this.authResponse.user = response.user;
+      this.authResponse.id_role = response.id_role;
+      this.authResponse.token  = response.token;
+    }
+  }
+
+  getAuthResponse(){
+    return this.authResponse;
+  }
 
   constructor(
     private http: HttpClient,
