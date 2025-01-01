@@ -7,10 +7,14 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+<<<<<<< HEAD
 from .serializers import UserSerializer, PatientSerializer, LaborantinSerializer, MedcinSerializer, RadiologueSerializer, InfirmierSerializer
 from .models import Groupe
 import random
 
+=======
+from .serializers import UserSerializer
+>>>>>>> origin/Grine/Ajout_fonctionnalités
 # Create your views here. 
 
 
@@ -58,6 +62,7 @@ def obtenir_utilisateur_connecte(request: Request) -> Response:
     return Response({"detail": "user not found"})
 
 
+<<<<<<< HEAD
 
 @api_view(['POST'])
 # @authentication_classes([TokenAuthentication])
@@ -186,6 +191,8 @@ def creer_infirmier(request: Request) -> Response:
                 "user": {"username": username, "token": token.key}
             })
     return Response(serializer.errors)
+=======
+>>>>>>> origin/Grine/Ajout_fonctionnalités
 
 # @api_view(['POST'])
 # @authentication_classes([TokenAuthentication])

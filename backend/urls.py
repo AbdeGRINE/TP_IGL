@@ -38,6 +38,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
+    path('bilan/', include('bilan.urls')),
     path('dpi/', include('dpi.urls')), # Inclure les URLs spécifiques à l'app dpi
     path('Ordonnance/', include('Ordonnance.urls')),
     path('Consultation/', include('Consultation.urls')),

@@ -2,10 +2,12 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Patient, Medcin, Laborantin, Radiologue, Infermier, Etablissement
 
+
 class UserSerializer (serializers.ModelSerializer):
     class Meta(object):
         model = User
         fields =['id','username','password','email']
+
 
 
 class PatientSerializer(serializers.ModelSerializer):
@@ -53,3 +55,4 @@ class EtablissementSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Medcin
 #         fields = ['id', 'nom', 'prenom']
+
