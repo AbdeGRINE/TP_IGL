@@ -70,6 +70,21 @@ export class LaboranService {
     return bilan ? bilan.tests : null;
   }
 
-  
+  updateTestResults(patientId: string, bilanNom: string, newResults: { [key: string]: string }): boolean {
+    ////objet qui contient le nom su test et le resultat(newResults)
+    const patient = this.patients.find(p => p.id === patientId);
+    if (patient) {
+      const bilan = patient.bilans.find(b => b.nom === bilanNom);
+      if (bilan) {
+        bilan.tests.forEach(test => {
+          if (newResults[test.nom]) {
+            test.resultat = newResults[test.nom];
+          }
+        });
+        return true;
+      }
+    }
+    return false;
+  }
  
 }
