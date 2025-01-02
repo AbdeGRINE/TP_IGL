@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 //Run the db with: `json-server --watch src/db.json --port 3000`,
 //after installing the json-server.
 export class ApiDataService {
-  private baseUrl = 'https://6da3-105-105-165-116.ngrok-free.app'; //link of backend api here.
+  private baseUrl = 'https://4eca-105-105-165-116.ngrok-free.app/'; //link of backend api here.
   constructor(private http: HttpClient) {}
 
   //The <T> makes the method flexible to work with different data types.
@@ -42,4 +42,14 @@ export class ApiDataService {
     });
     return this.http.get<T>(url, { headers });
   }
+
+  getBilansRadiologueEnCours<T>(endpoint: string, token: string): Observable<T> {
+    const url = `${this.baseUrl}/${endpoint}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${token}`,
+    });
+    return this.http.get<T>(url, { headers });
+  }
+
 }

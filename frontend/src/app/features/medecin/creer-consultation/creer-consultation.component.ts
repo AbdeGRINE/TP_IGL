@@ -111,28 +111,30 @@ export class CreerConsultationComponent implements OnInit {
   }
 
 
-  bilansBiologique: Bilan[] = [{
-    id: '1',
-    nom: "bilan 1",
-  },{
-    id: '2',
-    nom : "bilan 2",
-  },{
-    id: '3',
-    nom : "bilan 3",
-  }
+  bilansBiologique: Bilan[] = [
+  //   {
+  //   id: '1',
+  //   nom: "bilan 1",
+  // },{
+  //   id: '2',
+  //   nom : "bilan 2",
+  // },{
+  //   id: '3',
+  //   nom : "bilan 3",
+  // }
 ]
 
-bilansRadio = [{
-  id: '1',
-  nom : "bilan 1",
-},{
-  id: '2',
-  nom : "bilan 2",
-},{
-  id: '3',
-  nom : "bilan 3",
-}
+bilansRadio = [
+//   {
+//   id: '1',
+//   nom : "bilan 1",
+// },{
+//   id: '2',
+//   nom : "bilan 2",
+// },{
+//   id: '3',
+//   nom : "bilan 3",
+// }
 ]
 
 onCheckboxChangeBio(bilan: Bilan, event: any) {

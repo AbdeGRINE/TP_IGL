@@ -47,8 +47,15 @@ export interface Consultation {
   bilanRadiologique: Bilan[];
 }
 export interface Bilan {
-  id: string;
   nom: string;
+  date_demande: string; // 2005-01-02
+  date_recuperation: string | null;
+  status: 'En_cours' | 'Terminé';
+  type: 'Radiologique' | 'Biologique';
+  redigant_laborantin: number | null;
+  redigant_radiologue: number | null;
+  consultation: number;
+  graphique: 'Attaché' | 'Non_Attaché';
 }
 
 export interface Ordonnance {
