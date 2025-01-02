@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from users.models import DPI, Medcin, Etablissement, Patient
+from users.models import DPI, Medcin, Etablissement, Patient, StatusBilan, TypeBilan
 from .serializers import DPISerializer, SimpleDPISerializer
 import qrcode
 from io import BytesIO
@@ -114,9 +114,15 @@ class creer_dpi(APIView):
 
 
 class consulter_dpi(APIView):
-    #permission_classes = [IsAuthenticated, IsDoctor | IsPatient] 
+    permission_classes = [IsAuthenticated] 
     def get(self, request, dpi_id, *args, **kwargs):
         # Récupérer le DPI
+        auth_header = request.META.get('HTTP_AUTHORIZATION')  # Fetch the Authorization header
+        if not auth_header:
+         return Response({'error': 'Authorization header is missing'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Log or process the token
+        print(f"Received token: {auth_header.split(' ')[1]}")  # Assuming "Token <your_token>"
         dpi = get_object_or_404(DPI, id=dpi_id)
         serializer = DPISerializer(dpi)
 
@@ -130,7 +136,7 @@ class consulter_dpi(APIView):
 
     
 class ListerDPI(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         dpi_list = DPI.objects.all()
@@ -140,16 +146,75 @@ class ListerDPI(APIView):
 
         return Response(serializer.data, status=200)
 
+class ListerDPI_par_medecin(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        medecin_id = request.query_params.get('medecin_id')
+ 
+        dpi_list = DPI.objects.all()
+
+       
+        if medecin_id:
+            dpi_list = dpi_list.filter(medecin_traitant_id=medecin_id)
+
+        serializer = SimpleDPISerializer(dpi_list, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class ListerDPIByRadiologiqueStatus(APIView):
+    def get(self, request, *args, **kwargs):
+        status_bilan = request.query_params.get('status_bilan')
+        if not status_bilan:
+            return Response(
+                {"error": "Missing 'status_bilan' query parameter."},
+                status=400
+            )
+
+        valid_statuses = [choice[0] for choice in StatusBilan.choices]
+        if status_bilan not in valid_statuses:
+            return Response(
+                {"error": f"Invalid 'status_bilan'. Must be one of {valid_statuses}."},
+                status=400
+            )
+
+        dpi_list = DPI.objects.filter(
+            consultation__bilan__status=status_bilan,
+            consultation__bilan__type=TypeBilan.RADIOLOGIQUE
+        ).distinct()
+
+        serializer = SimpleDPISerializer(dpi_list, many=True)
+        return Response(serializer.data, status=200)
 
 
+class ListerDPIByBiologiqueStatus(APIView):
+    def get(self, request, *args, **kwargs):
+        status_bilan = request.query_params.get('status_bilan')
+        if not status_bilan:
+            return Response(
+                {"error": "Missing 'status_bilan' query parameter."},
+                status=400
+            )
 
+        valid_statuses = [choice[0] for choice in StatusBilan.choices]
+        if status_bilan not in valid_statuses:
+            return Response(
+                {"error": f"Invalid 'status_bilan'. Must be one of {valid_statuses}."},
+                status=400
+            )
 
+        dpi_list = DPI.objects.filter(
+            consultation__bilan__status=status_bilan,
+            consultation__bilan__type=TypeBilan.BIOLOGIQUE
+        ).distinct()
+
+        serializer = SimpleDPISerializer(dpi_list, many=True)
+        return Response(serializer.data, status=200)
 
 
 
 
 class rechercher_dpi_nss(APIView):
-     permission_classes = [IsAuthenticated, IsDoctor | IsPatient]  
+     #permission_classes = [IsAuthenticated, IsDoctor | IsPatient]  
      def get(self, request, *args, **kwargs):
         # Récupérer le NSS depuis les paramètres GET
         nss = request.query_params.get("nss")
