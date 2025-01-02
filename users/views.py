@@ -29,7 +29,7 @@ def authentifier_utilisateur(request: Request) -> Response:
                 }
             serializer = UserSerializer(instance= user)
             token,created = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key,"user": serializer.data,"related_data": patient_data},status= status.HTTP_200_OK)
+            return Response({"token": token.key,"user": serializer.data},status= status.HTTP_200_OK)
         return Response({"details": "incorrect password"},status= status.HTTP_400_BAD_REQUEST)
     except User.DoesNotExist:
         return Response({"details": "user not found"},status= status.HTTP_400_BAD_REQUEST)
@@ -145,8 +145,8 @@ def creer_laborantin(request: Request) -> Response:
     return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+#@authentication_classes([TokenAuthentication])
+#@permission_classes([IsAuthenticated])
 def creer_radiologue(request: Request) -> Response:
     # superuser
     serializer = RadiologueSerializer(data=request.data)
