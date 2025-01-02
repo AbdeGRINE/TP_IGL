@@ -54,7 +54,7 @@ export class LaboranService {
     return patient ? patient.bilans : null;
   }
 
-  //this is a getter for one bilan
+  //this is a getter for one bilan (to gointo the test modal)
   getBilanForPatient(patientId: string, bilanNom: string): Bilan | null {
     const patient = this.patients.find(p => p.id === patientId);
     if (patient) {
@@ -64,5 +64,12 @@ export class LaboranService {
     return null;
   }
 
+  // Get all tests for a specific bilan of a patient
+  getTestsForBilan(patientId: string, bilanNom: string): Test[] | null {
+    const bilan = this.getBilanForPatient(patientId, bilanNom);
+    return bilan ? bilan.tests : null;
+  }
+
+  
  
 }
