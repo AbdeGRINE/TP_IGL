@@ -1,7 +1,5 @@
 // src/app/services/laboratin.service.ts
-
 import { Injectable } from '@angular/core';
-
 
 interface Patient {
   id: string;
@@ -24,7 +22,7 @@ interface Test {
 @Injectable({
   providedIn: 'root'
 })
-export class LaboranService{
+export class LaboranService {
   
   private patients: Patient[] = [
     {
@@ -50,5 +48,21 @@ export class LaboranService{
     return this.patients;
   }
 
-  
+  // Get all bilans for a specific patient(for the bilan modal)
+  getBilansForPatient(patientId: string): Bilan[] | null {
+    const patient = this.patients.find(p => p.id === patientId);
+    return patient ? patient.bilans : null;
+  }
+
+  //this is a getter for one bilan
+  getBilanForPatient(patientId: string, bilanNom: string): Bilan | null {
+    const patient = this.patients.find(p => p.id === patientId);
+    if (patient) {
+      const bilan = patient.bilans.find(b => b.nom === bilanNom);
+      return bilan || null;
+    }
+    return null;
+  }
+
+ 
 }
