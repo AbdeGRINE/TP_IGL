@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-//import { Chart } from 'chart.js/auto';
+//import { Chart } from 'chart.js/auto'; // hada nahinah (it was the courbe )
 import { Chart, registerables } from 'chart.js';
+//import { LaboranService } from ../../services/laboran.service;
 Chart.register(...registerables);
 
 interface Patient {
@@ -94,6 +95,7 @@ export class LaboratinDashboardComponent implements OnInit {
         {
           nom: 'Bilan Sanguin',
           tests: [
+            //check les changements
             { nom: 'Test1', resultat: '7,90' },
             { nom: 'Test2', resultat: '0,5' },
             { nom: 'Test3', resultat: '20,5' },
@@ -139,7 +141,7 @@ export class LaboratinDashboardComponent implements OnInit {
     },
     
   ];
-
+///initiaisation
   selectedPatient: Patient | null = null;
   selectedBilan: Bilan | null = null;
   bilansModalVisible = false;
@@ -156,7 +158,7 @@ export class LaboratinDashboardComponent implements OnInit {
     this.originalBilans = JSON.parse(JSON.stringify(patient.bilans));
     this.bilansModalVisible = true;
   }
-
+//same from the infermier
   closeBilansModal() {
     this.bilansModalVisible = false;
     this.selectedPatient = null;

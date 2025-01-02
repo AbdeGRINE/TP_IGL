@@ -50,21 +50,5 @@ export class LaboranService{
     return this.patients;
   }
 
-  // Update test results(modification)
-  updateTestResults(patientId: string, bilanNom: string, newResults: { [key: string]: string }): boolean { //hadoo g3 ml ancient data
-    const patient = this.patients.find(p => p.id === patientId);
-    if (patient) {//patient trouve 
-      const bilan = patient.bilans.find(b => b.nom === bilanNom);
-      if (bilan) { //bilan trouvé
-        bilan.tests.forEach(test => {
-          if (newResults[test.nom]) {
-            //hna tsra la mise a jour des test 
-            test.resultat = newResults[test.nom];
-          }
-        });
-        return true;
-      }
-    }
-    return false;
-  }
+  
 }
