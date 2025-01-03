@@ -31,7 +31,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-wv%+l(xvk^&*llyc+igta-)_^&ny06tc(_e_^z8&q!q#kb_k01'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,6 +84,9 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://22e4-105-105-99-74.ngrok-free.app",
+]
 CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'backend.urls'
@@ -109,11 +112,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-import dj_database_url
 
-DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600)
-}
 
 DATABASES = {
     'default': {

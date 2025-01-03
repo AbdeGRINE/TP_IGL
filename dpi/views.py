@@ -111,10 +111,8 @@ class creer_dpi(APIView):
 
 
 
-
-
 class consulter_dpi(APIView):
-    permission_classes = [IsAuthenticated] 
+    #permission_classes = [IsAuthenticated] 
     def get(self, request, dpi_id, *args, **kwargs):
         # Récupérer le DPI
         auth_header = request.META.get('HTTP_AUTHORIZATION')  # Fetch the Authorization header

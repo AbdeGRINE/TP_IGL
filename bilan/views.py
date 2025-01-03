@@ -41,8 +41,8 @@ def consulter_bilans_biologiques_en_cours(request: Request) -> Response:
     return Response(bilans_data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+#@authentication_classes([TokenAuthentication])
+#@permission_classes([IsAuthenticated])
 def consulter_bilans_radiologiques_en_cours(request: Request) -> Response:
     # radiologue
     bilans = Bilan.objects.filter(status=StatusBilan.EN_COURS, type=TypeBilan.RADIOLOGIQUE)
