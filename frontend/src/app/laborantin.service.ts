@@ -45,4 +45,21 @@ export class LaborantinService {
         
       );
 
- }}
+ }
+//get un seul patient 
+getPatient(id: string): Observable<Patient> {
+  return this.http.get<Patient>(`${this.apiUrl}/patients/${id}/`)
+    .pipe(
+      map(patient => ({
+        ...patient,
+        dateDeCreation: new Date(patient.dateDeCreation)
+      })),
+      
+    );
+}
+//sauvegarder les tests
+saveTestResults(bilanId: number, tests: Partial<Test>[]): Observable<Bilan> {
+  return this.http.put<Bilan>(`${this.apiUrl}/bilans/${bilanId}/tests/`, { tests })
+   
+}
+}
