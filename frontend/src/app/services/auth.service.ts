@@ -15,20 +15,21 @@ export class AuthService {
   private isBrowser: boolean;
 
   authResponse: AuthResponse = {
-    id_role: '',
     token: '',
     user: {
       id: '',
       username: '',
       password: '',
       email: '',
-      type: '',
+      role : {
+        type : '',
+        id : '',
+      }
     },
   };
 
   setAuthResponse(response: AuthResponse) {
     this.authResponse.user = response.user;
-    this.authResponse.id_role = response.id_role;
     this.authResponse.token = response.token;
   }
 
