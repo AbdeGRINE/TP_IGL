@@ -57,6 +57,12 @@ getPatient(id: string): Observable<Patient> {
       
     );
 }
+//get les bilans d'un patient 
+getPatientBilans(patientId: string): Observable<Bilan[]> {
+  return this.http.get<Bilan[]>(`${this.apiUrl}/patients/${patientId}/bilans/`)
+}
+
+
 //sauvegarder les tests
 saveTestResults(bilanId: number, tests: Partial<Test>[]): Observable<Bilan> {
   return this.http.put<Bilan>(`${this.apiUrl}/bilans/${bilanId}/tests/`, { tests })
