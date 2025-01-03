@@ -158,7 +158,7 @@ export class LaboratinDashboardComponent implements OnInit {
     this.originalBilans = JSON.parse(JSON.stringify(patient.bilans));
     this.bilansModalVisible = true;
   }
-//same from the infermier
+//
   closeBilansModal() {
     this.bilansModalVisible = false;
     this.selectedPatient = null;
@@ -250,7 +250,7 @@ export class LaboratinDashboardComponent implements OnInit {
     });
   }
     
-
+//changer les valeurs des test
   updateTestResult(testName: string, newValue: string) {
     this.editedResults[testName] = newValue;
   }
