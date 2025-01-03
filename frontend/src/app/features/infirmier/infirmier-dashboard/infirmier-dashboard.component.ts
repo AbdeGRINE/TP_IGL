@@ -3,14 +3,41 @@ import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiDataService } from '../../../services/api-data.service';
+import { AuthService } from '../../../services/auth.service';
 
-interface Patient {
-  id: string;
-  nom: string;
-  medecin: string;
-  dateDeCreation: Date;
+//This Patient can be named DPI:
+export interface Patient {
+  id: number;
+  patient_nom: string;
+  patient_prenom: string;
+  medecin_traitant: MedecinTraitant;
+  etablissement_courant: EtablissementCourant;
+  date_creation: string;
   ordonnances: Ordonnance[];
   soins: Soin[];
+}
+
+export interface MedecinTraitant {
+  id: number;
+  nom: string;
+  prenom: string;
+  specialite: string;
+}
+
+export interface EtablissementCourant {
+  id: number;
+  nom: string;
+  adresse: string;
+}
+
+interface Soin {
+  id: string;
+  nom: string;
+  date: string;
+  status: string;
+  observation: string;
+  dpi: string;
+  infermier: string;
 }
 
 interface Ordonnance {
@@ -24,11 +51,6 @@ interface Traitement {
   duree: string;
 }
 
-interface Soin {
-  titre: string;
-  observation: string;
-}
-
 @Component({
   selector: 'app-infirmier-dashboard',
   imports: [HeaderComponent, CommonModule, FormsModule],
@@ -36,114 +58,55 @@ interface Soin {
   styleUrl: './infirmier-dashboard.component.css',
 })
 export class InfirmierDashboardComponent {
-  // patients: Patient[] = [
-  //   {
-  //     id: 'P12345',
-  //     nom: 'Benziada',
-  //     medecin: 'Grine',
-  //     dateDeCreation: new Date('2023-01-01'), //?
-  //     ordonnances: [
-  //       {
-  //         titre: 'ordonnance 1',
-  //         traitements: [
-  //           {
-  //             medicament: 'Paracetamol',
-  //             dose: '500mg',
-  //             duree: '7 jours',
-  //           },
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         titre: 'Ordonnance 2',
-  //         traitements: [
-  //           {
-  //             medicament: 'Ibuprofen',
-  //             dose: '200mg',
-  //             duree: '5 jours',
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //     soins: [
-  //       {
-  //         titre: 'soin 1',
-  //         observation: "Ce soin là est un soin d'un module qui s'appelle IGL.",
-  //       },
-  //     ],
-  //   },
-  // ];
-
-  constructor(private apiDataService: ApiDataService) {}
+  constructor(
+    private apiDataService: ApiDataService,
+    private authService: AuthService
+  ) {}
   patients: Patient[] | null = null;
-  // Fetching data from the backend once the pages is loaded:
+  // Fetching Patients from the backend once the pages is loaded:
   ngOnInit() {
-    this.apiDataService.get<Patient[]>('Patients').subscribe({
+    this.apiDataService.getAll<Patient[]>('dpi/listerall/').subscribe({
       next: (data) => (this.patients = data),
       error: (err) => console.error('Error fetching users:', err),
     });
   }
-
+  //------------------------------------------------------------------
   // Soin and Ordonnace modals logic:
   //Initialization:
   selectedPatient: Patient | null = null;
   soinsModalVisible = false;
   newSoin: Soin = {
-    titre: '',
+    id: '',
+    nom: '',
+    date: '',
+    status: '',
     observation: '',
+    dpi: '',
+    infermier: ``,
   };
-  originalSoins: Soin[] = []; // To store the original soins
+  newSoins: Soin[] = [];
   selectedOrdonnance: Ordonnance | null = null;
   ordonnanceModalVisible = false;
 
   //Methodes:
   openSoinsModal(patient: Patient) {
     this.selectedPatient = patient;
-    this.originalSoins = JSON.parse(JSON.stringify(patient.soins)); // Deep copy of patient.soins
+    //fetch Soins from the backend:
+    this.apiDataService
+      .get<Soin[]>(
+        `Soin/dpi/${this.selectedPatient?.id}/`,
+        `${this.authService.getToken()}`
+      )
+      .subscribe({
+        next: (data) => {
+          if (this.selectedPatient) {
+            this.selectedPatient.soins = data; // Assign only if selectedPatient is not null
+          }
+        },
+        error: (err) => console.error('Error fetching soins:', err),
+      });
+    //fetch ordonnance from backend too:
+    //still not done!
     this.soinsModalVisible = true;
   }
 
@@ -152,13 +115,6 @@ export class InfirmierDashboardComponent {
     this.selectedPatient = null;
   }
 
-  cancelSoinsModal() {
-    //it can be null.
-    if (this.selectedPatient) {
-      this.selectedPatient.soins = this.originalSoins; // Revert to original, this means that patient also will be reverted.
-    }
-    this.closeSoinsModal();
-  }
 
   openOrdonnanceModal(ordonnance: Ordonnance) {
     this.selectedOrdonnance = ordonnance;
@@ -171,35 +127,39 @@ export class InfirmierDashboardComponent {
   }
 
   addNewSoin() {
-    if (
-      this.selectedPatient &&
-      this.newSoin.titre &&
-      this.newSoin.observation
-    ) {
+    if (this.selectedPatient && this.newSoin.nom && this.newSoin.observation) {
       //when pushing to selectedPatient, we push also into to the patient.
       //because the two variables refrences the same object.
       //this.selectedPatient = patient is an assignement by reference.
-      this.selectedPatient.soins.push({ ...this.newSoin });
-      this.newSoin = { titre: '', observation: '' }; // Reset input fields to null.
+      this.newSoins.push({ ...this.newSoin }); //to put just the new one.
+      this.selectedPatient.soins.push({ ...this.newSoin }); //for the list
+      this.newSoin = {
+        id: '',
+        nom: '',
+        date: '',
+        status: '',
+        observation: '',
+        dpi: '',
+        infermier: '',
+      }; // Reset input fields to null.
     } else {
       alert("Veuillez remplir tous les champs avant d'ajouter un soin.");
     }
   }
 
-  //it's better to put just the soins,
-  //but I am putting all the patient,
-  //because there is no end point of `/Patients/id/soins` in my data base.
   handleSaveSoins() {
-    this.apiDataService.put(`Patients/${this.selectedPatient?.id}`, this.selectedPatient).subscribe({
-      next: (response) => {
-        alert('Les soins du patient ont été enregistrées avec succès!');
-        this.closeSoinsModal();
-        console.log(response);
-      },
-      error: (err) => {
-        alert('Impossible d"enregistrer le patient. Veuillez réessayer.');
-        console.error(err);
-      },
-    });
+    this.apiDataService
+      .put(`Soin/creer/`, this.newSoins, `${this.authService.getToken()}`)
+      .subscribe({
+        next: (response) => {
+          alert('Les soins du patient ont été enregistrées avec succès!');
+          this.closeSoinsModal();
+          console.log(response);
+        },
+        error: (err) => {
+          alert('Impossible d"enregistrer le patient. Veuillez réessayer.');
+          console.error(err);
+        },
+      });
   }
 }

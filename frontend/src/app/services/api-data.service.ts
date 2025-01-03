@@ -12,44 +12,53 @@ import { Observable } from 'rxjs';
 //Run the db with: `json-server --watch src/db.json --port 3000`,
 //after installing the json-server.
 export class ApiDataService {
-  private baseUrl = 'https://4eca-105-105-165-116.ngrok-free.app/'; //link of backend api here.
+  //run the django server and put its linke here:
+  private baseUrl = 'http://127.0.0.1:8000';
   constructor(private http: HttpClient) {}
 
   //The <T> makes the method flexible to work with different data types.
   // If you're posting data and expecting a response of type User, you'd call post<User>.
-  post<T>(endpoint: string, data: any): Observable<T> {
+  post<T>(endpoint: string, data: any, token: string): Observable<T> {
     const url = `${this.baseUrl}/${endpoint}`;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    });
     return this.http.post<T>(url, data, { headers });
   }
 
-  put<T>(endpoint: string, data: any): Observable<T> {
+  put<T>(endpoint: string, data: any, token: string): Observable<T> {
     const url = `${this.baseUrl}/${endpoint}`;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    });
     return this.http.put<T>(url, data, { headers });
   }
 
-  get<T>(endpoint: string): Observable<T> {
+  getAll<T>(endpoint: string): Observable<T> {
     const url = `${this.baseUrl}/${endpoint}`;
     return this.http.get<T>(url);
   }
 
-  getDPI<T>(endpoint: string, token: string): Observable<T> {
+  get<T>(endpoint: string, token: string): Observable<T> {
     const url = `${this.baseUrl}/${endpoint}`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Token ${token}`,
+      Authorization: `Token ${token}`,
     });
     return this.http.get<T>(url, { headers });
   }
 
-  getBilansRadiologueEnCours<T>(endpoint: string, token: string): Observable<T> {
+  getBilansRadiologueEnCours<T>(
+    endpoint: string,
+    token: string
+  ): Observable<T> {
     const url = `${this.baseUrl}/${endpoint}`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Token ${token}`,
+      Authorization: `Token ${token}`,
     });
     return this.http.get<T>(url, { headers });
   }
-
 }

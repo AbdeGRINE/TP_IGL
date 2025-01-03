@@ -11,5 +11,6 @@ export class HeaderComponent {
   authResponse: AuthResponse;
   constructor(private authService: AuthService) {
     this.authResponse = this.authService.getAuthResponse();
+    console.log('From the header:', this.authResponse);
   }
 }

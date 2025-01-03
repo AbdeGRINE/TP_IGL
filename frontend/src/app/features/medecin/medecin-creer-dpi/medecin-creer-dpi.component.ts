@@ -94,19 +94,19 @@ export class MedecinCreerDpiComponent implements OnInit{
   }
 
   handleSaveDPI() {
-    if (this.inputValidation()) {
-      this.apiDataService.post('DPIs', this.patient).subscribe({
-        next: (response) => {
-          alert('Patient saved successfully!');
-          console.log(response);
-          this.route.navigate(['/medecin-dashboard']);
-        },
-        error: (err) => {
-          alert('Failed to save patient. Please try again.');
-          console.error(err);
-        },
-      });
-    }
+    // if (this.inputValidation()) {
+    //   this.apiDataService.post('DPIs', this.patient).subscribe({
+    //     next: (response) => {
+    //       alert('Patient saved successfully!');
+    //       console.log(response);
+    //       this.route.navigate(['/medecin-dashboard']);
+    //     },
+    //     error: (err) => {
+    //       alert('Failed to save patient. Please try again.');
+    //       console.error(err);
+    //     },
+    //   });
+    // }
     this.navigateToMedecinDashboard();
   }
 

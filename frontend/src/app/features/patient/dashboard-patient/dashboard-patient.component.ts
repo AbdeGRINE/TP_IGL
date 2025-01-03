@@ -54,12 +54,12 @@ export class DashboardPatientComponent {
   ngOnInit() {
     //trying to fetch data
     this.apiDataService
-      .getDPI(
-        'dpi/consulter-dpi/1/',
+      .get(
+        `dpi/consulter-dpi/1/`,
         '3a03779b0655e0518a93a3748d68ee478ee62dd0'
       )
       .subscribe({
-        next: (data) => console.log('I am here, you dont see me?', data),
+        next: (data) => console.log('The Patient', data),
         error: (err) => console.error('Error fetching:', err),
       });
     if (this.patient) {

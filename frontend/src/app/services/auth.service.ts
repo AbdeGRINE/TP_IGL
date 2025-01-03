@@ -9,32 +9,25 @@ import { AuthResponse, User } from '../models/interfaces/interfaces';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://4eca-105-105-165-116.ngrok-free.app/';
+  //run the django server and put its linke here:
+  private apiUrl = 'http://127.0.0.1:8000';
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
   private isBrowser: boolean;
 
   authResponse: AuthResponse = {
-    id_role: '',
     token: '',
     user: {
       id: '',
       username: '',
       password: '',
       email: '',
-      type: '',
+      type: {
+        id: '',
+        type: '',
+      },
     },
   };
-
-  setAuthResponse(response: AuthResponse) {
-    this.authResponse.user = response.user;
-    this.authResponse.id_role = response.id_role;
-    this.authResponse.token = response.token;
-  }
-
-  getAuthResponse() {
-    return this.authResponse;
-  }
 
   constructor(
     private http: HttpClient,
@@ -45,8 +38,30 @@ export class AuthService {
     // if (token) {
     //   this.getCurrentUser().subscribe();
     // }
+
+    const storedData = localStorage.getItem('authResponse');
+    if (storedData) {
+      this.authResponse = JSON.parse(storedData);
+    }
   }
 
+  // setAuthResponse(response: AuthResponse) {
+  //   this.authResponse.user = response.user;
+  //   this.authResponse.token = response.token;
+  // }
+
+  getAuthResponse() {
+    return this.authResponse;
+  }
+
+  getToken() {
+    return this.authResponse.token;
+  }
+
+  //example: return the id of infirmier role (not user).
+  getIdRole() {
+    return this.authResponse.user.type.id;
+  }
   login(username: string, password: string): Observable<AuthResponse> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http
@@ -72,7 +87,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/deconnecter_utilisateur/`, {}).pipe(
       tap(() => {
         if (this.isBrowser) {
-          localStorage.removeItem('token');
+          localStorage.removeItem('authResponse');
         }
         this.userSubject.next(null);
       })

@@ -92,18 +92,18 @@ export class CreerDPIComponent {
 
   handleSaveDPI() {
     //subscibe methode handle the success or error.
-    if (this.inputValidation()) {
-      this.apiDataService.post('DPIs', this.patient).subscribe({
-        next: (response) => {
-          alert('Patient saved successfully!');
-          console.log(response);
-          this.navigationService.navigateTo('/admin-dashboard');
-        },
-        error: (err) => {
-          alert('Failed to save patient. Please try again.');
-          console.error(err);
-        },
-      });
-    }
+    // if (this.inputValidation()) {
+    //   this.apiDataService.post('DPIs', this.patient).subscribe({
+    //     next: (response) => {
+    //       alert('Patient saved successfully!');
+    //       console.log(response);
+    //       this.navigationService.navigateTo('/admin-dashboard');
+    //     },
+    //     error: (err) => {
+    //       alert('Failed to save patient. Please try again.');
+    //       console.error(err);
+    //     },
+    //   });
+    // }
   }
 }
