@@ -19,28 +19,39 @@ from users.permissions import IsInfermier
     methods=['post']
 )
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsInfermier])
+#@permission_classes([IsAuthenticated, IsInfermier])
 def creer_soin(request):
     """
-    Créer un soin pour un patient par un infirmier.
+    Créer plusieurs soins pour le patients par un infirmier.
     """
     if request.method == 'POST':
-        # Sérialiser les données du soin
-        serializer = SoinSerializer(data=request.data)
+        soins_data = request.data  
+       
 
-        if serializer.is_valid():
-            try:
-                dpi = DPI.objects.get(id=request.data.get('dpi'))
-                infermier = Infermier.objects.get(id=request.data.get('infermier'))
-            except DPI.DoesNotExist:
-                return Response({'error': 'DPI not found'}, status=404)
-            except Infermier.DoesNotExist:
-                return Response({'error': 'Infirmier not found'}, status=404)
+        created_soins = []
+        errors = []
 
-            # Enregistrer le soin si tous les éléments sont valides
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+        for soin_data in soins_data:
+            serializer = SoinSerializer(data=soin_data)
+            if serializer.is_valid():
+                try:
+                    dpi = DPI.objects.get(id=soin_data.get('dpi'))
+                    infermier = Infermier.objects.get(id=soin_data.get('infermier'))
+                except DPI.DoesNotExist:
+                    errors.append({'dpi': soin_data.get('dpi'), 'error': 'DPI not found'})
+                    continue
+                except Infermier.DoesNotExist:
+                    errors.append({'infermier': soin_data.get('infermier'), 'error': 'Infirmier not found'})
+                    continue
+
+                serializer.save()
+                created_soins.append(serializer.data)
+            else:
+                errors.append({'data': soin_data, 'error': serializer.errors})
+
+        if created_soins:
+            return Response({'created_soins': created_soins, 'errors': errors}, status=201)
+        return Response({'errors': errors}, status=400)
 
 @swagger_auto_schema(
     operation_description="Récupère toutes les soins liées à un DPI spécifique.",

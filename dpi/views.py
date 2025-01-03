@@ -127,8 +127,21 @@ class consulter_dpi(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
   
 
+  
+class consulterDPI_patient(APIView):
+    permission_classes = [IsAuthenticated] 
+    def get(self, request, patient_id, *args, **kwargs):
+        patient = get_object_or_404(Patient, id=patient_id)
+        dpi_list = DPI.objects.filter(patient=patient)
+        
+        if not dpi_list:
+            return Response(
+                {"error": "No DPI records found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
-
+        serializer = DPISerializer(dpi_list, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 

@@ -11,17 +11,17 @@ class UserSerializer (serializers.ModelSerializer):
     
     def get_type(self, obj):
         if hasattr(obj, 'patient'):
-            return 'patient'
+            return {"type": "patient", "id": obj.patient.id}
         elif hasattr(obj, 'medcin'):
-            return 'medcin'
+            return {"type": "medcin", "id": obj.medcin.id}
         elif hasattr(obj, 'laborantin'):
-            return 'laborantin'
+            return {"type": "laborantin", "id": obj.laborantin.id}
         elif hasattr(obj, 'radiologue'):
-            return 'radiologue'
-        elif hasattr(obj, 'infirmier'):
-            return 'infirmier'
+            return {"type": "radiologue", "id": obj.radiologue.id}
+        elif hasattr(obj, 'infermier'):
+            return {"type": "infermier", "id": obj.infermier.id}
         elif hasattr(obj, 'admin'):
-            return 'admin'
+            return {"type": "admin", "id": obj.admin.id}
         return None
 
 

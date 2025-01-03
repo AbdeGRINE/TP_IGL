@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ListerDPI_par_medecin,  ListerDPIByBiologiqueStatus, ListerDPIByRadiologiqueStatus, creer_dpi, consulter_dpi, rechercher_dpi_nss, ListerDPI    #, rechercher_dpi_qrcode  # Importer la nouvelle vue
+from .views import ListerDPI_par_medecin,  ListerDPIByBiologiqueStatus, ListerDPIByRadiologiqueStatus, consulterDPI_patient, creer_dpi, consulter_dpi, rechercher_dpi_nss, ListerDPI    #, rechercher_dpi_qrcode  # Importer la nouvelle vue
 from . import views
 
 urlpatterns = [
@@ -10,6 +10,7 @@ urlpatterns = [
     path('lister_par_medecin/<int:medecin_id>/', ListerDPI_par_medecin.as_view(), name='ListerDPI_par_medecin'),
     path('radiologique/', ListerDPIByRadiologiqueStatus.as_view(), name='ListerDPIByRadiologiqueStatus'),
     path('biologique/', ListerDPIByBiologiqueStatus.as_view(), name='ListerDPIByBiologiqueStatus'),
+    path('consulter_dpi_patient/<int:patient_id>/', consulterDPI_patient.as_view(), name='consulterDPI_patient'),
     #path('rechercher-dpi-qrcode/', rechercher_dpi_qrcode.as_view(), name='rechercher_dpi_qrcode'), 
      
 ]
