@@ -21,7 +21,7 @@ export class AuthService {
       username: '',
       password: '',
       email: '',
-      role : {
+      type : {
         type : '',
         id : '',
       }

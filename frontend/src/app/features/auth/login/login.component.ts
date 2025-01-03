@@ -25,7 +25,7 @@ export class LoginComponent {
         password: 'amalamal',
         email: 'ma_messaoud@esi.dz',
         type: {
-          type : 'radiologue',
+          type : 'medecin',
           id : '1',
         }
       },
@@ -57,7 +57,7 @@ export class LoginComponent {
         } else if (this.authResponse.user.type.type === 'laboratin') {
           this.naviagtionService.navigateTo('/laboratin-dashboard');
         } else if (this.authResponse.user.type.type === 'radiologue') {
-          this.naviagtionService.navigateTo('/dashboard-radiologue');
+          this.naviagtionService.navigateTo('/radiologue-dashboard');
         } else {
           console.error('Unknown user type:', this.authResponse.user.type.type);
         }

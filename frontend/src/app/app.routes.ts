@@ -17,11 +17,16 @@ import { afficherDpiGuard } from './guards/medecin/afficher-dpi.guard';
 import { afficherConsultationGuard } from './guards/medecin/afficher-consultation.guard';
 import { creerConsultationGuard } from './guards/medecin/creer-consultation.guard';
 import { afficherConsultationPatientGuard } from './guards/patient/afficher-consultation.guard';
+import { rolesGuard } from './guards/roles.guard';
 
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, //route to login by default.
-  { path: 'login', component: LoginComponent, title: 'Login' },
+  { path: 'login', 
+    component: LoginComponent, 
+    title: 'Login',
+    //canActivate: [rolesGuard],
+   },
   {
     path: 'creer-dpi',
     component: CreerDPIComponent,
@@ -31,6 +36,8 @@ export const routes: Routes = [
     path: 'medecin-dashboard',
     component: MedecinDashboardComponent,
     title: 'Medecin Dashboard',
+    data: { role: 'medecin' },
+    canActivate: [rolesGuard],
     children: [
       {
         path: 'afficher-dpi/:id',
@@ -63,11 +70,15 @@ export const routes: Routes = [
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
     title: 'Admin Dashboard',
+    data: { role: 'admin' },
+    canActivate: [rolesGuard],
   },
   {
     path: 'patient-dashboard',
     component: DashboardPatientComponent,
     title: 'Patient Dashboard',
+    data: { role: 'patient' },
+    canActivate: [rolesGuard],
     children : [
       {
         path : 'patient-afficher-consultation/:id',
@@ -81,16 +92,22 @@ export const routes: Routes = [
     path: 'infirmier-dashboard',
     component: InfirmierDashboardComponent,
     title: 'Infirmier Dashboard',
+    data: { role: 'infirmier' },
+    canActivate: [rolesGuard],
   },
   {
     path: 'laboratin-dashboard',
     component: LaboratinDashboardComponent,
     title: 'Laboratin Dashboard',
+    data: { role: 'laboratin' },
+    canActivate: [rolesGuard],
   },
   {
-    path: 'dashboard-radiologue',
+    path: 'radiologue-dashboard',
     component: RadiologueDashboardComponent,
     title: 'Radiologue Dashboard',
+    data: { role: 'radiologue' },
+    canActivate: [rolesGuard],
   },
   { path: '**', redirectTo: 'login' },
 ];
