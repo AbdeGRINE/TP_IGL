@@ -1,56 +1,64 @@
-import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
-import { AuthResponse, Bilan, User } from '../models/interfaces/interfaces';
 import { of } from 'rxjs';
+
+interface Bilan {
+  nom: string;
+  date_demande: string; // 2005-01-02
+  date_recuperation: string | null;
+  status: 'En_cours' | 'Terminé';
+  type: 'Radiologique' | 'Biologique';
+  redigant_laborantin: number | null;
+  redigant_radiologue: number | null;
+  consultation: number;
+  graphique: 'Attaché' | 'Non_Attaché';
+  radioBase64 : string;
+  compteRendu : string,
+}
 
 @Injectable({
   providedIn: 'root'
 })
-export class RadiologueService {
-  private apiUrl = 'https://4eca-105-105-165-116.ngrok-free.app/';
+export class RadiologueService implements OnInit{
+  private apiUrl = 'http://127.0.0.1:8000/';
   private bilansSubject = new BehaviorSubject<Bilan[]>([]);
   bilans$ = this.bilansSubject.asObservable();
   private isBrowser: boolean;
-    bilan : Bilan = {
-    nom: "IRM",
-    date_demande: "2024-12-31",
-    date_recuperation: null,
-    status: "En_cours",
-    type: "Radiologique",
-    redigant_laborantin: null,
-    redigant_radiologue: null,
-    consultation: 1,
-    graphique: "Non_Attaché"
-    }
+    bilans : Bilan[] = [];
 
-    setBilanRadiologique(bilan : Bilan){
+    setBilansRadiologique(bilan : Bilan){
 
     }
 
-    getBilanRadiologique(){
-      return this.bilan;
+    getBilansRadiologique(){
+      return this.bilans;
     }
 
   constructor(private http: HttpClient,
     @Inject(PLATFORM_ID) platformId: Object) {this.isBrowser = isPlatformBrowser(platformId);}
 
+
+  ngOnInit(): void {
+    
+  }
+
     getBilansRadiologueEnCours(): Observable<Bilan[]> {
-      const token = this.isBrowser ? localStorage.getItem('token') : null;
+      const AuthResponseString = this.isBrowser ? localStorage.getItem('authResponse') : null;
+      const AuthResponse = AuthResponseString ? JSON.parse(AuthResponseString) : null;
       
-      if (!token) {
-        throw new Error('No authentication token found');
+      if (!AuthResponse) {
+        throw new Error('No authentication response found');
       }
-      console.log(`token: ${token}`)
+      console.log(`token: ${AuthResponse.token}`)
   
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
-        
-        "ngrok-skip-browser-warning": "69420"
+        'Authentification' : `Token ${AuthResponse.token}`
       });
-      console.log(headers);
+      console.log(AuthResponse);
   
       return this.http.get<Bilan[]>(`${this.apiUrl}bilan/consulter_bilans_radiologiques_en_cours/`, { headers })
       .pipe(
@@ -69,4 +77,13 @@ export class RadiologueService {
         
       );
     }
-}
+
+    saisirResultatsBilanRadiologique<T>(endpoint: string, data: any): Observable<T>{
+      const url = `${this.apiUrl}/${endpoint}`;
+      console.log(data);
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization' : `Token ${JSON.parse(localStorage.getItem('authResponse') || '{}').token}` });
+      console.log(headers);
+      return this.http.post<T>(url, data, { headers });
+    }
+
+  }

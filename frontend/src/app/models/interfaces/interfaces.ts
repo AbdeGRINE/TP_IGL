@@ -6,7 +6,7 @@ export interface AuthResponse {
 }
 
 export interface User {
-  id: string;
+  id: number;
   username: string;
   password: string;
   email: string;

@@ -18,9 +18,9 @@ export class LoginComponent {
   error: string = '';
   private isBrowser: boolean;
   private authResponse : AuthResponse = {
-      token: 'd99d0eb010bac9acc6e935d9dc00845b5995e285',
+      token: '4ca14a05b91bfb2690e4b80b962aba98625442ec',
       user: {
-        id: '8',
+        id: 3,
         username: 'messaoud',
         password: 'amalamal',
         email: 'ma_messaoud@esi.dz',
@@ -64,5 +64,33 @@ export class LoginComponent {
         console.log(this.authResponse);
       }
     }, 500);
+    // this.authService.login(this.username, this.password).subscribe({
+    //   next: (response) => {
+    //     //set the info of user:
+    //     this.authService.setAuthResponse(response);
+    //     if (this.isBrowser) {
+    //       localStorage.setItem('token', response.token);
+    //       if (response.user.type.type === 'admin') {
+    //         this.naviagtionService.navigateTo('/admin-dashboard');
+    //       } else if (response.user.type.type === 'medecin') {
+    //         this.naviagtionService.navigateTo('/medecin-dashboard');
+    //       } else if (response.user.type.type === 'patient') {
+    //         this.naviagtionService.navigateTo('/patient-dashboard');
+    //       } else if (response.user.type.type === 'infirmier') {
+    //         this.naviagtionService.navigateTo('/infirmier-dashboard');
+    //       } else if (response.user.type.type === 'laboratin') {
+    //         this.naviagtionService.navigateTo('/laboratin-dashboard');
+    //       } else if (response.user.type.type === 'radiologue') {
+    //         this.naviagtionService.navigateTo('/dashboard-radiologue');
+    //       } else {
+    //         console.error('Unknown user type:', response.user.type);
+    //       }
+    //       console.log(response);
+    //     }
+    //   },
+    //   error: (error) => {
+    //     this.error = error.error.error || 'Login failed';
+    //   },
+    // });
   }
 }

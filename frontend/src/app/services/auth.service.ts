@@ -9,7 +9,7 @@ import { AuthResponse, User } from '../models/interfaces/interfaces';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://4eca-105-105-165-116.ngrok-free.app/';
+  private apiUrl = 'http://127.0.0.1:8000/';
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
   private isBrowser: boolean;
@@ -17,7 +17,7 @@ export class AuthService {
   authResponse: AuthResponse = {
     token: '',
     user: {
-      id: '',
+      id: -1,
       username: '',
       password: '',
       email: '',
