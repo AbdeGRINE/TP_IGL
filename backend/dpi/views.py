@@ -114,13 +114,7 @@ class creer_dpi(APIView):
 class consulter_dpi(APIView):
     #permission_classes = [IsAuthenticated] 
     def get(self, request, dpi_id, *args, **kwargs):
-        # Récupérer le DPI
-        auth_header = request.META.get('HTTP_AUTHORIZATION')  # Fetch the Authorization header
-        if not auth_header:
-         return Response({'error': 'Authorization header is missing'}, status=status.HTTP_401_UNAUTHORIZED)
-
-        # Log or process the token
-        print(f"Received token: {auth_header.split(' ')[1]}")  # Assuming "Token <your_token>"
+       
         dpi = get_object_or_404(DPI, id=dpi_id)
         serializer = DPISerializer(dpi)
 
