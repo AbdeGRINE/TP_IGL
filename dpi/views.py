@@ -24,7 +24,7 @@ from pyzbar.pyzbar import decode
 
 
 class creer_dpi(APIView):
-    permission_classes = [IsAuthenticated, IsDoctor | IsAdmin]
+     # permission_classes = [IsAuthenticated, IsDoctor | IsAdmin]
     def post(self, request, *args, **kwargs):
         # Valider les données
         patient_data = request.data.get("patient")
