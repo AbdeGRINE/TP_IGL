@@ -17,8 +17,8 @@ from users.permissions import IsDoctor
     methods=['post']
 )
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, IsDoctor])
-def creer_ordonnance(request, dpi_id):
+#@permission_classes([IsAuthenticated, IsDoctor])
+def creer_ordonnance(request):
     """
     Créer une ordonnance.
     """
