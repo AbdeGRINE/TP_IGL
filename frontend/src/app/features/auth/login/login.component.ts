@@ -46,7 +46,6 @@ export class LoginComponent {
           } else {
             console.error('Unknown user type:', response.user.type.type );
           }
-          console.log(response);
         }
       },
       error: (error) => {
