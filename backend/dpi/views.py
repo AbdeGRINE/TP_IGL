@@ -24,21 +24,17 @@ from pyzbar.pyzbar import decode
 
 
 class creer_dpi(APIView):
-     # permission_classes = [IsAuthenticated, IsDoctor | IsAdmin]
+    permission_classes = [IsAuthenticated, IsDoctor | IsAdmin]
     def post(self, request, *args, **kwargs):
         # Valider les données
         patient_data = request.data.get("patient")
         medecin_nom_prenom = request.data.get("medecin_traitant")  # Nom et prénom du médecin
-        personne_contact_data = request.data.get("personne_a_contacter")  # Nouveau champ ajouté
+        
 
         if not patient_data or not medecin_nom_prenom:
             return Response({"error": "Données incomplètes."}, status=status.HTTP_400_BAD_REQUEST)
         
-        # Combiner nom et prénom de la personne à contacter en une seule chaîne
-        personne_a_contacter = None
-        if personne_contact_data:
-            personne_a_contacter = f"{personne_contact_data.get('prenom', '').strip()} {personne_contact_data.get('nom', '').strip()}".strip()
-
+        
         # Créer ou récupérer le patient
         patient, created = Patient.objects.get_or_create(
             NSS=patient_data.get("nss"),
@@ -48,19 +44,23 @@ class creer_dpi(APIView):
                 "date_naissance": patient_data.get("date_naissance"),
                 "adresse": patient_data.get("adresse"),
                 "mutuelle": patient_data.get("mutuelle"),
-                "personne_a_contacter": personne_a_contacter,  # Ajouter la personne à contacter
+                "personne_a_contacter":  patient_data.get("personne_a_contacter"),  # Ajouter la personne à contacter
+                "telephone": patient_data.get("telephone"),  # Ajout du champ téléphone
             },
         )
 
-        # Si le patient existe déjà, mettre à jour les informations de la personne à contacter
-        if not created and personne_a_contacter:
-            patient.personne_a_contacter = personne_a_contacter
+        
+
+
+
+              # Si le patient existe déjà, mettre à jour les informations
+        if not created:
+            if patient_data.get("telephone"):  # Mise à jour du téléphone si fourni
+                patient.telephone = patient_data.get("telephone")
             patient.save()
 
-       
 
-   
-  
+
 
 
         # Séparer le nom et le prénom du médecin
@@ -104,6 +104,37 @@ class creer_dpi(APIView):
             "success": f"DPI créé pour le patient {patient.nom} {patient.prenom}.",
             "qr_code": qr_base64  # Envoyer le QR Code sous forme de chaîne base64
         }, status=status.HTTP_201_CREATED)
+
+
+
+
+
+      
+
+      
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

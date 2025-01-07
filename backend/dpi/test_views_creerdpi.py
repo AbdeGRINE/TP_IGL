@@ -24,7 +24,8 @@ def test_creer_dpi_non_authentifie():
       "date_naissance": "1990-01-01",
       "adresse": "Adresse Test",
       "mutuelle": "Test",
-      "personne_a_contacter": "Nom Contact Personne"
+      "personne_a_contacter": "Doe John",
+      "telephone": "0555555555"
     }
 
 
@@ -45,6 +46,13 @@ def test_creer_dpi_non_authentifie():
     
 
 
+  
+
+
+
+
+
+
 @pytest.mark.django_db
 def test_creer_dpi_utilisateur_non_autorise():
     # Créer un utilisateur sans rôle approprié (par exemple un patient)
@@ -58,7 +66,8 @@ def test_creer_dpi_utilisateur_non_autorise():
         "date_naissance": "1990-01-01",
         "adresse": "Adresse Test",
         "mutuelle": "Test",
-        "personne_a_contacter": {"nom": "Doe", "prenom": "John"}
+        "personne_a_contacter": "Doe John",
+        "telephone": "0555555555"
     }
     payload = {
         "patient": patient_data,
@@ -103,7 +112,8 @@ def test_creer_dpi_utilisateur_autorise():
         "date_naissance": "1990-01-01",
         "adresse": "Adresse Test",
         "mutuelle": "Test",
-        "personne_a_contacter": {"nom": "Doe", "prenom": "John"}
+        "personne_a_contacter": "Doe John",
+        "telephone": "0555555555"
     }
 
     # Payload pour la création du DPI
@@ -143,3 +153,6 @@ def test_creer_dpi_utilisateur_autorise():
         base64.b64decode(dpi.qr_code)
     except Exception:
         pytest.fail("Le QR code n'est pas un format base64 valide")
+    assert dpi.patient.personne_a_contacter == "Doe John" # Vérifier que la personne à contacter est bien enregistrée
+    assert dpi.patient.telephone == "0555555555"  # Vérifier que le numéro de téléphone est bien enregistré
+  

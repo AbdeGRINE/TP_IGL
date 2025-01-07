@@ -71,7 +71,7 @@ class Patient(models.Model):
     mutuelle = models.CharField(max_length=50)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='patient', null=True, blank=True)
     personne_a_contacter = models.CharField(max_length=255, blank=True, null=True)
-
+    telephone = models.CharField(max_length=20, null=True, blank=True)
 
     
     def __str__(self):

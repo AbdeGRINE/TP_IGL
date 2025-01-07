@@ -25,7 +25,7 @@ class DPISerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DPI
-        fields = ['id', 'patient', 'medecin_traitant', 'etablissement_courant', 'qr_code']
+        fields = ['id', 'patient', 'medecin_traitant', 'etablissement_courant', 'qr_code', 'date_creation']
 
 
 

@@ -94,8 +94,8 @@ def creer_patient(request: Request) -> Response:
     return Response(serializer.errors,status= status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+#@authentication_classes([TokenAuthentication])
+#@permission_classes([IsAuthenticated])
 def creer_medcin(request: Request) -> Response:
     # superuser
     serializer = MedcinSerializer(data=request.data)
