@@ -50,6 +50,7 @@ export class ApiDataService {
     return this.http.get<T>(url, { headers });
   }
 
+  //------------------------------------------------------
   getBilansRadiologueEnCours<T>(
     endpoint: string,
     token: string

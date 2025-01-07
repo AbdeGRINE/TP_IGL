@@ -3,16 +3,25 @@ import { HeaderComponent } from '../../shared/header/header.component';
 import { NavigationService } from '../../../services/navigation.service';
 import { FormsModule } from '@angular/forms';
 import { ApiDataService } from '../../../services/api-data.service';
+import { AuthService } from '../../../services/auth.service';
+import { AuthResponse } from '../../../models/interfaces/interfaces';
 
-interface Patient {
+
+export interface Patient {
   nom: string;
   prenom: string;
-  nss: string;
+  date_naissance: string;
   adresse: string;
-  n_tlph: string;
+  //   n_tlph: string;
+  nss: string;
   mutuelle: string;
-  medecin: string;
-  personne: string;
+  medecin_traitant: string;
+  personne_a_contacter: PersonneAContacter;
+}
+
+export interface PersonneAContacter {
+  nom: string;
+  prenom: string;
 }
 
 @Component({
@@ -25,17 +34,24 @@ export class CreerDPIComponent {
   patient: Patient = {
     nom: '',
     prenom: '',
-    nss: '',
+    date_naissance: '',
     adresse: '',
-    n_tlph: '',
+    nss: '',
     mutuelle: '',
-    medecin: '',
-    personne: '',
+    medecin_traitant: '',
+    personne_a_contacter: {
+      nom: '',
+      prenom: '#',
+    },
   };
+  authResponse: AuthResponse;
   constructor(
     private navigationService: NavigationService,
-    private apiDataService: ApiDataService
-  ) {}
+    private apiDataService: ApiDataService,
+    private authService: AuthService
+  ) {
+    this.authResponse = this.authService.getAuthResponse();
+  }
 
   navigateToAdminDashboard() {
     this.navigationService.navigateTo('/admin-dashboard');
@@ -47,10 +63,10 @@ export class CreerDPIComponent {
       !this.patient.prenom ||
       !this.patient.nss ||
       !this.patient.adresse ||
-      !this.patient.n_tlph ||
+      !this.patient.date_naissance ||
       !this.patient.mutuelle ||
-      !this.patient.medecin ||
-      !this.patient.personne
+      !this.patient.medecin_traitant ||
+      !this.patient.personne_a_contacter.nom
     ) {
       alert('Veuillez remplir tous les champs obligatoires!');
       return false;
@@ -68,22 +84,22 @@ export class CreerDPIComponent {
       alert('NSS doit être un nombre.');
       return false;
     }
+    // if (
+    //   !/^\d+$/.test(this.patient.n_tlph) ||
+    //   !/^\d{10}$/.test(this.patient.n_tlph) ||
+    //   !this.patient.n_tlph.startsWith('0')
+    // ) {
+    //   alert(
+    //     'Numéro de téléphone doit être un nombre! Comporter 10 chiffres et commencer par 0.'
+    //   );
+    //   return false;
+    // }
 
-    if (
-      !/^\d+$/.test(this.patient.n_tlph) ||
-      !/^\d{10}$/.test(this.patient.n_tlph) ||
-      !this.patient.n_tlph.startsWith('0')
-    ) {
-      alert(
-        'Numéro de téléphone doit être un nombre! Comporter 10 chiffres et commencer par 0.'
-      );
-      return false;
-    }
-    if (!/^[a-zA-Z\s]+$/.test(this.patient.medecin)) {
+    if (!/^[a-zA-Z\s]+$/.test(this.patient.medecin_traitant)) {
       alert('Medecin traitant ne doit pas contenir de chiffres.');
       return false;
     }
-    if (!/^[a-zA-Z\s]+$/.test(this.patient.personne)) {
+    if (!/^[a-zA-Z\s]+$/.test(this.patient.personne_a_contacter.nom)) {
       alert('Personne à contacter ne doit pas contenir de chiffres.');
       return false;
     }
@@ -91,19 +107,28 @@ export class CreerDPIComponent {
   }
 
   handleSaveDPI() {
-    //subscibe methode handle the success or error.
-    // if (this.inputValidation()) {
-    //   this.apiDataService.post('DPIs', this.patient).subscribe({
-    //     next: (response) => {
-    //       alert('Patient saved successfully!');
-    //       console.log(response);
-    //       this.navigationService.navigateTo('/admin-dashboard');
-    //     },
-    //     error: (err) => {
-    //       alert('Failed to save patient. Please try again.');
-    //       console.error(err);
-    //     },
-    //   });
-    // }
+    if (this.inputValidation()) {
+      //format the date of birth:
+      this.formatDate(this.patient.date_naissance);
+      console.log("PATIENT: ", this.patient); 
+      this.apiDataService
+        .post('dpi/creer/', this.patient, `${this.authService.getToken()}`)
+        .subscribe({
+          next: (response) => {
+            alert('Le DPI a été créé avec succès !');
+            console.log(response);
+            this.navigationService.navigateTo('/admin-dashboard');
+          },
+          error: (err) => {
+            alert('Impossible d"enregistrer le DPI. Veuillez réessayer.');
+            console.error(err);
+          },
+        });
+    }
+  }
+
+  formatDate(date: string): string {
+    const [year, month, day] = date.split('-');
+    return `${day}-${month}-${year}`;
   }
 }

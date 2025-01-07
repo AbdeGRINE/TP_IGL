@@ -11,10 +11,9 @@
       class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
   </div>
   <div class="flex flex-row items-center gap-20">
-    <label for="nss" class="w-24">NSS:</label>
-    <input id="nss" name="nss" type="text" inputmode="numeric" placeholder="123456789" required
-      [(ngModel)]="patient.nss"
-      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+    <label for="date" class="w-24">Date de naissance:</label>
+    <input id="date" name="date" type="date" required [(ngModel)]="patient.date_naissance"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray w-[340px]" />
   </div>
   <div class="flex flex-row items-center gap-20">
     <label for="adresse" class="w-24">Adresse:</label>
@@ -23,11 +22,17 @@
       class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
   </div>
   <div class="flex flex-row items-center gap-20">
+    <label for="nss" class="w-24">NSS:</label>
+    <input id="nss" name="nss" type="text" inputmode="numeric" placeholder="123456789" required
+      [(ngModel)]="patient.nss"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+  </div>
+  <!-- <div class="flex flex-row items-center gap-20">
     <label for="n_tlph" class="w-24">N tel:</label>
     <input id="n_tlph" name="n_tlph" type="text" inputmode="numeric" placeholder="0555555555" required
       [(ngModel)]="patient.n_tlph"
       class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
-  </div>
+  </div> -->
   <div class="flex flex-row items-center gap-20">
     <label for="mutuelle" class="w-24">Mutuelle:</label>
     <input id="mutuelle" name="mutuelle" type="text" placeholder="/" required [(ngModel)]="patient.mutuelle"
@@ -36,12 +41,12 @@
   <div class="flex flex-row items-center gap-20">
     <label for="medecin" class="w-24">Medecin traitant:</label>
     <input id="medecin" name="medecin" type="text" placeholder="Grine Abderrahmane" required
-      [(ngModel)]="patient.medecin"
+      [(ngModel)]="patient.medecin_traitant"
       class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
   </div>
   <div class="flex flex-row items-center gap-20">
     <label for="personne" class="w-24">Personne Ã contacter:</label>
-    <input id="personne" name="personne" type="text" placeholder="Yasser Arafat" required [(ngModel)]="patient.personne"
+    <input id="personne" name="personne" type="text" placeholder="Yasser Arafat" required [(ngModel)]="patient.personne_a_contacter.nom"
       class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
   </div>
   <div class="flex flex-row self-center ml-52  gap-x-8 ">
