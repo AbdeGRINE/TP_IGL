@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { AuthResponse } from '../../../models/interfaces/interfaces';
+import { NavigationService } from '../../../services/navigation.service';
 @Component({
   selector: 'app-header',
   imports: [],
@@ -9,7 +10,12 @@ import { AuthResponse } from '../../../models/interfaces/interfaces';
 })
 export class HeaderComponent {
   authResponse: AuthResponse;
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private navigationService: NavigationService) {
     this.authResponse = this.authService.getAuthResponse();
+  }
+  logout(){
+    this.authService.logout();
+    alert("Utilisateur deconnecte!");
+    this.navigationService.navigateTo("login");
   }
 }

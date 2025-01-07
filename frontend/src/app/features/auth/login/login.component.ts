@@ -33,7 +33,7 @@ export class LoginComponent {
           console.log(response);
           if (response.user.type.type  === 'admin') {
             this.naviagtionService.navigateTo('/admin-dashboard');
-          } else if (response.user.type.type  === 'medecin') {
+          } else if (response.user.type.type  === 'medcin') {
             this.naviagtionService.navigateTo('/medecin-dashboard');
           } else if (response.user.type.type  === 'patient') {
             this.naviagtionService.navigateTo('/patient-dashboard');

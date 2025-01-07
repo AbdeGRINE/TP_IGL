@@ -76,7 +76,7 @@ export class AuthService {
       .pipe(
         tap((response) => {
           if (this.isBrowser) {
-            localStorage.setItem('token', response.token);
+            localStorage.setItem('authResponse', JSON.stringify(response));
           }
           this.userSubject.next(response.user);
         })
@@ -84,7 +84,11 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/deconnecter_utilisateur/`, {}).pipe(
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Token ${this.getToken}`,
+    });
+    return this.http.post(`${this.apiUrl}/users/deconnecter_utilisateur/`, {headers}).pipe(
       tap(() => {
         if (this.isBrowser) {
           localStorage.removeItem('authResponse');
