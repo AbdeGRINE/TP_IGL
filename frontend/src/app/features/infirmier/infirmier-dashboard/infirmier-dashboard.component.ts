@@ -76,6 +76,7 @@ export class InfirmierDashboardComponent {
     this.apiDataService.getAll<Patient[]>('dpi/listerall/').subscribe({
       next: (data) => {
         this.patients = data;
+      console.log("HELLO: ", this.patients);
       },
       error: (err) => console.error('Error fetching users:', err),
     });

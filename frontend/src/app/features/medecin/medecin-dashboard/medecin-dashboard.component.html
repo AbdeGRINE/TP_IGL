@@ -11,7 +11,7 @@
     class="absolute top-16 left-1/2 transform -translate-x-1/2  bg-white flex flex-col border border-darkgray rounded-lg gap-y-6 w-1/2 px-4 py-4 h-40">
     <div class="w-full flex flex-col h-full min-h-full  justify-center items-center">
       <div class="py-6 text-black text-xl text-center">Etes vous sure de vouloir supprimer le DPI de
-        {{DPIToDelete?.nom}} {{DPIToDelete?.prenom}}?</div>
+        {{DPIToDelete?.patient_nom}} {{DPIToDelete?.patient_prenom}}?</div>
       <div class="flex justify-center w-full gap-x-5">
         <button class="text-lg px-6 py-2 rounded-xl flex " (click)="closeDeletionPopup()">Annuler</button>
         <button class="bg-red text-white text-lg px-6 py-2 rounded-xl flex "
@@ -71,18 +71,18 @@
       <tbody>
         <tr *ngFor="let DPI of DPIs; let i = index" class="hover:bg-gray-50">
           <td class="px-6 py-4 text-sm font-medium text-gray-900">
-            {{ DPI.nom }}
+            {{ DPI.patient_nom}}
           </td>
-          <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.prenom }}</td>
+          <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.patient_nom }}</td>
           <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.id }}</td>
           <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.telephone }}</td>
           <td class="px-6 py-4 text-sm text-gray-600">
-            {{ DPI.dateDeCreation | date : "d-MMMM-yyyy" }}
+            {{ DPI.date_creation| date : "d-MMMM-yyyy" }}
           </td>
           <td class="flex gap-5 py-6">
             <!-- view icon -->
             <button><img src="/eye.svg" alt="view icon" (click)="navigateToViewDPI(DPI)"></button>
-            <button><img src="/edit.svg" alt="edit icon"></button>
+            <!-- <button><img src="/edit.svg" alt="edit icon"></button> -->
             <button><img src="/trash.svg" alt="delete icon" (click)="OpenDeletionPopup(i)"></button>
           </td>
         </tr>

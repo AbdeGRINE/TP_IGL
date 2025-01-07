@@ -107,7 +107,6 @@ export class CreerDPIComponent {
     if (this.inputValidation()) {
       //format the date of birth:
       this.formatDate(this.patient.patient.date_naissance);
-      console.log('PATIENT HERO: ', this.patient);
       this.apiDataService
         .post('dpi/creer/', this.patient, `${this.authService.getToken()}`)
         .subscribe({
