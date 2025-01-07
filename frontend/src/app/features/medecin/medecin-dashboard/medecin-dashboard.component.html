@@ -58,12 +58,6 @@
             ID
           </th>
           <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-            Tel.
-          </th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
-            Date de Creation
-          </th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-700">
             Actions
           </th>
         </tr>
@@ -75,10 +69,6 @@
           </td>
           <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.patient_nom }}</td>
           <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.id }}</td>
-          <td class="px-6 py-4 text-sm text-gray-600">{{ DPI.telephone }}</td>
-          <td class="px-6 py-4 text-sm text-gray-600">
-            {{ DPI.date_creation| date : "d-MMMM-yyyy" }}
-          </td>
           <td class="flex gap-5 py-6">
             <!-- view icon -->
             <button><img src="/eye.svg" alt="view icon" (click)="navigateToViewDPI(DPI)"></button>

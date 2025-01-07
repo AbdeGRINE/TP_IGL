@@ -1,4 +1,4 @@
-<!-- <app-header></app-header>
+<app-header></app-header>
 <div class="bg-lightgray px-[8%] w-full h-screen overflow-y-auto">
     <div *ngIf="isViewBilanRadioOpen"
         class="absolute top-6 left-1/2 transform -translate-x-1/2  bg-white flex flex-col justify-center items-center border border-darkgray rounded-lg gap-y-6 w-1/2 px-4 py-4">
@@ -7,7 +7,7 @@
         <div class="w-full flex flex-col items-center gap-y-8 ">
             <div class="w-full flex flex-col gap-y-4">
                 <div class="w-full text-left">Compte Rendu</div>
-                <textarea type="text" [(ngModel)]="newResponse.compteRendu"
+                <textarea type="text" [(ngModel)]="newReponse.compterendu.resultat"
                     class="text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md w-full h-60 resize-none"></textarea>
 
 
@@ -20,8 +20,8 @@
                 <button (click)="fileInput.click()"
                     class="px-4 py-2 bg-green text-white rounded-2xl border border-green">
                     Importer Radio (image)</button>
-                <div *ngIf="selectedBilan?.radioBase64" class="w-full flex">
-                    <img [src]="selectedBilan?.radioBase64">
+                <div *ngIf="newReponse.image.donnee" class="w-full flex">
+                    <img [src]="newReponse.image.donnee">
                 </div>
             </div>
         </div>
@@ -40,18 +40,16 @@
                     <div
                         class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center justify-between">
                         <div>Nom</div>
-                        <div>ID</div>
-                        <div>Medecin traitant</div>
+                        <div>Status</div>
                         <div>Date</div>
                         <div>Actions</div>
                     </div>
                     <div class="w-full flex flex-col">
                         <div *ngFor="let demande of Demandes" class="flex justify-between items-center py-2 px-4">
                             <div class="text-black">{{demande.nom}}</div>
-                            <div class="font-semibold text-black">{{demande.id}}</div>
-                            <div class="text-black">{{demande.medecin}}
+                            <div class="text-black">{{demande.status}}
                             </div>
-                            <div class="text-black">{{demande.date}}</div>
+                            <div class="text-black">{{demande.date_demande}}</div>
                             <div class="flex flex-row gap-x-6 items-center justify-between">
                                 <button><img src="/eye.svg" alt="view icon"
                                         (click)="openViewBilanRadio(demande)"></button>
@@ -63,4 +61,4 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>

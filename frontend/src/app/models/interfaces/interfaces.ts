@@ -50,6 +50,7 @@ export interface Consultation {
   bilanRadiologique: Bilan[];
 }
 export interface Bilan {
+  id : number,
   nom: string;
   date_demande: string; // 2005-01-02
   date_recuperation: string | null;

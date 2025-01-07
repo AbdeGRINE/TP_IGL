@@ -10,11 +10,12 @@ import { of } from 'rxjs';
   providedIn: 'root'
 })
 export class RadiologueService {
-  private apiUrl = 'https://4eca-105-105-165-116.ngrok-free.app/';
+  private apiUrl = 'http://127.0.0.1:8000/';
   private bilansSubject = new BehaviorSubject<Bilan[]>([]);
   bilans$ = this.bilansSubject.asObservable();
   private isBrowser: boolean;
     bilan : Bilan = {
+    id : -1,
     nom: "IRM",
     date_demande: "2024-12-31",
     date_recuperation: null,
@@ -38,18 +39,22 @@ export class RadiologueService {
     @Inject(PLATFORM_ID) platformId: Object) {this.isBrowser = isPlatformBrowser(platformId);}
 
     getBilansRadiologueEnCours(): Observable<Bilan[]> {
-      const token = this.isBrowser ? localStorage.getItem('token') : null;
-      
-      if (!token) {
-        throw new Error('No authentication token found');
-      }
-      console.log(`token: ${token}`)
+      let token = null;
+      const auth = localStorage.getItem('authResponse') || null;
+
+      if (auth) {
+      // Parse the string back to an object
+      const parsedAuth = JSON.parse(auth);
+
+      // Now you can access a specific field
+      token = parsedAuth?.token; }
+
+      console.log(token);  
+      console.log(`token ${token}`);
   
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
-        
-        "ngrok-skip-browser-warning": "69420"
-      });
+              });
       console.log(headers);
   
       return this.http.get<Bilan[]>(`${this.apiUrl}bilan/consulter_bilans_radiologiques_en_cours/`, { headers })
@@ -68,5 +73,27 @@ export class RadiologueService {
         
         
       );
+    }
+
+
+    postBilanResponse<Reponse_Bilan>(endpoint: string, data: Reponse_Bilan): Observable<Reponse_Bilan> {
+      let token = null;
+      const auth = localStorage.getItem('authResponse') || null;
+
+      if (auth) {
+      // Parse the string back to an object
+      const parsedAuth = JSON.parse(auth);
+
+      // Now you can access a specific field
+      token = parsedAuth?.token; }
+
+      console.log(token);  
+      console.log(`token ${token}`);
+      const url = `${this.apiUrl}${endpoint}`;
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization' : `Token ${token}`,
+      });
+      return this.http.post<Reponse_Bilan>(url, data, { headers });
     }
 }

@@ -10,14 +10,15 @@ import { AuthService } from '../../../services/auth.service';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, tap, catchError } from 'rxjs';
 
-
-interface DemandeBilan {
-  id: number,
-  nom : string,
-  medecin : string,
-  date : string,
-  compteRendu : string;
-  radioBase64 : string;
+interface Reponse_Bilan { 
+  compterendu:{
+        nom:string,
+        resultat:string,
+        bilan:number
+    },
+    image:{
+        donnee:string,
+    }
 }
 
 @Component({
@@ -29,42 +30,20 @@ interface DemandeBilan {
 export class RadiologueDashboardComponent implements OnInit{
   imagePreview: string | null = null;
   private isBrowser: boolean;
-  selectedBilan : DemandeBilan | null  = null;
-  newResponse : DemandeBilan = {
-    id: -1,
-    nom : "",
-    medecin : "",
-    date : "",
-    compteRendu : "",
-    radioBase64 : "",
-  }
+  selectedBilan : Bilan | null  = null;
+  
+  newReponse : Reponse_Bilan = {
+    compterendu:{
+        nom:"lahla la treb7ak",
+        resultat:"",
+        bilan:-1
+    },
+    image:{
+        donnee:"",
+    }
+}
   isViewBilanRadioOpen : Boolean;
-  Demandes : Bilan[] = [];
-//   Demandes : DemandeBilan[] = [{
-//     id: 1,
-//     nom: 'test',
-//     medecin: 'test',
-//     date: 'test',
-//     compteRendu: '',
-//     radioBase64: ''
-//   },
-//   {
-//     id: 1,
-//     nom: 'test',
-//     medecin: 'test',
-//     date: 'test',
-//     compteRendu: '',
-//     radioBase64: ''
-//   },
-//   {
-//     id: 1,
-//     nom: 'test',
-//     medecin: 'test',
-//     date: 'test',
-//     compteRendu: '',
-//     radioBase64: ''
-//   },
-// ]
+  Demandes : Bilan [] = [];
 constructor(
     private radiologueservice: RadiologueService,
     private router: Router,
@@ -136,7 +115,7 @@ onFileSelected(event: Event): void {
     const reader = new FileReader();
     
     reader.onload = () => {
-      this.newResponse.radioBase64 = reader.result as string;
+      this.newReponse.image.donnee = reader.result as string;
       // At this point, this.imagePreview contains the base64 string
       // You can now send this to your backend or store it as needed
     };
@@ -150,26 +129,55 @@ onFileSelected(event: Event): void {
   }
 }
 
-openViewBilanRadio(demande: DemandeBilan){
+openViewBilanRadio(demande: Bilan){
   this.isViewBilanRadioOpen = true;
   this.selectedBilan = demande;
-  this.newResponse = this.selectedBilan;
+  this.newReponse ={
+    compterendu:{
+        nom:"lahla la treb7ak hna tani",
+        resultat:"",
+        bilan: demande.id,
+    },
+    image:{
+        donnee:"",
+    }
+}
 }
 
 closeViewBilanRadio(){
   this.isViewBilanRadioOpen = false;
 }
 
-EnregistrerReponse(){
-  if(this.newResponse.compteRendu && this.newResponse.radioBase64){
-    if(this.selectedBilan){
-    this.selectedBilan.compteRendu = this.newResponse.compteRendu;
-    this.selectedBilan.radioBase64 = this.newResponse.radioBase64;
-    console.log(this.selectedBilan);
-    }
-  }
-  else{
-    alert("Veuillez remplir tout les champs")
+EnregistrerReponse() {
+
+  if (this.newReponse.compterendu.resultat && this.newReponse.image.donnee) {
+    let base64Data = this.newReponse.image.donnee.replace(/^data:image\/[a-z]+;base64,/, '');
+
+    // Remove the trailing '=' characters (padding)
+    base64Data = base64Data.replace(/=+$/, '');
+
+    // Assign the cleaned Base64 string back to the object
+    this.newReponse.image.donnee = base64Data;
+    console.log(this.newReponse);
+    // Call postBilanResponse to send data to the backend
+    this.radiologueservice.postBilanResponse("bilan/saisir_resultat_bilan_radiologique/", this.newReponse)
+      .subscribe(
+        response => {
+          this.isViewBilanRadioOpen = false;
+          alert("Réponse enregistrée avec succès !");
+          console.log('Response from server:', response);
+          
+        },
+        error => {
+          console.error('Erreur lors de l\'enregistrement:', error);
+          alert("Une erreur s'est produite lors de l'enregistrement de la réponse.");
+        }
+      );
+
+  } else {
+    alert("Veuillez remplir tous les champs.");
   }
 }
+
+
 }

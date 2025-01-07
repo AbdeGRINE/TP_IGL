@@ -30,8 +30,9 @@ private dpiData: DPI | null = {
       redigant_laborantin: null,
       redigant_radiologue: null,
       consultation: 1,
-      graphique: "Non_Attaché"
-      }],
+      graphique: "Non_Attaché",
+      id: 0
+    }],
     bilansBiologique: [{
       nom: "IRM",
       date_demande: "2024-12-31",
@@ -41,8 +42,9 @@ private dpiData: DPI | null = {
       redigant_laborantin: null,
       redigant_radiologue: null,
       consultation: 1,
-      graphique: "Non_Attaché"
-      }],
+      graphique: "Non_Attaché",
+      id: 0
+    }],
     ordonnances: [
       {
         titre: 'Ordonnance 1',
