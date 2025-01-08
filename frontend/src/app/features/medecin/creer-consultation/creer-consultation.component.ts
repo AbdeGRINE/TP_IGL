@@ -47,7 +47,7 @@ export class CreerConsultationComponent implements OnInit {
     id: 0,
     status: '',
     date: '',
-    observation: 'exemple',
+    observation: '',
     consultation: 0,
     medicaments: [],
   };
@@ -72,6 +72,7 @@ export class CreerConsultationComponent implements OnInit {
   selectedBilansBiologique: BilanRequest[] = [];
   selectedBilansRadiologique: BilanRequest[] = [];
   authResponse: AuthResponse;
+
   constructor(
     private dpiService: DpiService,
     private router: Router,
@@ -80,15 +81,17 @@ export class CreerConsultationComponent implements OnInit {
     private authService: AuthService
   ) {
     this.selectedPatient = this.dpiService.getDPI();
+    this.newConsultation.ordonnances = [];
     this.selectedOrdonnance = null;
-    console.log(this.selectedPatient);
+    // console.log(this.selectedPatient);
     this.authResponse = this.authService.getAuthResponse();
   }
   ngOnInit(): void {
     this.selectedOrdonnance = null;
-    console.log(this.selectedPatient);
+    // console.log(this.selectedPatient);
   }
 
+  //------------------------------------------- Ordonnance Logic:
   isAddOrdonnanceOpen = false;
   isViewOrdonnanceOpen = false;
   wantsToDelete = false;
@@ -110,55 +113,6 @@ export class CreerConsultationComponent implements OnInit {
     this.isPopupOpen = false;
   }
 
-  EnregistrerOrdonnace() {
-    this.newOrdonnace.medicaments = this.newTraitements;
-
-    this.newOrdonnace.consultation =
-      this.selectedPatient.consultations[
-        this.selectedPatient.consultations.length - 1
-      ].id; //weird but it work, who cares?
-
-    console.log('Hero: ', this.newOrdonnace);
-    if (this.newOrdonnace?.medicaments) {
-      //creat the ordonnace:
-      this.apiDataService
-        .createOrdonnace<Ordonnance>(
-          `Ordonnance/creer/`,
-          this.newOrdonnace,
-          `${this.authService.getToken()}`
-        )
-        .subscribe({
-          next: (response) => {
-            alert('L"ordonnance du patient a été enregistrées avec succès!');
-            //update before push:
-            this.newOrdonnace.id = response.id;
-            this.newOrdonnace.date = response.date;
-            this.newConsultation.ordonnances.push({ ...this.newOrdonnace });
-          },
-          error: (err) => {
-            alert(
-              'Impossible d"enregistrer l"ordonnance. Veuillez réessayer.\nNota Bene: il faut ecrire le ID de medicament deja existe!'
-            );
-            console.error(err);
-          },
-        });
-    }
-    //reset:
-    this.newOrdonnace = {
-      id: 0,
-      status: '',
-      date: '',
-      observation: 'exemple',
-      consultation: 0,
-      medicaments: [],
-    };
-    this.newTraitements = [];
-
-    this.isAddOrdonnanceOpen = false;
-    this.isPopupOpen = false;
-    console.log(this.isPopupOpen);
-  }
-
   openViewOrdonnance(ordonnance: Ordonnance) {
     this.selectedOrdonnance = ordonnance;
     this.isViewOrdonnanceOpen = true;
@@ -170,7 +124,7 @@ export class CreerConsultationComponent implements OnInit {
     this.isViewOrdonnanceOpen = false;
     this.isPopupOpen = false;
   }
-
+  //------------------------------------------- Bilans Logic:
   bilansBiologique: BilanRequest[] = [
     {
       nom: 'Test sanguin',
@@ -254,9 +208,9 @@ export class CreerConsultationComponent implements OnInit {
     }
     console.log(this.selectedBilansRadiologique);
   }
+  //------------------------------------------- Sumbition Section:
 
   addNewTrait() {
-    console.log(this.newTraitement);
     if (
       this.selectedOrdonnance &&
       this.newTraitement.medicament &&
@@ -269,14 +223,63 @@ export class CreerConsultationComponent implements OnInit {
       alert("Veuillez remplir tous les champs avant d'ajouter un traitement.");
     }
   }
-
-  onSubmit() {
-    this.newConsultation.resumes[0].consultation =
+  EnregistrerOrdonnace() {
+    this.newOrdonnace.medicaments = this.newTraitements;
+    this.newOrdonnace.consultation =
       this.selectedPatient.consultations[
         this.selectedPatient.consultations.length - 1
       ].id; //weird but it work, who cares?
-    if (this.newConsultation && this.newConsultation.resumes) {
+    if (this.newOrdonnace?.medicaments) {
+      //creat the ordonnace:
+      this.apiDataService
+        .createOrdonnace<Ordonnance>(
+          `Ordonnance/creer/`,
+          this.newOrdonnace,
+          `${this.authService.getToken()}`
+        )
+        .subscribe({
+          next: (response) => {
+            alert('L"ordonnance du patient a été enregistrées avec succès!');
+            //update before push:
+            this.newOrdonnace.id = response.id;
+            this.newOrdonnace.date = response.date;
+            console.log('HHH: ', this.newOrdonnace.medicaments);
+            this.newConsultation.ordonnances.push({ ...this.newOrdonnace });
+            // reset:
+            this.newOrdonnace = {
+              id: 0,
+              status: '',
+              date: '',
+              observation: '',
+              consultation: 0,
+              medicaments: [],
+            };
+            this.newTraitements = [];
+          },
+          error: (err) => {
+            alert(
+              'Impossible d"enregistrer l"ordonnance. Veuillez réessayer.\nNota Bene: il faut ecrire le ID de medicament deja existe!'
+            );
+            console.error(err);
+          },
+        });
+    }
+    
+    this.isAddOrdonnanceOpen = false;
+    this.isPopupOpen = false;
+  }
+
+  onSubmit() {
+    console.log(this.newConsultation.ordonnances);
+    if (
+      this.newConsultation.ordonnances &&
+      this.newConsultation.resumes[0].mesures_prises
+    ) {
       //Sumbit Resume:
+      this.newConsultation.resumes[0].consultation =
+        this.selectedPatient.consultations[
+          this.selectedPatient.consultations.length - 1
+        ].id; //weird but it work, who cares?
       this.apiDataService
         .createResume(
           `Consultation/resume/`,
@@ -301,6 +304,7 @@ export class CreerConsultationComponent implements OnInit {
         )
         .subscribe({
           next: (response) => {
+            //NO NEED FOR THIS PUSHING!
             // this.newConsultation.bilans.push(...{response});
           },
           error: (err) => {
@@ -328,27 +332,21 @@ export class CreerConsultationComponent implements OnInit {
             console.error(err);
           },
         });
-      this.selectedPatient.consultations.push({ ...this.newConsultation });
-      // this.newConsultation = {
-      //   id:  this.selectedPatient.consultations.length,
-      //   bilanRadiologique : [],
-      //   bilansBiologique : [],
-      //   dateDeCreation: new Date,
-      //   ordonnances : [],
-      //   resume : "",
-      // }
       alert('La nouvelle Consultation a etait creer avec succes!');
       this.goBack();
     } else {
-      alert("Veuillez remplir le resume avant d'ajouter une consultation.");
+      alert(
+        "Veuillez remplir le resume et les ordonnaces avant d'ajouter une consultation."
+      );
     }
-    console.log(this.selectedPatient);
-    this.dpiService.setDPI(this.selectedPatient);
+    // NO NEED FOR THIS TOO:
   }
 
   goBack() {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
+
+  //------------------------------------------- Delete Section:
 
   deleteOrdonnance() {
     console.log(this.newConsultation);
@@ -369,6 +367,7 @@ export class CreerConsultationComponent implements OnInit {
       this.newConsultation.ordonnances[this.indexOfOrdonnanceToDelete];
     console.log(this.OrdonnanceToDelete);
   }
+
   closeDeletionPopup() {
     console.log(this.newConsultation);
     this.indexOfOrdonnanceToDelete = -1;

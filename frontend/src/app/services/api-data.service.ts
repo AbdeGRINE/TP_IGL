@@ -17,6 +17,7 @@ export class ApiDataService {
   private baseUrl = 'http://127.0.0.1:8000';
   constructor(private http: HttpClient) {}
 
+  //---------------------------------------------------Geneal methodes:
   //The <T> makes the method flexible to work with different data types.
   // If you're posting data and expecting a response of type User, you'd call post<User>.
   post<T>(endpoint: string, data: any, token: string): Observable<T> {
@@ -27,7 +28,24 @@ export class ApiDataService {
     });
     return this.http.post<T>(url, data, { headers });
   }
+  get<T>(endpoint: string, token: string): Observable<T> {
+    const url = `${this.baseUrl}/${endpoint}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    });
+    return this.http.get<T>(url, { headers });
+  }
 
+  put<T>(endpoint: string, data: any, token: string): Observable<T> {
+    const url = `${this.baseUrl}/${endpoint}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    });
+    return this.http.put<T>(url, data, { headers });
+  }
+  //--------------------------------------------------- Specific methodes:
   createConsultation<T>(
     endpoint: string,
     dpiID: any,
@@ -75,7 +93,7 @@ export class ApiDataService {
     const body = {
       consultation: Resume.consultation,
       resume: {
-        mesures_prises:Resume.mesures_prises,
+        mesures_prises: Resume.mesures_prises,
         autres: '/',
         date_prochaine_consultation: '1869-01-21',
       },
@@ -83,39 +101,8 @@ export class ApiDataService {
     return this.http.post<T>(url, body, { headers });
   }
 
-  put<T>(endpoint: string, data: any, token: string): Observable<T> {
-    const url = `${this.baseUrl}/${endpoint}`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Token ${token}`,
-    });
-    return this.http.put<T>(url, data, { headers });
-  }
-
   getAll<T>(endpoint: string): Observable<T> {
     const url = `${this.baseUrl}/${endpoint}`;
     return this.http.get<T>(url);
-  }
-
-  get<T>(endpoint: string, token: string): Observable<T> {
-    const url = `${this.baseUrl}/${endpoint}`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Token ${token}`,
-    });
-    return this.http.get<T>(url, { headers });
-  }
-
-  //------------------------------------------------------
-  getBilansRadiologueEnCours<T>(
-    endpoint: string,
-    token: string
-  ): Observable<T> {
-    const url = `${this.baseUrl}/${endpoint}`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: `Token ${token}`,
-    });
-    return this.http.get<T>(url, { headers });
   }
 }

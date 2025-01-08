@@ -98,6 +98,7 @@ export class MedecinDashboardComponent implements OnInit {
   }
 
   navigateToViewDPI(DPI: DPI) {
+    //We can here set only its id:
     this.dpiService.setDPI(DPI);
     setAccessedFromMedecin(true);
     this.router.navigate(['/medecin-dashboard/afficher-dpi', DPI.id]);
