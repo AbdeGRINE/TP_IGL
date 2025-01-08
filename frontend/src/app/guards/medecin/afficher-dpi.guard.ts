@@ -14,7 +14,7 @@ export const afficherDpiGuard: CanActivateFn = (route, state) => {
   }
 
   // Redirect to /medecin if accessed directly
-  router.navigate(['/medecin']);
+  router.navigate(['/medecin-dashboard']);
   return false;
 };
 

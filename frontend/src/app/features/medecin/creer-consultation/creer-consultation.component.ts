@@ -1,57 +1,88 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule} from '@angular/forms';
-import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/interfaces';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  DPI,
+  Traitement,
+  Ordonnance,
+  Consultation,
+  Bilan,
+} from '../../../models/interfaces/interfaces';
 import { DpiService } from '../../../services/dpi.service';
-import { Router, RouterModule,ActivatedRoute } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { ApiDataService } from '../../../services/api-data.service';
+import { AuthResponse } from '../../../models/interfaces/interfaces';
+import { AuthService } from '../../../services/auth.service';
 
-
+interface BilanRequest {
+  nom: string;
+  type: string;
+  consultation: string;
+}
 
 @Component({
   selector: 'app-creer-consultation',
-  imports: [HeaderComponent, CommonModule, ReactiveFormsModule, FormsModule,RouterModule],
+  imports: [
+    HeaderComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule,
+  ],
   templateUrl: './creer-consultation.component.html',
-  styleUrl: './creer-consultation.component.css'
+  styleUrl: './creer-consultation.component.css',
 })
 export class CreerConsultationComponent implements OnInit {
-
   selectedPatient: DPI;
-
-  indexOfOrdonnanceToDelete : number = -1;
-
-  OrdonnanceToDelete : Ordonnance | null = null;
-
+  indexOfOrdonnanceToDelete: number = -1;
+  OrdonnanceToDelete: Ordonnance | null = null;
   newTraitement: Traitement = {
     medicament: '',
-    dose: '',
-    duree : '',
+    dosage: '',
+    duree: '',
   };
-  
-  newOrdonnace : Ordonnance = {
-    titre: 'Ordonnance 1',
-    state : 'en attente',
-    traitements: [],
+  newTraitements: Traitement[] = [];
+  newOrdonnace: Ordonnance = {
+    id: 0,
+    status: '',
+    date: '',
+    observation: 'exemple',
+    consultation: 0,
+    medicaments: [],
   };
-
   newConsultation: Consultation = {
-    id :0,
-    dateDeCreation: new Date(),
+    id: 0,
+    date: '',
+    medecin_consulte: '',
     ordonnances: [],
-    bilanRadiologique: [],
-    bilansBiologique: [],
-    resume : "",
-  }
-
+    bilans: [],
+    dpi: 0,
+    resumes: [
+      {
+        id: 0,
+        date_prochaine_consultation: '',
+        mesures_prises: '',
+        autres: '',
+        consultation: 0,
+      },
+    ],
+  };
   selectedOrdonnance: Ordonnance | null = null;
-  selectedBilanBiologique: Bilan[] = [];
-  selectedBilanRadiologique: Bilan[] = [];
-
-  constructor(private dpiService : DpiService, private router : Router, private route : ActivatedRoute){
+  selectedBilansBiologique: BilanRequest[] = [];
+  selectedBilansRadiologique: BilanRequest[] = [];
+  authResponse: AuthResponse;
+  constructor(
+    private dpiService: DpiService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private apiDataService: ApiDataService,
+    private authService: AuthService
+  ) {
     this.selectedPatient = this.dpiService.getDPI();
     this.selectedOrdonnance = null;
-    this.newConsultation.id =  this.selectedPatient.consultations.length + 1,
     console.log(this.selectedPatient);
+    this.authResponse = this.authService.getAuthResponse();
   }
   ngOnInit(): void {
     this.selectedOrdonnance = null;
@@ -67,7 +98,6 @@ export class CreerConsultationComponent implements OnInit {
     this.selectedOrdonnance = this.newOrdonnace;
     this.isAddOrdonnanceOpen = true;
     this.isPopupOpen = true;
-    
   }
 
   closeAddOrdonnance() {
@@ -75,24 +105,55 @@ export class CreerConsultationComponent implements OnInit {
     this.isPopupOpen = false;
   }
 
-  AnnulerOrdonnance(){
+  AnnulerOrdonnance() {
     this.isAddOrdonnanceOpen = false;
     this.isPopupOpen = false;
   }
 
-  EnregistrerOrdonnace(){
-    if (
-      this.newOrdonnace?.traitements
-    ) {
-      this.newConsultation.ordonnances.push({ ...this.newOrdonnace });
-      console.log(this.selectedPatient);
-      this.newOrdonnace = {titre: `Ordonnance ${this.newConsultation.ordonnances.length + 1}`,
-        state : 'en attente',
-        traitements: [],}
-    } else {
-      console.log(this.selectedOrdonnance);
-      alert("Veuillez remplir tous les champs avant d'ajouter une ordonnance.");
+  EnregistrerOrdonnace() {
+    this.newOrdonnace.medicaments = this.newTraitements;
+
+    this.newOrdonnace.consultation =
+      this.selectedPatient.consultations[
+        this.selectedPatient.consultations.length - 1
+      ].id; //weird but it work, who cares?
+
+    console.log('Hero: ', this.newOrdonnace);
+    if (this.newOrdonnace?.medicaments) {
+      //creat the ordonnace:
+      this.apiDataService
+        .createOrdonnace<Ordonnance>(
+          `Ordonnance/creer/`,
+          this.newOrdonnace,
+          `${this.authService.getToken()}`
+        )
+        .subscribe({
+          next: (response) => {
+            alert('L"ordonnance du patient a été enregistrées avec succès!');
+            //update before push:
+            this.newOrdonnace.id = response.id;
+            this.newOrdonnace.date = response.date;
+            this.newConsultation.ordonnances.push({ ...this.newOrdonnace });
+          },
+          error: (err) => {
+            alert(
+              'Impossible d"enregistrer l"ordonnance. Veuillez réessayer.\nNota Bene: il faut ecrire le ID de medicament deja existe!'
+            );
+            console.error(err);
+          },
+        });
     }
+    //reset:
+    this.newOrdonnace = {
+      id: 0,
+      status: '',
+      date: '',
+      observation: 'exemple',
+      consultation: 0,
+      medicaments: [],
+    };
+    this.newTraitements = [];
+
     this.isAddOrdonnanceOpen = false;
     this.isPopupOpen = false;
     console.log(this.isPopupOpen);
@@ -110,127 +171,208 @@ export class CreerConsultationComponent implements OnInit {
     this.isPopupOpen = false;
   }
 
+  bilansBiologique: BilanRequest[] = [
+    {
+      nom: 'Test sanguin',
+      type: 'Biologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+    {
+      nom: "Analyse d'urine",
+      type: 'Biologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+    {
+      nom: 'Test de la fonction hépatique',
+      type: 'Biologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+    {
+      nom: 'Test de la fonction rénale',
+      type: 'Biologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+    {
+      nom: 'Numération formule sanguine',
+      type: 'Biologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+  ];
 
-  bilansBiologique: Bilan[] = [
-  //   {
-  //   id: '1',
-  //   nom: "bilan 1",
-  // },{
-  //   id: '2',
-  //   nom : "bilan 2",
-  // },{
-  //   id: '3',
-  //   nom : "bilan 3",
-  // }
-]
+  bilansRadio: BilanRequest[] = [
+    {
+      nom: 'Radiographie thoracique',
 
-bilansRadio = [
-//   {
-//   id: '1',
-//   nom : "bilan 1",
-// },{
-//   id: '2',
-//   nom : "bilan 2",
-// },{
-//   id: '3',
-//   nom : "bilan 3",
-// }
-]
+      type: 'Radiologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+    {
+      nom: 'IRM cérébrale',
+      type: 'Radiologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+    {
+      nom: 'Scanner abdominal',
+      type: 'Radiologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+    {
+      nom: 'Mammographie',
+      type: 'Radiologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+    {
+      nom: 'Échographie pelvienne',
+      type: 'Radiologique',
+      consultation: `${this.newConsultation.id}`,
+    },
+  ];
 
-onCheckboxChangeBio(bilan: Bilan, event: any) {
-  if (event.target.checked) {
-     console.log(bilan)
-    this.selectedBilanBiologique = [...this.selectedBilanBiologique, bilan];
-  }
-  else{
-    this.selectedBilanBiologique = this.selectedBilanBiologique.filter(elt => elt !== bilan);
-  }
-  console.log(this.selectedBilanBiologique);
-}
-
-
-onCheckboxChangeRadio(bilan: Bilan, event: any) {
-  if (event.target.checked) {
-     console.log(bilan)
-    this.selectedBilanRadiologique = [...this.selectedBilanRadiologique, bilan];
-  }
-  else{
-    this.selectedBilanRadiologique = this.selectedBilanRadiologique.filter(elt => elt !== bilan);
-  }
-  console.log(this.selectedBilanRadiologique);
-}
-
-
-addNewTrait() {
-  console.log(this.newTraitement);
-  if (
-    this.selectedOrdonnance &&
-    this.newTraitement.medicament &&
-    this.newTraitement.dose &&
-    this.newTraitement.duree
-  ) {
-    if(typeof this.newTraitement.dose === 'number' && typeof this.newTraitement.duree === 'number' ){
-      this.selectedOrdonnance.traitements.push({ ...this.newTraitement });
-      this.newTraitement = { medicament: '', dose: '', duree: '' }; // Reset input fields
+  onCheckboxChangeBio(bilan: BilanRequest, event: any) {
+    if (event.target.checked) {
+      console.log(bilan);
+      this.selectedBilansBiologique = [...this.selectedBilansBiologique, bilan];
+    } else {
+      this.selectedBilansBiologique = this.selectedBilansBiologique.filter(
+        (elt) => elt !== bilan
+      );
     }
-    else{
-      alert("La dose et la duree doivent etre des nombres !");
-    }
-  } else {
-    alert("Veuillez remplir tous les champs avant d'ajouter un traitement.");
+    console.log(this.selectedBilansBiologique);
   }
-}
 
-onSubmit(){
-  if (
-    this.newConsultation && this.newConsultation.resume
-  ) {
-    this.newConsultation.bilansBiologique = this.selectedBilanBiologique;
-    this.newConsultation.bilanRadiologique = this.selectedBilanRadiologique;
-    this.selectedPatient.consultations.push({ ...this.newConsultation });
-    this.newConsultation = {
-      id:  this.selectedPatient.consultations.length,
-      bilanRadiologique : [],
-      bilansBiologique : [],
-      dateDeCreation: new Date,
-      ordonnances : [],
-      resume : "",
+  onCheckboxChangeRadio(bilan: BilanRequest, event: any) {
+    if (event.target.checked) {
+      console.log(bilan);
+      this.selectedBilansRadiologique = [
+        ...this.selectedBilansRadiologique,
+        bilan,
+      ];
+    } else {
+      this.selectedBilansRadiologique = this.selectedBilansRadiologique.filter(
+        (elt) => elt !== bilan
+      );
     }
-    alert("La nouvelle Consultation a etait creer avec succes!");
-    this.goBack();
-
-  } else {
-    alert("Veuillez remplir le resume d'ajouter une consultation.");
+    console.log(this.selectedBilansRadiologique);
   }
-  console.log(this.selectedPatient);
-  this.dpiService.setDPI(this.selectedPatient);
-}
 
+  addNewTrait() {
+    console.log(this.newTraitement);
+    if (
+      this.selectedOrdonnance &&
+      this.newTraitement.medicament &&
+      this.newTraitement.dosage &&
+      this.newTraitement.duree
+    ) {
+      this.newTraitements.push({ ...this.newTraitement });
+      this.newTraitement = { medicament: '', dosage: '', duree: '' }; // Reset input fields
+    } else {
+      alert("Veuillez remplir tous les champs avant d'ajouter un traitement.");
+    }
+  }
 
-goBack(){
-  this.router.navigate(['../',], { relativeTo: this.route });
-}
+  onSubmit() {
+    this.newConsultation.resumes[0].consultation =
+      this.selectedPatient.consultations[
+        this.selectedPatient.consultations.length - 1
+      ].id; //weird but it work, who cares?
+    if (this.newConsultation && this.newConsultation.resumes) {
+      //Sumbit Resume:
+      this.apiDataService
+        .createResume(
+          `Consultation/resume/`,
+          this.newConsultation.resumes[0],
+          `${this.authService.getToken()}`
+        )
+        .subscribe({
+          next: (response) => {},
+          error: (err) => {
+            alert('Impossible d"enregistrer le resume. Veuillez réessayer.');
+            console.error(err);
+          },
+        });
 
-deleteOrdonnance(){
-  console.log(this.newConsultation);
-  this.newConsultation.ordonnances = this.newConsultation?.ordonnances.filter(c => c.titre !== this.OrdonnanceToDelete?.titre);
-  this.indexOfOrdonnanceToDelete = -1;
-  this.wantsToDelete = false;
-  this.isPopupOpen = false;
-}
+      //Sumbit Bilans:
+      //1-Biologique:
+      this.apiDataService
+        .post<Bilan>(
+          `demander_bilan/`,
+          this.selectedBilansBiologique,
+          `${this.authService.getToken()}`
+        )
+        .subscribe({
+          next: (response) => {
+            // this.newConsultation.bilans.push(...{response});
+          },
+          error: (err) => {
+            alert(
+              'Impossible d"envoyer les bilans biologique. Veuillez réessayer.'
+            );
+            console.error(err);
+          },
+        });
+      //2- Radiologique:
+      this.apiDataService
+        .post<Bilan>(
+          `demander_bilan/`,
+          this.selectedBilansRadiologique,
+          `${this.authService.getToken()}`
+        )
+        .subscribe({
+          next: (response) => {
+            // this.newConsultation.bilans.push(...{response});
+          },
+          error: (err) => {
+            alert(
+              'Impossible d"envoyer les bilans radiologique. Veuillez réessayer.'
+            );
+            console.error(err);
+          },
+        });
+      this.selectedPatient.consultations.push({ ...this.newConsultation });
+      // this.newConsultation = {
+      //   id:  this.selectedPatient.consultations.length,
+      //   bilanRadiologique : [],
+      //   bilansBiologique : [],
+      //   dateDeCreation: new Date,
+      //   ordonnances : [],
+      //   resume : "",
+      // }
+      alert('La nouvelle Consultation a etait creer avec succes!');
+      this.goBack();
+    } else {
+      alert("Veuillez remplir le resume avant d'ajouter une consultation.");
+    }
+    console.log(this.selectedPatient);
+    this.dpiService.setDPI(this.selectedPatient);
+  }
 
-OpenDeletionPopup(index : number){
-  this.wantsToDelete = true;
-  this.isPopupOpen = true;
-  console.log(index);
-  this.indexOfOrdonnanceToDelete = index;
-  this.OrdonnanceToDelete = this.newConsultation.ordonnances[this.indexOfOrdonnanceToDelete];
-  console.log(this.OrdonnanceToDelete);
-}
-closeDeletionPopup(){
-  console.log(this.newConsultation)
-  this.indexOfOrdonnanceToDelete = -1;
-  this.isPopupOpen = false;
-  this.wantsToDelete = false;
-}
+  goBack() {
+    this.router.navigate(['../'], { relativeTo: this.route });
+  }
+
+  deleteOrdonnance() {
+    console.log(this.newConsultation);
+    this.newConsultation.ordonnances = this.newConsultation?.ordonnances.filter(
+      (c) => c.id !== this.OrdonnanceToDelete?.id
+    );
+    this.indexOfOrdonnanceToDelete = -1;
+    this.wantsToDelete = false;
+    this.isPopupOpen = false;
+  }
+
+  OpenDeletionPopup(index: number) {
+    this.wantsToDelete = true;
+    this.isPopupOpen = true;
+    console.log(index);
+    this.indexOfOrdonnanceToDelete = index;
+    this.OrdonnanceToDelete =
+      this.newConsultation.ordonnances[this.indexOfOrdonnanceToDelete];
+    console.log(this.OrdonnanceToDelete);
+  }
+  closeDeletionPopup() {
+    console.log(this.newConsultation);
+    this.indexOfOrdonnanceToDelete = -1;
+    this.isPopupOpen = false;
+    this.wantsToDelete = false;
+  }
 }

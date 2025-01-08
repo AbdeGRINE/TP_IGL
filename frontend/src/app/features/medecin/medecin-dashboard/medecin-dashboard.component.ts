@@ -53,6 +53,9 @@ export class MedecinDashboardComponent implements OnInit {
 
   DPIs: DPI[] | null = null;
 
+  DPIsList: DPI[] | null = this.DPIs; //copy the DPIs array to DPIsList:
+
+
   authResponse: AuthResponse;
   constructor(
     private router: Router,
@@ -87,27 +90,26 @@ export class MedecinDashboardComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.DPIs = data; 
-          console.log(data);
+          this.DPIsList = this.DPIs;
+          console.log(this.DPIs);
         },
         error: (err) => console.error('Error fetching soins:', err),
       });
   }
 
   navigateToViewDPI(DPI: DPI) {
-    // this.dpiService.setDPI(DPI);
+    this.dpiService.setDPI(DPI);
     setAccessedFromMedecin(true);
     this.router.navigate(['/medecin-dashboard/afficher-dpi', DPI.id]);
   }
 
   navigateToCreerDPI() {
     this.router.navigate(['/medecin-dashboard/medecin-creer-dpi']);
-
     //this.router.navigate(['./creer-dpi-medecin'], { relativeTo: this.route });
   }
 
   // ---------------------------------------------- SEARCH Logic:
   // In any reload of the page: DPIsList will be DPIs.
-  DPIsList: DPI[] | null = this.DPIs; //copy the DPIs array to DPIsList:
   matchedDPI: null | DPI = {
     id: '',
     patient_nom: '',

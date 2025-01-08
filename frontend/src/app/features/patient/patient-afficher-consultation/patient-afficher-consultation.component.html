@@ -20,9 +20,9 @@
 
                 <div class="w-full flex flex-col">
                     <div class="flex  items-center py-2 px-4 w-full"
-                        *ngFor="let traitement of selectedOrdonnance?.traitements">
+                        *ngFor="let traitement of selectedOrdonnance?.medicaments">
                         <div class="w-1/3 flex-grow">{{traitement.medicament}}</div>
-                        <div class="w-1/3 flex-grow text-black">{{traitement.dose}}</div>
+                        <div class="w-1/3 flex-grow text-black">{{traitement.dosage}}</div>
                         <div class="w-1/3 flex-grow text-black">{{traitement.duree}}</div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
             <div class="w-full flex flex-col gap-y-4">
                 <div class="w-full text-left">Compte Rendu</div>
                 <div class="text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md w-full h-60"
-                    placeholder="Resume de la consultation">{{selectedConsultation?.resume}}
+                    placeholder="Resume de la consultation">{{selectedConsultation?.resumes}}
                 </div>
             </div>
 
@@ -95,7 +95,7 @@
                         <div class="flex justify-between items-center mx-4 my-2">
                             <div class="text-xl">Date</div>
                             <div class="bg-lightgray text-darkgray px-6 py-2 rounded-sm">
-                                {{selectedConsultation?.dateDeCreation | date : "dd-MM-yyyy"}}</div>
+                                {{selectedConsultation?.date | date : "dd-MM-yyyy"}}</div>
                         </div>
                     </div>
 
@@ -120,8 +120,8 @@
 
                                 <div *ngFor="let ord of selectedConsultation?.ordonnances"
                                     class="flex items-center py-2 px-4 w-full text-black">
-                                    <div class="w-1/3 flex-grow">{{ord.titre}}</div>
-                                    <div class="w-1/3 flex-grow text-black">{{ord.state}}</div>
+                                    <div class="w-1/3 flex-grow">{{ord.id}}</div>
+                                    <div class="w-1/3 flex-grow text-black">{{ord.status}}</div>
                                     <div class="flex flex-row gap-x-6 items-center w-1/3 flex-grow justify-end">
                                         <button><img src="/eye.svg" alt="view icon"
                                                 (click)="openViewOrdonnance(ord)"></button>
@@ -146,7 +146,7 @@
                             </div>
 
                             <div class="w-full flex flex-col">
-                                <div *ngFor="let Bilan of selectedConsultation?.bilansBiologique"
+                                <div *ngFor="let Bilan of selectedConsultation?.bilans"
                                     class="flex  items-center py-2 px-4 w-full">
                                     <div class="w-1/3 flex-grow">{{Bilan.nom}}</div>
                                     <div class="w-1/3 flex-grow text-black">{{Bilan.nom}}</div>
@@ -180,7 +180,7 @@
                             </div>
 
                             <div class="w-full flex flex-col">
-                                <div *ngFor="let Bilan of selectedConsultation?.bilanRadiologique"
+                                <div *ngFor="let Bilan of selectedConsultation?.bilans"
                                     class="flex  items-center py-2 px-4 w-full">
                                     <div class="w-1/3 flex-grow">{{Bilan.nom}}</div>
                                     <div class="w-1/3 flex-grow text-black">{{Bilan.nom}}</div>
@@ -205,7 +205,7 @@
                         <!-- input -->
                         <div class="w-full h-full flex">
                             <div class="resize-none text-start text-black flex-wrap bg-lightgray align-text-top px-4 py-2 border border-darkgray rounded-md focus:ring-2 focus:ring-green focus:outline-none w-full h-full"
-                                placeholder="Resume de la consultation">{{selectedConsultation?.resume}}</div>
+                                placeholder="Resume de la consultation">{{selectedConsultation?.resumes}}</div>
                         </div>
                     </div>
                 </div>

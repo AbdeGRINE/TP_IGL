@@ -25,7 +25,7 @@ export class LoginComponent {
   }
 
   onSubmit(): void {
-    this.authService.login(this.username, this.password).subscribe({
+    this.authService.login("test_medecin", "test_medecin").subscribe({
       next: (response) => {
         if (this.isBrowser) {
           //Save the user's settings:

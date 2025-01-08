@@ -14,24 +14,24 @@ export class RadiologueService {
   private bilansSubject = new BehaviorSubject<Bilan[]>([]);
   bilans$ = this.bilansSubject.asObservable();
   private isBrowser: boolean;
-    bilan : Bilan = {
-    nom: "IRM",
-    date_demande: "2024-12-31",
-    date_recuperation: null,
-    status: "En_cours",
-    type: "Radiologique",
-    redigant_laborantin: null,
-    redigant_radiologue: null,
-    consultation: 1,
-    graphique: "Non_Attaché"
-    }
+    // bilan : Bilan = {
+    // nom: "IRM",
+    // date_demande: "2024-12-31",
+    // date_recuperation: null,
+    // status: "En_cours",
+    // type: "Radiologique",
+    // redigant_laborantin: null,
+    // redigant_radiologue: null,
+    // consultation: 1,
+    // graphique: "Non_Attaché"
+    // }
 
     setBilanRadiologique(bilan : Bilan){
 
     }
 
     getBilanRadiologique(){
-      return this.bilan;
+      // return this.bilan;
     }
 
   constructor(private http: HttpClient,

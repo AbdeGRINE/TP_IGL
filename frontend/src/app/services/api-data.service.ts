@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Ordonnance, Resume } from '../models/interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,61 @@ export class ApiDataService {
       Authorization: `Token ${token}`,
     });
     return this.http.post<T>(url, data, { headers });
+  }
+
+  createConsultation<T>(
+    endpoint: string,
+    dpiID: any,
+    token: string
+  ): Observable<T> {
+    const url = `${this.baseUrl}/${endpoint}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    });
+    const body = {
+      dpi: `${dpiID}`,
+    };
+    return this.http.post<T>(url, body, { headers });
+  }
+
+  createOrdonnace<T>(
+    endpoint: string,
+    ordonnace: Ordonnance,
+    token: string
+  ): Observable<T> {
+    const url = `${this.baseUrl}/${endpoint}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    });
+    const body = {
+      consultation: ordonnace.consultation, // ID de la consultation existante
+      observation: 'exemple',
+      medicaments: ordonnace.medicaments,
+    };
+    return this.http.post<T>(url, body, { headers });
+  }
+
+  createResume<T>(
+    endpoint: string,
+    Resume: Resume,
+    token: string
+  ): Observable<T> {
+    const url = `${this.baseUrl}/${endpoint}`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    });
+    const body = {
+      consultation: Resume.consultation,
+      resume: {
+        mesures_prises:Resume.mesures_prises,
+        autres: '/',
+        date_prochaine_consultation: '1869-01-21',
+      },
+    };
+    return this.http.post<T>(url, body, { headers });
   }
 
   put<T>(endpoint: string, data: any, token: string): Observable<T> {
