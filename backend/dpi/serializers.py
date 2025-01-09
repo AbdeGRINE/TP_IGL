@@ -53,6 +53,17 @@ class SimpleDPISerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DPI
-        fields = ['id', 'patient_nom', 'patient_prenom', 'medecin_traitant', 'etablissement_courant']
+        fields = ['id', 'patient_nom', 'patient_prenom', 'medecin_traitant', 'etablissement_courant','date_creation']
 
 
+class SimpleDPIparmedecinSerializer(serializers.ModelSerializer):
+    medecin_traitant = SimpleMedcinSerializer()
+    etablissement_courant = SimpleEtablissementSerializer()
+    patient_nom = serializers.CharField(source='patient.nom')
+    patient_prenom = serializers.CharField(source='patient.prenom')
+    telephone = serializers.CharField(source='patient.telephone')
+    nss = serializers.CharField(source='patient.NSS')
+
+    class Meta:
+        model = DPI
+        fields = ['id', 'patient_nom', 'patient_prenom', 'medecin_traitant', 'etablissement_courant','telephone','qr_code','nss','date_creation']

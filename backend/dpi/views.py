@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from users.models import DPI, Medcin, Etablissement, Patient, StatusBilan, TypeBilan
-from .serializers import DPISerializer, SimpleDPISerializer
-import qrcode
+from .serializers import DPISerializer, SimpleDPISerializer, SimpleDPIparmedecinSerializer
+import qrcode # type: ignore
 from io import BytesIO
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import ListAPIView
@@ -154,7 +154,7 @@ class consulter_dpi(APIView):
 
   
 class consulterDPI_patient(APIView):
-    permission_classes = [IsAuthenticated] 
+    #permission_classes = [IsAuthenticated] 
     def get(self, request, patient_id, *args, **kwargs):
         patient = get_object_or_404(Patient, id=patient_id)
         dpi_list = DPI.objects.filter(patient=patient)
@@ -183,7 +183,7 @@ class ListerDPI(APIView):
         return Response(serializer.data, status=200)
 
 class ListerDPI_par_medecin(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         medecin_id = request.query_params.get('medecin_id')
@@ -194,7 +194,7 @@ class ListerDPI_par_medecin(APIView):
         if medecin_id:
             dpi_list = dpi_list.filter(medecin_traitant_id=medecin_id)
 
-        serializer = SimpleDPISerializer(dpi_list, many=True)
+        serializer = SimpleDPIparmedecinSerializer(dpi_list, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ListerDPIByRadiologiqueStatus(APIView):

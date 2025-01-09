@@ -61,10 +61,9 @@ def creer_consultation(request):
                 else:
                     return Response(resume_serializer.errors, status=400)
             """
-            return Response({
-                "message": "Consultation créés avec succès",
-                "consultation": ConsultationSerializer(instance=consultation).data
-            }, status=201)
+            return Response(
+                serializer.data
+            , status=201)
 
         return Response(serializer.errors, status=400)
     except KeyError:

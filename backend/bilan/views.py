@@ -16,19 +16,30 @@ from rest_framework import status
 
 @api_view(['POST'])
 @authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+#@permission_classes([IsAuthenticated])
 def demander_bilan(request: Request) -> Response:
-    # medcin
-    serializer = BilanSerializer(data = request.data)
-    if serializer.is_valid():
-        default_status = StatusBilan.EN_COURS
-        default_date = date.today()
-        default_graphique = StatusGraphique.NON_ATTACHE
-        bilan = serializer.save(status= default_status, date_demande= default_date, graphique= default_graphique)
-        bilan_data = BilanSerializer(instance = bilan).data
-        return Response(bilan_data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+    if isinstance(request.data, list):
+        created_bilans = []
 
+        for bilan_data in request.data:
+            serializer = BilanSerializer(data=bilan_data)
+            if serializer.is_valid():
+                default_status = StatusBilan.EN_COURS
+                default_date = date.today()
+                default_graphique = StatusGraphique.NON_ATTACHE
+                bilan = serializer.save(
+                    status=default_status,
+                    date_demande=default_date,
+                    graphique=default_graphique
+                )
+                created_bilans.append(BilanSerializer(instance=bilan).data)
+
+        return Response(created_bilans, status=status.HTTP_200_OK)
+
+    return Response(
+        {"error": "list of bilans plz."},
+        status=status.HTTP_400_BAD_REQUEST
+    )
 
 
 @api_view(['GET'])
