@@ -219,3 +219,47 @@ def consulter_bilan_biologique_tests(request: Request) -> Response:
     
     return Response({"bilan": bilan_data}, status=status.HTTP_200_OK)
 
+
+@api_view(['POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def update_test_results(request):
+    # try:
+        # Retrieve the bilan ID and test results from the request data
+        bilan_id = request.data.get('bilan_id')
+        test_results = request.data.get('test_results', {})
+
+        # Validate the input data
+        if not bilan_id or not isinstance(test_results, dict):
+            return Response(
+                {"error": "Invalid input data. 'bilan_id' and 'test_results' are required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Fetch the Bilan and its related tests
+       
+
+        # Update the results of the tests
+        updated_tests = []
+        for test_name, result in test_results.items():
+            try:
+                test = Test.objects.get(bilan=bilan, nom=test_name)
+                test.resultat = result
+                test.save()
+                updated_tests.append({"test_id": test.id, "test_name": test.nom, "new_result": test.resultat})
+            except Test.DoesNotExist:
+                return Response(
+                    {"error": f"Test with name '{test_name}' not found for the given Bilan."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+        # Return a success response
+        return Response(
+            {
+                "message": "Test results updated successfully.",
+                "updated_tests": updated_tests,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    
