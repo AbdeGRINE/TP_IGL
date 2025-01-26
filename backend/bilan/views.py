@@ -262,4 +262,8 @@ def update_test_results(request):
             status=status.HTTP_200_OK,
         )
 
-    
+      except Exception as e:
+        return Response(
+            {"error": "An unexpected error occurred.", "details": str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
