@@ -224,7 +224,7 @@ def consulter_bilan_biologique_tests(request: Request) -> Response:
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def update_test_results(request):
-    # try:
+    try:
         # Retrieve the bilan ID and test results from the request data
         bilan_id = request.data.get('bilan_id')
         test_results = request.data.get('test_results', {})
@@ -237,7 +237,10 @@ def update_test_results(request):
             )
 
         # Fetch the Bilan and its related tests
-       
+        try:
+            bilan = Bilan.objects.get(id=bilan_id)
+        except Bilan.DoesNotExist:
+            return Response({"error": "Bilan not found."}, status=status.HTTP_404_NOT_FOUND)
 
         # Update the results of the tests
         updated_tests = []
@@ -262,7 +265,7 @@ def update_test_results(request):
             status=status.HTTP_200_OK,
         )
 
-      except Exception as e:
+    except Exception as e:
         return Response(
             {"error": "An unexpected error occurred.", "details": str(e)},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
