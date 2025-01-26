@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from users.models import TypeBilan, StatusBilan, StatusGraphique
-from .serializers import BilanSerializer, TestSerializer, GraphiqueSerializer, CompteRenduSerializer, ImageSerializer
+from users.models import DPI,TypeBilan, StatusBilan, StatusGraphique,Patient
+from .serializers import BilanSerializer, TestSerializer, GraphiqueSerializer, CompteRenduSerializer, ImageSerializer,PatientBilanSerializer
 from users.serializers import UserSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -11,6 +11,7 @@ from users.models import Bilan, Test, CompteRendu, Image, Consultation
 from datetime import date
 from base64 import b64decode
 from rest_framework import status
+from django.db.models import Prefetch
 
 # Create your views here.
 
@@ -163,3 +164,58 @@ def envoyer_donnees_graphes(request: Request) -> Response:
         tests_data = TestSerializer(tests, many=True).data 
         return Response(tests_data, status=status.HTTP_200_OK)
     return Response({"detail":"pas de graphiques attachés"}, status= status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def consulter_bilans_biologiques_en_cours_with_Patients(request: Request) -> Response:
+    # Get all patients who have ongoing biological tests
+    patients = Patient.objects.filter(
+        dpi__consultation__bilan__type=TypeBilan.BIOLOGIQUE,
+        dpi__consultation__bilan__status=StatusBilan.EN_COURS
+    ).distinct().prefetch_related(
+        Prefetch(
+            'dpi_set',  # Use the reverse relationship name
+            queryset=DPI.objects.select_related('medecin_traitant')
+        ),
+        Prefetch(
+            'dpi_set__consultation_set',
+            queryset=Consultation.objects.prefetch_related(
+                Prefetch(
+                    'bilan_set',
+                    queryset=Bilan.objects.filter(
+                        type=TypeBilan.BIOLOGIQUE,
+                        status=StatusBilan.EN_COURS
+                    )
+                )
+            )
+        )
+    )
+    
+    serializer = PatientBilanSerializer(patients, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def consulter_bilan_biologique_tests(request: Request) -> Response:
+    # Retrieve bilan_id from query parameters
+    bilan_id = request.query_params.get('bilan')
+    
+    if not bilan_id:
+        return Response({"error": "Bilan ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        bilan = Bilan.objects.get(id=bilan_id)
+    except Bilan.DoesNotExist:
+        return Response({"error": "Bilan not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    bilan_data = BilanSerializer(bilan).data
+    tests = Test.objects.filter(bilan=bilan)
+    
+    if tests.exists():
+        tests_data = TestSerializer(tests, many=True).data
+        return Response({"bilan": bilan_data, "tests": tests_data}, status=status.HTTP_200_OK)
+    
+    return Response({"bilan": bilan_data}, status=status.HTTP_200_OK)
+
