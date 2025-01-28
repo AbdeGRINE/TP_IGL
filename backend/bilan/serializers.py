@@ -5,7 +5,7 @@ class BilanSerializer(serializers.ModelSerializer):
     consultation = serializers.PrimaryKeyRelatedField(queryset=Consultation.objects.all())
     class Meta:
         model = Bilan
-        fields = ['nom', 'date_demande', 'date_recuperation', 'status', 'type', 'redigant_laborantin', 'redigant_radiologue', 'consultation', 'graphique']
+        fields = ['id','nom', 'date_demande', 'date_recuperation', 'status', 'type', 'redigant_laborantin', 'redigant_radiologue', 'consultation', 'graphique']
 
 class TestSerializer(serializers.ModelSerializer):
     bilan = serializers.PrimaryKeyRelatedField(queryset=Bilan.objects.all())
