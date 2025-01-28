@@ -1,105 +1,127 @@
 <app-header *ngIf="showParentUI"></app-header>
 <router-outlet></router-outlet>
-<div class="bg-lightgray px-[5%] py-14 flex flex-col gap-y-20 relative" *ngIf="showParentUI">
-
+<div
+  class="bg-lightgray px-[5%] py-14 flex flex-col gap-y-20 relative"
+  *ngIf="showParentUI"
+>
   <div class="flex w-full h-full">
-    <div class="flex flex-row items-center justify-between w-full gap-x-20 min-h-fit">
+    <div
+      class="flex flex-row items-center justify-between w-full gap-x-20 min-h-fit"
+    >
       <div class="flex items-center align-items flex-col w-1/3 gap-y-10">
-        <div class="border w-full flex items-center justify-center bg-white  border-darkgray rounded-xl">
-          <img id="qrCodeImage" [src]="qrCodeDataUrl" alt="qr code example" class="py-6" />
+        <div
+          class="border w-full flex items-center justify-center bg-white border-darkgray rounded-xl"
+        >
+          <img
+            id="qrCodeImage"
+            [src]="qrCodeDataUrl"
+            alt="qr code example"
+            class="py-6"
+          />
         </div>
-        <div><button (click)="downloadImage()"
-            class="bg-green text-white text-lg px-6 py-2 rounded-xl">Exporter</button>
+        <div>
+          <button
+            (click)="downloadImage()"
+            class="bg-green text-white text-lg px-6 py-2 rounded-xl"
+          >
+            Exporter
+          </button>
         </div>
       </div>
 
-      <div class="w-2/3 bg-white border border-darkgray rounded-xl h-full flex items-center">
+      <div
+        class="w-2/3 bg-white border border-darkgray rounded-xl h-full flex items-center"
+      >
         <div class="flex flex-col p-14 h-full justify-between text-xl w-full">
           <div class="flex w-full gap-x-2">
-            <div class="font-semibold">Nom :
-            </div>
-            <div>{{patient.nom}}</div>
+            <div class="font-semibold">Nom :</div>
+            <!-- <div>{{ patient.nom }}</div> -->
           </div>
 
           <div class="flex w-full gap-x-2">
-            <div class="font-semibold">Prenom :
-            </div>
-            <div>{{patient.prenom}}</div>
+            <div class="font-semibold">Prenom :</div>
+            <!-- <div>{{patient.prenom}}</div> -->
           </div>
           <div class="flex w-full gap-x-2">
-            <div class="font-semibold">NSS :
-            </div>
-            <div>{{patient.NSS}}</div>
+            <div class="font-semibold">NSS :</div>
+            <!-- <div>{{patient.NSS}}</div> -->
           </div>
           <div class="flex w-full gap-x-2">
-            <div class="font-semibold">Date de naissance :
-            </div>
-            <div>{{patient.dateNaissance}}</div>
+            <div class="font-semibold">Date de naissance :</div>
+            <!-- <div>{{patient.dateNaissance}}</div> -->
           </div>
           <div class="flex w-full gap-x-2">
-            <div class="font-semibold">Adresse :
-            </div>
-            <div>{{patient.adresse}}</div>
+            <div class="font-semibold">Adresse :</div>
+            <!-- <div>{{patient.adresse}}</div> -->
           </div>
           <div class="flex w-full gap-x-2">
-            <div class="font-semibold">N tel. :
-            </div>
-            <div>{{patient.telephone}}</div>
+            <div class="font-semibold">N tel. :</div>
+            <div>{{ patient.telephone }}</div>
           </div>
           <div class="flex w-full gap-x-2">
-            <div class="font-semibold">Mutuelle :
-            </div>
-            <div>{{patient.mutuelle}}</div>
+            <div class="font-semibold">Mutuelle :</div>
+            <!-- <div>{{patient.mutuelle}}</div> -->
           </div>
           <div class="flex w-full gap-x-2">
-            <div class="font-semibold">Personne à contacter :
-            </div>
-            <div>{{patient.personneAContacter}}</div>
+            <div class="font-semibold">Personne à contacter :</div>
+            <!-- <div>{{patient.personneAContacter}}</div> -->
           </div>
-
         </div>
       </div>
     </div>
   </div>
 
   <div class="flex w-full h-full">
-    <div class="flex flex-row justify-between items-center gap-x-20 min-h-fit w-full">
-      <div class="bg-white border rounded-xl border-darkgray w-3/5 h-full flex flex-col items-center p-8 gap-y-4">
+    <div
+      class="flex flex-row justify-between items-center gap-x-20 min-h-fit w-full"
+    >
+      <div
+        class="bg-white border rounded-xl border-darkgray w-3/5 h-full flex flex-col items-center p-8 gap-y-4"
+      >
         <div class="w-full text-left text-xl flex justify-between items-center">
           <div>Liste des consultations</div>
-
         </div>
         <div class="w-full flex flex-col items-center gap-y-1">
-          <div class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center justify-between">
+          <div
+            class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center justify-between"
+          >
             <div>ID</div>
             <div>Date de creation</div>
             <div>Actions</div>
           </div>
           <div class="w-full flex flex-col">
-            <div *ngFor="let Consultation of patient?.consultations; let i = index"
-              class="flex justify-between items-center py-2 px-4">
-              <div>{{Consultation.id}}</div>
+            <div
+              *ngFor="let Consultation of patient?.consultations; let i = index"
+              class="flex justify-between items-center py-2 px-4"
+            >
+              <div>{{ Consultation.id }}</div>
               <div>
-                <div class="font-semibold text-black">{{Consultation.dateDeCreation | date :
-                  "dd/MM/yyyy"}}</div>
-                <div class="text-darkgray font-medium">{{Consultation.dateDeCreation | date :
-                  "HH:mm"}}
+                <div class="font-semibold text-black">
+                  {{ Consultation.date | date : "dd/MM/yyyy" }}
+                </div>
+                <div class="text-darkgray font-medium">
+                  {{ Consultation.date | date : "HH:mm" }}
                 </div>
               </div>
               <div class="flex flex-row gap-x-6 items-center justify-between">
-                <button><img src="/eye.svg" alt="view icon" (click)="navigateToViewConsultation(Consultation)"></button>
+                <button>
+                  <img
+                    src="/eye.svg"
+                    alt="view icon"
+                    (click)="navigateToViewConsultation(Consultation)"
+                  />
+                </button>
               </div>
-
             </div>
           </div>
         </div>
       </div>
 
-      <div class="bg-white border rounded-xl border-darkgray w-2/5 flex justify-center items-center">
-        <img src="/graphe.svg" alt="graphe exemple" class="p-6">
+      <div
+        class="bg-white border rounded-xl border-darkgray w-2/5 flex justify-center items-center"
+      >
+        <img src="/graphe.svg" alt="graphe exemple" class="p-6" />
       </div>
     </div>
   </div>
-
-
 </div>

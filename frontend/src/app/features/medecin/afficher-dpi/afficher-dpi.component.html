@@ -1,128 +1,180 @@
 <app-header *ngIf="showParentUI"></app-header>
 <router-outlet></router-outlet>
-<div class="bg-lightgray px-[5%] py-14 flex flex-col gap-y-20 relative" *ngIf="showParentUI">
-    <div class="absolute inset-0 " [ngClass]="{
-        'bg-gray opacity-50': isPopupOpen,
-        'bg-transparent hidden': !isPopupOpen
-      }"></div>
-    <div *ngIf="isPopupOpen"
-        class="absolute top-[600px] left-1/2 transform -translate-x-1/2  bg-white flex flex-col border border-darkgray rounded-lg gap-y-6 w-1/2 px-4 py-4 h-40">
-        <div class="w-full flex flex-col h-full min-h-full  justify-center items-center">
-            <div class="py-6 text-black text-xl text-center">Etes vous sure de vouloir supprimer l'ordonnance
-                {{consultationToDelete?.id}}?</div>
-            <div class="flex justify-center w-full gap-x-5">
-                <button class="text-lg px-6 py-2 rounded-xl flex " (click)="closeDeletionPopup()">Annuler</button>
-                <button class="bg-red text-white text-lg px-6 py-2 rounded-xl flex "
-                    (click)="deleteConsultation()">Supprimer</button>
-            </div>
+<div
+  class="bg-lightgray px-[5%] py-14 flex flex-col gap-y-20 relative"
+  *ngIf="showParentUI"
+>
+  <div
+    class="absolute inset-0"
+    [ngClass]="{
+      'bg-gray opacity-50': isPopupOpen,
+      'bg-transparent hidden': !isPopupOpen
+    }"
+  ></div>
+  <div
+    *ngIf="isPopupOpen"
+    class="absolute top-[600px] left-1/2 transform -translate-x-1/2 bg-white flex flex-col border border-darkgray rounded-lg gap-y-6 w-1/2 px-4 py-4 h-40"
+  >
+    <div
+      class="w-full flex flex-col h-full min-h-full justify-center items-center"
+    >
+      <div class="py-6 text-black text-xl text-center">
+        Etes vous sure de vouloir supprimer l'ordonnance
+        {{ consultationToDelete?.id }}?
+      </div>
+      <div class="flex justify-center w-full gap-x-5">
+        <button
+          class="text-lg px-6 py-2 rounded-xl flex"
+          (click)="closeDeletionPopup()"
+        >
+          Annuler
+        </button>
+        <button
+          class="bg-red text-white text-lg px-6 py-2 rounded-xl flex"
+          (click)="deleteConsultation()"
+        >
+          Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <button
+      (click)="goBack()"
+      class="bg-white text-green text-lg px-6 py-2 rounded-xl border border-g w-auto"
+    >
+      Retour
+    </button>
+  </div>
+
+  <div class="flex w-full h-full">
+    <div
+      class="flex flex-row items-center justify-between w-full gap-x-20 min-h-fit"
+    >
+      <div class="flex items-center align-items flex-col w-1/3 gap-y-10">
+        <div
+          class="border w-full flex items-center justify-center bg-white border-darkgray rounded-xl"
+        >
+          <img
+            id="qrCodeImage"
+            [src]="qrCodeDataUrl"
+            alt="qr code example"
+            class="py-6"
+          />
         </div>
-    </div>
-    <div>
-        <button (click)="goBack()"
-            class="bg-white text-green text-lg px-6 py-2 rounded-xl border border-g w-auto">Retour</button>
-    </div>
-
-    <div class="flex w-full h-full">
-        <div class="flex flex-row items-center justify-between w-full gap-x-20 min-h-fit">
-            <div class="flex items-center align-items flex-col w-1/3 gap-y-10">
-                <div class="border w-full flex items-center justify-center bg-white  border-darkgray rounded-xl">
-                    <img id="qrCodeImage" [src]="qrCodeDataUrl" alt="qr code example" class="py-6" />
-                </div>
-                <div><button (click)="downloadImage()"
-                        class="bg-green text-white text-lg px-6 py-2 rounded-xl">Exporter</button>
-                </div>
-            </div>
-
-            <div class="w-2/3 bg-white border border-darkgray rounded-xl h-full flex items-center">
-                <div class="flex flex-col p-14 h-full justify-between text-xl w-full">
-                    <div class="flex w-full gap-x-2">
-                        <div class="font-semibold">Nom :
-                        </div>
-                        <div>{{patient.nom}}</div>
-                    </div>
-
-                    <div class="flex w-full gap-x-2">
-                        <div class="font-semibold">Prenom :
-                        </div>
-                        <div>{{patient.prenom}}</div>
-                    </div>
-                    <div class="flex w-full gap-x-2">
-                        <div class="font-semibold">NSS :
-                        </div>
-                        <div>{{patient.NSS}}</div>
-                    </div>
-                    <div class="flex w-full gap-x-2">
-                        <div class="font-semibold">Date de naissance :
-                        </div>
-                        <div>{{patient.dateNaissance}}</div>
-                    </div>
-                    <div class="flex w-full gap-x-2">
-                        <div class="font-semibold">Adresse :
-                        </div>
-                        <div>{{patient.adresse}}</div>
-                    </div>
-                    <div class="flex w-full gap-x-2">
-                        <div class="font-semibold">N tel. :
-                        </div>
-                        <div>{{patient.telephone}}</div>
-                    </div>
-                    <div class="flex w-full gap-x-2">
-                        <div class="font-semibold">Mutuelle :
-                        </div>
-                        <div>{{patient.mutuelle}}</div>
-                    </div>
-                    <div class="flex w-full gap-x-2">
-                        <div class="font-semibold">Personne à contacter :
-                        </div>
-                        <div>{{patient.personneAContacter}}</div>
-                    </div>
-
-                </div>
-            </div>
+        <div>
+          <button
+            (click)="downloadImage()"
+            class="bg-green text-white text-lg px-6 py-2 rounded-xl"
+          >
+            Exporter
+          </button>
         </div>
-    </div>
+      </div>
 
-    <div class="flex w-full h-full">
-        <div class="flex flex-row justify-between items-center gap-x-20 min-h-fit w-full">
-            <div class="bg-white border rounded-xl border-darkgray w-3/5 h-full flex flex-col items-center p-8 gap-y-4">
-                <div class="w-full text-left text-xl flex justify-between items-center">
-                    <div>Liste des consultations</div>
-                    <button (click)="NavigateToCreerConsultation()"><img src="/add.svg" alt="add icon" /></button>
-                </div>
-                <div class="w-full flex flex-col items-center gap-y-1">
-                    <div
-                        class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center justify-between">
-                        <div>ID</div>
-                        <div>Date de creation</div>
-                        <div>Actions</div>
-                    </div>
-                    <div class="w-full flex flex-col">
-                        <div *ngFor="let Consultation of patient?.consultations; let i = index"
-                            class="flex justify-between items-center py-2 px-4">
-                            <div>{{Consultation.id}}</div>
-                            <div>
-                                <div class="font-semibold text-black">{{Consultation.dateDeCreation | date :
-                                    "dd/MM/yyyy"}}</div>
-                                <div class="text-darkgray font-medium">{{Consultation.dateDeCreation | date :
-                                    "HH:mm"}}
-                                </div>
-                            </div>
-                            <div class="flex flex-row gap-x-6 items-center justify-between">
-                                <button><img src="/eye.svg" alt="view icon"
-                                        (click)="navigateToViewConsultation(Consultation)"></button>
-                                <button><img src="/trash.svg" alt="delete icon" (click)="OpenDeletionPopup(i)"></button>
-                            </div>
+      <div
+        class="w-2/3 bg-white border border-darkgray rounded-xl h-full flex items-center"
+      >
+        <div class="flex flex-col p-14 h-full justify-between text-xl w-full">
+          <div class="flex w-full gap-x-2">
+            <div class="font-semibold">Nom :</div>
+            <div>{{DPIResponse?.patient?.nom}}</div>
+          </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white border rounded-xl border-darkgray w-2/5 flex justify-center items-center">
-                <img src="/graphe.svg" alt="graphe exemple" class="p-6">
-            </div>
+          <div class="flex w-full gap-x-2">
+            <div class="font-semibold">Prenom :</div>
+            <div>{{DPIResponse?.patient?.prenom}}</div>
+          </div>
+          <div class="flex w-full gap-x-2">
+            <div class="font-semibold">NSS :</div>
+            <div>{{DPIResponse?.patient?.NSS}}</div>
+          </div>
+          <div class="flex w-full gap-x-2">
+            <div class="font-semibold">Date de naissance :</div>
+            <div>{{DPIResponse?.patient?.date_naissance}}</div>
+          </div>
+          <div class="flex w-full gap-x-2">
+            <div class="font-semibold">Adresse :</div>
+            <div>{{DPIResponse?.patient?.adresse}}</div>
+          </div>
+          <!-- <div class="flex w-full gap-x-2">
+            <div class="font-semibold">N tel. :</div>
+            <div>{{ DPIResponse?.patient.}}</div>
+          </div> -->
+          <div class="flex w-full gap-x-2">
+            <div class="font-semibold">Mutuelle :</div>
+            <div>{{DPIResponse?.patient?.mutuelle}}</div>
+          </div>
+          <div class="flex w-full gap-x-2">
+            <div class="font-semibold">Personne à contacter :</div>
+            <div>{{DPIResponse?.patient?.personne_a_contacter}}</div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
+  <div class="flex w-full h-full">
+    <div
+      class="flex flex-row justify-between items-center gap-x-20 min-h-fit w-full"
+    >
+      <div
+        class="bg-white border rounded-xl border-darkgray w-3/5 h-full flex flex-col items-center p-8 gap-y-4"
+      >
+        <div class="w-full text-left text-xl flex justify-between items-center">
+          <div>Liste des consultations</div>
+          <button (click)="NavigateToCreerConsultation()">
+            <img src="/add.svg" alt="add icon" />
+          </button>
+        </div>
+        <div class="w-full flex flex-col items-center gap-y-1">
+          <div
+            class="bg-lightgray w-full rounded-lg py-2 px-4 text-darkgray text-sm flex items-center justify-between"
+          >
+            <div>ID</div>
+            <div>Date de creation</div>
+            <div>Actions</div>
+          </div>
+          <div class="w-full flex flex-col">
+            <div
+              *ngFor="let Consultation of patient?.consultations; let i = index"
+              class="flex justify-between items-center py-2 px-4"
+            >
+              <div>{{ Consultation.id }}</div>
+              <div>
+                <div class="font-semibold text-black">
+                  {{ Consultation.date | date : "dd/MM/yyyy" }}
+                </div>
+                <div class="text-darkgray font-medium">
+                  {{ Consultation.date | date : "HH:mm" }}
+                </div>
+              </div>
+              <div class="flex flex-row gap-x-6 items-center justify-between">
+                <button>
+                  <img
+                    src="/eye.svg"
+                    alt="view icon"
+                    (click)="navigateToViewConsultation(Consultation)"
+                  />
+                </button>
+                <button>
+                  <img
+                    src="/trash.svg"
+                    alt="delete icon"
+                    (click)="OpenDeletionPopup(i)"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div
+        class="bg-white border rounded-xl border-darkgray w-2/5 flex justify-center items-center"
+      >
+        <img src="/graphe.svg" alt="graphe exemple" class="p-6" />
+      </div>
+    </div>
+  </div>
 </div>

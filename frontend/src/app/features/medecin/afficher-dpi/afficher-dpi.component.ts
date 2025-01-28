@@ -1,73 +1,130 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule,NavigationEnd } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { NavigationService } from '../../../services/navigation.service';
-import { DPI, Traitement, Ordonnance, Consultation, Bilan } from '../../../models/interfaces/interfaces';
+import { DPI, Consultation } from '../../../models/interfaces/interfaces';
 import { DpiService } from '../../../services/dpi.service';
 import { ConsultationService } from '../../../services/consultation.service';
 import * as QRCode from 'qrcode';
-import { from } from 'rxjs';
 import { setAccessedFromAfficherDPI } from '../../../guards/medecin/afficher-consultation.guard';
 import { setAccessedFromAfficherDpi } from '../../../guards/medecin/creer-consultation.guard';
+import { ApiDataService } from '../../../services/api-data.service';
+import { AuthResponse } from '../../../models/interfaces/interfaces';
+import { AuthService } from '../../../services/auth.service';
+import { setAccessedFromMedecin } from '../../../guards/medecin/afficher-dpi.guard';
+import { Cons } from 'rxjs';
 
+//Because the respons of DPI is not the same as our declaration in interfaces.sevice,
+//and beacuse change what in intefaces.service will implies nourmus changes,
+//we choose to write this, as a bad choice:
+export interface DPIResponse {
+  id: number;
+  patient: Patient;
+  medecin_traitant: MedecinTraitant;
+  etablissement_courant: EtablissementCourant;
+  qr_code: string;
+  date_creation: string;
+}
+export interface Patient {
+  NSS: string;
+  nom: string;
+  prenom: string;
+  date_naissance: string;
+  adresse: string;
+  mutuelle: string;
+  personne_a_contacter: string;
+}
+export interface MedecinTraitant {
+  id: number;
+  nom: string;
+  prenom: string;
+}
+export interface EtablissementCourant {
+  id: number;
+  nom: string;
+  adresse: string;
+}
 
 @Component({
   selector: 'app-afficher-dpi',
-  imports: [CommonModule, HeaderComponent,RouterModule],
+  imports: [CommonModule, HeaderComponent, RouterModule],
   templateUrl: './afficher-dpi.component.html',
-  styleUrl: './afficher-dpi.component.css'
+  styleUrl: './afficher-dpi.component.css',
 })
-export class AfficherDpiComponent implements OnInit{
+export class AfficherDpiComponent implements OnInit {
+  patient: DPI;
+  DPIResponse: DPIResponse | null = null;
+  showParentUI: boolean = true;
+  qrCodeDataUrl: string | null = null; //our image URL.
+  isPopupOpen: boolean = false;
+  indexOfConsultationToDelete: number = -1;
+  consultationToDelete: Consultation | null = null;
+  consultation: Consultation | null = null;
+  authResponse: AuthResponse;
 
-    patient: DPI ;
-
-    showParentUI: boolean = true;
-
-    qrCodeDataUrl: string | null = null; //our image URL.
-
-    isPopupOpen : boolean = false;
-
-    indexOfConsultationToDelete : number = -1;
-
-    consultationToDelete : Consultation | null = null;
-
-    constructor(private route : Router,private router: ActivatedRoute, private dpiService: DpiService, private consultationService : ConsultationService){
-      this.patient = this.dpiService.getDPI();
-    }
-
-    downloadImage() {
-      const image = document.getElementById('qrCodeImage') as HTMLImageElement;
-      const link = document.createElement('a');
-      link.href = image.src;
-      link.download = `QR_code.png`;
-      link.click();
-    }
-
-    ngOnInit() {
-      if (this.patient) {
-        // You can now use the DPI object in your template
-        console.log('DPI object:', this.patient);
-      } else {
-        // If DPI is not found (e.g., user navigated directly), handle accordingly
-        console.log('No DPI object found.');
-    }
-    this.generateQRCode();
-    this.route.events.subscribe((event) => {
-          if (event instanceof NavigationEnd) {
-            // Check the current URL to determine if the child route is active
-            const currentRoute = this.route.url;
-            this.showParentUI = !(currentRoute.includes('afficher-consultation') || currentRoute.includes("creer-consultation"));
-          }
-        });
+  constructor(
+    private route: Router,
+    private router: ActivatedRoute,
+    private dpiService: DpiService,
+    private consultationService: ConsultationService,
+    private apiDataService: ApiDataService,
+    private authService: AuthService
+  ) {
+    this.patient = this.dpiService.getDPI(); //bring patient's data.
+    this.authResponse = this.authService.getAuthResponse();
   }
 
+  ngOnInit() {
+    setAccessedFromMedecin(true);
+    //fetch DPI here:
+    this.apiDataService
+      .get<DPIResponse>(
+        `dpi/consulter-dpi/${this.patient.id}/`,
+        `${this.authService.getToken()}`
+      )
+      .subscribe({
+        next: (data) => {
+          if (this.patient) {
+            this.DPIResponse = data;
+          }
+        },
+        error: (err) => console.error('Error fetching Patient', err),
+      });
+    this.generateQRCode();
+    //fetch Consultation here:
+    this.apiDataService
+      .get<Consultation[]>(
+        `Consultation/dpi/${this.patient.id}/`,
+        `${this.authService.getToken()}`
+      )
+      .subscribe({
+        next: (data) => {
+          if (this.patient) {
+            this.patient.consultations = data;
+          }
+        },
+        error: (err) => console.error('Error fetching Consultation', err),
+      });
+
+    //Routing... etc.
+    this.route.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Check the current URL to determine if the child route is active
+        const currentRoute = this.route.url;
+        this.showParentUI = !(
+          currentRoute.includes('afficher-consultation') ||
+          currentRoute.includes('creer-consultation')
+        );
+      }
+    });
+  }
+
+  //-------------------------------------------------------QR code Section:
   generateQRCode(): void {
-    if (this.patient?.decodeBase64) {
-      QRCode.toDataURL(this.patient.decodeBase64, {
+    if (this.patient.qr_code) {
+      QRCode.toDataURL(this.patient.qr_code, {
         errorCorrectionLevel: 'H',
-        width: 351,
       })
         .then((url) => {
           this.qrCodeDataUrl = url;
@@ -79,38 +136,73 @@ export class AfficherDpiComponent implements OnInit{
       console.error('Error: Patient decodeBase64 value is undefined');
     }
   }
-  
 
-  navigateToViewConsultation(consultation : Consultation){
+  downloadImage() {
+    const image = document.getElementById('qrCodeImage') as HTMLImageElement;
+    const link = document.createElement('a');
+    link.href = image.src;
+    link.download = `QR_code${this.patient.patient_nom}_${this.patient.patient_prenom}.png`;
+    link.click();
+  }
+  //------------------------------------------------------- Navigation Section:
+  navigateToViewConsultation(consultation: Consultation) {
     this.consultationService.setConsultation(consultation);
     setAccessedFromAfficherDPI(true);
-    this.route.navigate(['afficher-consultation', consultation.id], { relativeTo: this.router });
-}
-
-  goBack(){
-    this.route.navigate(['../..',], { relativeTo: this.router });
+    this.route.navigate(['afficher-consultation', consultation.id], {
+      relativeTo: this.router,
+    });
   }
-  NavigateToCreerConsultation(){
-    console.log(this.dpiService.getDPI());
+
+  goBack() {
+    this.route.navigate(['../..'], { relativeTo: this.router });
+  }
+
+  NavigateToCreerConsultation() {
+    //creat consultation using the end point:
+    this.apiDataService
+      .createConsultation<Consultation>(
+        'Consultation/creer/',
+        this.patient.id,
+        `${this.authService.getToken()}`
+      )
+      .subscribe({
+        next: (response) => {
+          if (!this.patient.consultations) {
+            this.patient.consultations = [];
+          }
+          this.patient.consultations.push({ ...response });
+          this.dpiService.setDPI(this.patient);
+        },
+        error: (err) => {
+          alert('Impossible de creer la consultation. Veuillez réessayer.');
+          console.error(err);
+        },
+      });
+
     setAccessedFromAfficherDpi(true);
     this.route.navigate(['creer-consultation'], { relativeTo: this.router });
   }
 
-  deleteConsultation(){
-    this.patient.consultations = this.patient.consultations.filter(c => c.id !== this.consultationToDelete?.id);
+  //------------------------------------------------------- Delete Section:
+  deleteConsultation() {
+    this.patient.consultations = this.patient.consultations.filter(
+      (c) => c.id !== this.consultationToDelete?.id
+    );
     console.log(this.patient);
     this.dpiService.setDPI(this.patient);
     this.closeDeletionPopup();
   }
 
-  OpenDeletionPopup(index : number){
+  OpenDeletionPopup(index: number) {
     this.isPopupOpen = true;
     console.log(index);
     this.indexOfConsultationToDelete = index;
-    this.consultationToDelete = this.patient.consultations[this.indexOfConsultationToDelete];
+    this.consultationToDelete =
+      this.patient.consultations[this.indexOfConsultationToDelete];
     console.log(this.consultationToDelete);
   }
-  closeDeletionPopup(){
+
+  closeDeletionPopup() {
     this.indexOfConsultationToDelete = -1;
     this.isPopupOpen = false;
   }

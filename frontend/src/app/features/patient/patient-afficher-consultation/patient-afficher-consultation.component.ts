@@ -44,7 +44,7 @@ export class PatientAfficherConsultationComponent implements OnInit{
 
   trait : Traitement = {
     medicament : 'doliprane',
-    dose : '2000mg',
+    dosage : '2000mg',
     duree: '2 jours',
   }
 

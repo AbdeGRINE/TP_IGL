@@ -6,53 +6,37 @@ import { isPlatformBrowser } from '@angular/common';
 import { AuthResponse, Bilan, User } from '../models/interfaces/interfaces';
 import { of } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class RadiologueService {
+export class LaboratinService {
   private apiUrl = 'http://127.0.0.1:8000/';
   private bilansSubject = new BehaviorSubject<Bilan[]>([]);
   bilans$ = this.bilansSubject.asObservable();
   private isBrowser: boolean;
-<<<<<<< HEAD
     bilan : Bilan = {
     id : -1,
-    nom: "IRM",
+    nom: "Glycemie",
     date_demande: "2024-12-31",
     date_recuperation: null,
     status: "En_cours",
-    type: "Radiologique",
+    type: "Biologique",
     redigant_laborantin: null,
     redigant_radiologue: null,
     consultation: 1,
     graphique: "Non_Attaché"
     }
-=======
-    // bilan : Bilan = {
-    // nom: "IRM",
-    // date_demande: "2024-12-31",
-    // date_recuperation: null,
-    // status: "En_cours",
-    // type: "Radiologique",
-    // redigant_laborantin: null,
-    // redigant_radiologue: null,
-    // consultation: 1,
-    // graphique: "Non_Attaché"
-    // }
->>>>>>> 8fa550c627fd161a5edc174d9c87fa877acd98f8
 
-    setBilanRadiologique(bilan : Bilan){
-
-    }
 
     getBilanRadiologique(){
-      // return this.bilan;
+      return this.bilan;
     }
 
   constructor(private http: HttpClient,
     @Inject(PLATFORM_ID) platformId: Object) {this.isBrowser = isPlatformBrowser(platformId);}
 
-    getBilansRadiologueEnCours(): Observable<Bilan[]> {
+    getBilansBiologiqueEnCours(): Observable<Bilan[]> {
       let token = null;
       const auth = localStorage.getItem('authResponse') || null;
 
@@ -68,10 +52,11 @@ export class RadiologueService {
   
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`
               });
       console.log(headers);
   
-      return this.http.get<Bilan[]>(`${this.apiUrl}bilan/consulter_bilans_radiologiques_en_cours/`, { headers })
+      return this.http.get<Bilan[]>(`${this.apiUrl}bilan/consulter_bilans_biologiques_en_cours/`, { headers })
       .pipe(
         tap(bilans => {
           console.log('Response from backend:', bilans);
@@ -110,4 +95,5 @@ export class RadiologueService {
       });
       return this.http.post<Reponse_Bilan>(url, data, { headers });
     }
+
 }
