@@ -67,6 +67,9 @@ export class CreerConsultationComponent implements OnInit {
         consultation: 0,
       },
     ],
+    resume: '',
+    bilansBiologique: [],
+    bilanRadiologique: []
   };
   selectedOrdonnance: Ordonnance | null = null;
   selectedBilansBiologique: BilanRequest[] = [];

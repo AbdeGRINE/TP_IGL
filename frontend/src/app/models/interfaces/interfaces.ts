@@ -48,11 +48,13 @@ export interface EtablissementCourant {
 
 export interface Consultation {
   id: number;
+  bilans : any;
+  dpi : any;
   date: string;
   medecin_consulte: string;
   ordonnances: Ordonnance[];
-<<<<<<< HEAD
   resume: String;
+  resumes : any;
   bilansBiologique: Bilan[];
   bilanRadiologique: Bilan[];
 }
@@ -67,11 +69,9 @@ export interface Bilan {
   redigant_radiologue: number | null;
   consultation: number;
   graphique: 'Attaché' | 'Non_Attaché';
-=======
   bilans: Bilan[];
   dpi: number;
   resumes: Resume[];
->>>>>>> 8fa550c627fd161a5edc174d9c87fa877acd98f8
 }
 
 export interface Ordonnance {
@@ -83,17 +83,17 @@ export interface Ordonnance {
   medicaments: Traitement[];
 }
 
-export interface Bilan {
-  nom: string;
-  date_demande: string;
-  date_recuperation: string;
-  status: string;
-  type: string;
-  redigant_laborantin: string;
-  redigant_radiologue: string;
-  consultation: number;
-  graphique: string;
-}
+// export interface Bilan {
+//   nom: string;
+//   date_demande: string;
+//   date_recuperation: string;
+//   status: string;
+//   type: string;
+//   redigant_laborantin: string;
+//   redigant_radiologue: string;
+//   consultation: number;
+//   graphique: string;
+// }
 
 export interface Resume {
   id: number;
