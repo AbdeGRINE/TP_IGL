@@ -3,6 +3,7 @@
 This documentation describes the available endpoints for managing Computerized Patient Records (DPI).
 
 ---
+## Postman docs: https://documenter.getpostman.com/view/34741910/2sAYJ7geS1
 
 ## Base URL
 
