@@ -270,4 +270,3 @@ def update_test_results(request):
             {"error": "An unexpected error occurred.", "details": str(e)},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
-    

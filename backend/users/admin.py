@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 # Register your models here.
-from .models import Infermier, Traitement,Ordonnance,Medicament,Etablissement,Hospitalisation, Consultation, Resume, Bilan,DPI,Patient,Medcin
+from .models import Test,Laborantin,Infermier, Traitement,Ordonnance,Medicament,Etablissement,Hospitalisation, Consultation, Resume, Bilan,DPI,Patient,Medcin
 
 admin.site.register(Hospitalisation)
 admin.site.register(Consultation)
@@ -18,6 +18,8 @@ admin.site.register(Medicament)
 admin.site.register(Ordonnance)
 admin.site.register(Traitement)
 admin.site.register(Infermier)
+admin.site.register(Laborantin)
+admin.site.register(Test)
 
 
 
