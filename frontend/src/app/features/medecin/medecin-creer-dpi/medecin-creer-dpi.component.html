@@ -1,0 +1,60 @@
+<app-header></app-header>
+<form #dpiForm="ngForm" class="bg-lightgray flex flex-col gap-7 items-center min-h-screen">
+  <div class="flex flex-row items-center gap-20 mt-12">
+    <label for="nom" class="w-24">Nom:</label>
+    <input id="nom" name="nom" type="text" placeholder="Benziada" required [(ngModel)]="patient.patient.nom"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="prenom" class="w-24">Prenom:</label>
+    <input id="prenom" name="prenom" type="text" placeholder="Fares" required [(ngModel)]="patient.patient.prenom"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="date" class="w-24">Date de naissance:</label>
+    <input id="date" name="date" type="date" required [(ngModel)]="patient.patient.date_naissance"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray w-[340px]" />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="adresse" class="w-24">Adresse:</label>
+    <input id="adresse" name="adresse" type="text" placeholder="ESI, Oued Semmar, Alger." required
+      [(ngModel)]="patient.patient.adresse"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="nss" class="w-24">NSS:</label>
+    <input id="nss" name="nss" type="text" inputmode="numeric" placeholder="123456789" required
+      [(ngModel)]="patient.patient.nss"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="n_tlph" class="w-24">N tel:</label>
+    <input id="n_tlph" name="n_tlph" type="text" inputmode="numeric" placeholder="0555555555" required
+      [(ngModel)]="patient.patient.telephone"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="mutuelle" class="w-24">Mutuelle:</label>
+    <input id="mutuelle" name="mutuelle" type="text" placeholder="/" required [(ngModel)]="patient.patient.mutuelle"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="medecin" class="w-24">Medecin traitant:</label>
+    <input id="medecin" name="medecin" type="text" placeholder="Grine Abderrahmane" required
+      [(ngModel)]="patient.medecin_traitant"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+  </div>
+  <div class="flex flex-row items-center gap-20">
+    <label for="personne" class="w-24">Personne Ã contacter:</label>
+    <input id="personne" name="personne" type="text" placeholder="Yasser Arafat" required [(ngModel)]="patient.patient.personne_a_contacter"
+      class="text-darkgray px-4 py-2 border rounded-xl focus:ring-2 focus:ring-[#46BB91] focus:outline-none border-gray" />
+  </div>
+  <div class="flex flex-row self-center ml-52  gap-x-8 ">
+    <button class="text-green bg-white rounded-xl p-2 w-32 border border-green" (click)="navigateToMedecinDashboard()">
+      Annuler
+    </button>
+    <button class="bg-[#46BB91] rounded-xl p-2 text-white w-32" (click)="handleSaveDPI()">
+      Confirmer
+    </button>
+  </div>
+</form>

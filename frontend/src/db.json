@@ -1,0 +1,147 @@
+{
+  "Patients": [
+    {
+      "id": "p1",
+      "nom": "Jean Dupont",
+      "medecin": "Dr. Sophie Martin",
+      "dateDeCreation": "2023-06-15T10:30:00Z",
+      "ordonnances": [
+        {
+          "titre": "Ordonnance Cardiologie",
+          "traitements": [
+            {
+              "medicament": "Atorvastatine",
+              "dose": "20 mg",
+              "duree": "30 jours"
+            },
+            {
+              "medicament": "Aspirine",
+              "dose": "75 mg",
+              "duree": "60 jours"
+            }
+          ]
+        }
+      ],
+      "soins": [
+        {
+          "titre": "Consultation Cardiologie",
+          "observation": "Amélioration de la tension artérielle."
+        },
+        {
+          "titre": "fares",
+          "observation": "was here"
+        },
+        {
+          "titre": "Fares",
+          "observation": "was here 2"
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "nom": "Marie Curie",
+      "medecin": "Dr. Alain Bernard",
+      "dateDeCreation": "2023-09-20T15:45:00Z",
+      "ordonnances": [
+        {
+          "titre": "Ordonnance Dermatologie",
+          "traitements": [
+            {
+              "medicament": "Crème Hydratante",
+              "dose": "Appliquer 2 fois par jour",
+              "duree": "15 jours"
+            }
+          ]
+        }
+      ],
+      "soins": [
+        {
+          "titre": "Consultation Dermatologie",
+          "observation": "Amélioration notable des lésions cutanées."
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "nom": "Luc Tremblay",
+      "medecin": "Dr. Clara Dubois",
+      "dateDeCreation": "2024-01-10T09:00:00Z",
+      "ordonnances": [
+        {
+          "titre": "Ordonnance Diabète",
+          "traitements": [
+            {
+              "medicament": "Metformine",
+              "dose": "500 mg",
+              "duree": "90 jours"
+            },
+            {
+              "medicament": "Insuline",
+              "dose": "10 unités avant les repas",
+              "duree": "Indéterminée"
+            }
+          ]
+        }
+      ],
+      "soins": [
+        {
+          "titre": "Contrôle Glycémique",
+          "observation": "Les niveaux de sucre dans le sang sont stables."
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "nom": "Amélie Moreau",
+      "medecin": "Dr. François Rousseau",
+      "dateDeCreation": "2023-12-05T14:20:00Z",
+      "ordonnances": [
+        {
+          "titre": "Ordonnance Neurologie",
+          "traitements": [
+            {
+              "medicament": "Gabapentine",
+              "dose": "300 mg",
+              "duree": "45 jours"
+            }
+          ]
+        }
+      ],
+      "soins": [
+        {
+          "titre": "Traitement Migraine",
+          "observation": "Fréquence des migraines réduite."
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "nom": "Paul Lambert",
+      "medecin": "Dr. Elise Perrin",
+      "dateDeCreation": "2023-07-28T11:10:00Z",
+      "ordonnances": [
+        {
+          "titre": "Ordonnance ORL",
+          "traitements": [
+            {
+              "medicament": "Antibiotique",
+              "dose": "500 mg",
+              "duree": "10 jours"
+            },
+            {
+              "medicament": "Spray Nasal",
+              "dose": "2 pulvérisations par narine",
+              "duree": "7 jours"
+            }
+          ]
+        }
+      ],
+      "soins": [
+        {
+          "titre": "Suivi Sinusite",
+          "observation": "Les symptômes de sinusite sont en régression."
+        }
+      ]
+    }
+  ]
+}
