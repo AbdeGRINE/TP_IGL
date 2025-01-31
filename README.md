@@ -4,7 +4,7 @@
 The Digital Patient Record (DPI) system is an electronic medical record solution designed to centralize and manage patient information efficiently. It enhances communication among healthcare professionals and ensures better continuity of care by integrating patient data and streamlining workflows.
 ![Login](images/login.png)
 ![DPIs List](images/dpi-list.png)
-![Ordonnace](images/ordonnace.png)
+![Ordonnance](images/ordonnance.png)
 ![Soin](images/soin.png)
 ![Labo](images/labo.png)
 ## Key Features
